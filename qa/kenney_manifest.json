@@ -1,0 +1,832 @@
+[
+  {
+    "kit": "furniture",
+    "model": "bathroomCabinet",
+    "bytes": 7216
+  },
+  {
+    "kit": "furniture",
+    "model": "bathroomCabinetDrawer",
+    "bytes": 34744
+  },
+  {
+    "kit": "furniture",
+    "model": "bathroomMirror",
+    "bytes": 6792
+  },
+  {
+    "kit": "furniture",
+    "model": "bathroomSink",
+    "bytes": 22536
+  },
+  {
+    "kit": "furniture",
+    "model": "bathroomSinkSquare",
+    "bytes": 15108
+  },
+  {
+    "kit": "furniture",
+    "model": "bathtub",
+    "bytes": 35500
+  },
+  {
+    "kit": "furniture",
+    "model": "bedBunk",
+    "bytes": 40784
+  },
+  {
+    "kit": "furniture",
+    "model": "bedDouble",
+    "bytes": 23368
+  },
+  {
+    "kit": "furniture",
+    "model": "bedSingle",
+    "bytes": 18636
+  },
+  {
+    "kit": "furniture",
+    "model": "bench",
+    "bytes": 10756
+  },
+  {
+    "kit": "furniture",
+    "model": "benchCushion",
+    "bytes": 12500
+  },
+  {
+    "kit": "furniture",
+    "model": "benchCushionLow",
+    "bytes": 10268
+  },
+  {
+    "kit": "furniture",
+    "model": "bookcaseClosed",
+    "bytes": 23132
+  },
+  {
+    "kit": "furniture",
+    "model": "bookcaseClosedDoors",
+    "bytes": 22644
+  },
+  {
+    "kit": "furniture",
+    "model": "bookcaseClosedWide",
+    "bytes": 23140
+  },
+  {
+    "kit": "furniture",
+    "model": "bookcaseOpen",
+    "bytes": 18020
+  },
+  {
+    "kit": "furniture",
+    "model": "bookcaseOpenLow",
+    "bytes": 11520
+  },
+  {
+    "kit": "furniture",
+    "model": "cabinetBed",
+    "bytes": 7496
+  },
+  {
+    "kit": "furniture",
+    "model": "cabinetBedDrawer",
+    "bytes": 16088
+  },
+  {
+    "kit": "furniture",
+    "model": "cabinetTelevision",
+    "bytes": 10524
+  },
+  {
+    "kit": "furniture",
+    "model": "cabinetTelevisionDoors",
+    "bytes": 16876
+  },
+  {
+    "kit": "furniture",
+    "model": "cardboardBoxClosed",
+    "bytes": 5400
+  },
+  {
+    "kit": "furniture",
+    "model": "cardboardBoxOpen",
+    "bytes": 5404
+  },
+  {
+    "kit": "furniture",
+    "model": "chair",
+    "bytes": 10756
+  },
+  {
+    "kit": "furniture",
+    "model": "chairCushion",
+    "bytes": 12588
+  },
+  {
+    "kit": "furniture",
+    "model": "chairDesk",
+    "bytes": 39016
+  },
+  {
+    "kit": "furniture",
+    "model": "chairModernCushion",
+    "bytes": 7376
+  },
+  {
+    "kit": "furniture",
+    "model": "chairModernFrameCushion",
+    "bytes": 18588
+  },
+  {
+    "kit": "furniture",
+    "model": "chairRounded",
+    "bytes": 17156
+  },
+  {
+    "kit": "furniture",
+    "model": "coatRackStanding",
+    "bytes": 13288
+  },
+  {
+    "kit": "furniture",
+    "model": "computerKeyboard",
+    "bytes": 3476
+  },
+  {
+    "kit": "furniture",
+    "model": "computerMouse",
+    "bytes": 5868
+  },
+  {
+    "kit": "furniture",
+    "model": "computerScreen",
+    "bytes": 6404
+  },
+  {
+    "kit": "furniture",
+    "model": "desk",
+    "bytes": 15048
+  },
+  {
+    "kit": "furniture",
+    "model": "deskCorner",
+    "bytes": 17984
+  },
+  {
+    "kit": "furniture",
+    "model": "kitchenBar",
+    "bytes": 6004
+  },
+  {
+    "kit": "furniture",
+    "model": "kitchenBarEnd",
+    "bytes": 11084
+  },
+  {
+    "kit": "furniture",
+    "model": "kitchenBlender",
+    "bytes": 18728
+  },
+  {
+    "kit": "furniture",
+    "model": "kitchenCabinet",
+    "bytes": 10444
+  },
+  {
+    "kit": "furniture",
+    "model": "kitchenCabinetDrawer",
+    "bytes": 15384
+  },
+  {
+    "kit": "furniture",
+    "model": "kitchenCabinetUpper",
+    "bytes": 8168
+  },
+  {
+    "kit": "furniture",
+    "model": "kitchenCabinetUpperDouble",
+    "bytes": 18184
+  },
+  {
+    "kit": "furniture",
+    "model": "kitchenCoffeeMachine",
+    "bytes": 13332
+  },
+  {
+    "kit": "furniture",
+    "model": "kitchenFridge",
+    "bytes": 20116
+  },
+  {
+    "kit": "furniture",
+    "model": "kitchenFridgeLarge",
+    "bytes": 30632
+  },
+  {
+    "kit": "furniture",
+    "model": "kitchenFridgeSmall",
+    "bytes": 12988
+  },
+  {
+    "kit": "furniture",
+    "model": "kitchenMicrowave",
+    "bytes": 11248
+  },
+  {
+    "kit": "furniture",
+    "model": "kitchenSink",
+    "bytes": 23480
+  },
+  {
+    "kit": "furniture",
+    "model": "kitchenStove",
+    "bytes": 54324
+  },
+  {
+    "kit": "furniture",
+    "model": "kitchenStoveElectric",
+    "bytes": 18604
+  },
+  {
+    "kit": "furniture",
+    "model": "lampRoundFloor",
+    "bytes": 6600
+  },
+  {
+    "kit": "furniture",
+    "model": "lampRoundTable",
+    "bytes": 6604
+  },
+  {
+    "kit": "furniture",
+    "model": "lampSquareCeiling",
+    "bytes": 5628
+  },
+  {
+    "kit": "furniture",
+    "model": "lampSquareFloor",
+    "bytes": 5624
+  },
+  {
+    "kit": "furniture",
+    "model": "lampSquareTable",
+    "bytes": 5624
+  },
+  {
+    "kit": "furniture",
+    "model": "lampWall",
+    "bytes": 4828
+  },
+  {
+    "kit": "furniture",
+    "model": "laptop",
+    "bytes": 5540
+  },
+  {
+    "kit": "furniture",
+    "model": "loungeChair",
+    "bytes": 9648
+  },
+  {
+    "kit": "furniture",
+    "model": "loungeChairRelax",
+    "bytes": 13904
+  },
+  {
+    "kit": "furniture",
+    "model": "loungeSofa",
+    "bytes": 9644
+  },
+  {
+    "kit": "furniture",
+    "model": "loungeSofaCorner",
+    "bytes": 13412
+  },
+  {
+    "kit": "furniture",
+    "model": "loungeSofaLong",
+    "bytes": 13112
+  },
+  {
+    "kit": "furniture",
+    "model": "loungeDesignSofa",
+    "bytes": 9128
+  },
+  {
+    "kit": "furniture",
+    "model": "pillow",
+    "bytes": 5044
+  },
+  {
+    "kit": "furniture",
+    "model": "pillowBlue",
+    "bytes": 5052
+  },
+  {
+    "kit": "furniture",
+    "model": "pillowLong",
+    "bytes": 5072
+  },
+  {
+    "kit": "furniture",
+    "model": "plantSmall1",
+    "bytes": 8224
+  },
+  {
+    "kit": "furniture",
+    "model": "plantSmall2",
+    "bytes": 12996
+  },
+  {
+    "kit": "furniture",
+    "model": "plantSmall3",
+    "bytes": 8424
+  },
+  {
+    "kit": "furniture",
+    "model": "pottedPlant",
+    "bytes": 7576
+  },
+  {
+    "kit": "furniture",
+    "model": "radio",
+    "bytes": 25020
+  },
+  {
+    "kit": "furniture",
+    "model": "rugDoormat",
+    "bytes": 13812
+  },
+  {
+    "kit": "furniture",
+    "model": "rugRectangle",
+    "bytes": 3188
+  },
+  {
+    "kit": "furniture",
+    "model": "rugRound",
+    "bytes": 10164
+  },
+  {
+    "kit": "furniture",
+    "model": "rugRounded",
+    "bytes": 10876
+  },
+  {
+    "kit": "furniture",
+    "model": "rugSquare",
+    "bytes": 3180
+  },
+  {
+    "kit": "furniture",
+    "model": "sideTable",
+    "bytes": 8800
+  },
+  {
+    "kit": "furniture",
+    "model": "sideTableDrawers",
+    "bytes": 19072
+  },
+  {
+    "kit": "furniture",
+    "model": "speaker",
+    "bytes": 15744
+  },
+  {
+    "kit": "furniture",
+    "model": "speakerSmall",
+    "bytes": 15244
+  },
+  {
+    "kit": "furniture",
+    "model": "stoolBar",
+    "bytes": 11816
+  },
+  {
+    "kit": "furniture",
+    "model": "stoolBarSquare",
+    "bytes": 9784
+  },
+  {
+    "kit": "furniture",
+    "model": "table",
+    "bytes": 8196
+  },
+  {
+    "kit": "furniture",
+    "model": "tableCloth",
+    "bytes": 9920
+  },
+  {
+    "kit": "furniture",
+    "model": "tableCoffee",
+    "bytes": 8256
+  },
+  {
+    "kit": "furniture",
+    "model": "tableCoffeeSquare",
+    "bytes": 8276
+  },
+  {
+    "kit": "furniture",
+    "model": "tableCoffeeGlass",
+    "bytes": 9428
+  },
+  {
+    "kit": "furniture",
+    "model": "tableCross",
+    "bytes": 12140
+  },
+  {
+    "kit": "furniture",
+    "model": "tableRound",
+    "bytes": 6444
+  },
+  {
+    "kit": "furniture",
+    "model": "tableGlass",
+    "bytes": 9848
+  },
+  {
+    "kit": "furniture",
+    "model": "televisionModern",
+    "bytes": 6368
+  },
+  {
+    "kit": "furniture",
+    "model": "televisionVintage",
+    "bytes": 19392
+  },
+  {
+    "kit": "furniture",
+    "model": "toaster",
+    "bytes": 14924
+  },
+  {
+    "kit": "furniture",
+    "model": "trashcan",
+    "bytes": 6452
+  },
+  {
+    "kit": "furniture",
+    "model": "washer",
+    "bytes": 48104
+  },
+  {
+    "kit": "furniture",
+    "model": "dryer",
+    "bytes": 17760
+  },
+  {
+    "kit": "furniture",
+    "model": "shower",
+    "bytes": 52020
+  },
+  {
+    "kit": "furniture",
+    "model": "toilet",
+    "bytes": 18112
+  },
+  {
+    "kit": "furniture",
+    "model": "toiletSquare",
+    "bytes": 17548
+  },
+  {
+    "kit": "furniture",
+    "model": "books",
+    "bytes": 6864
+  },
+  {
+    "kit": "factory",
+    "model": "box-large",
+    "bytes": 7496
+  },
+  {
+    "kit": "factory",
+    "model": "box-small",
+    "bytes": 7500
+  },
+  {
+    "kit": "factory",
+    "model": "box-long",
+    "bytes": 7492
+  },
+  {
+    "kit": "factory",
+    "model": "box-wide",
+    "bytes": 7496
+  },
+  {
+    "kit": "factory",
+    "model": "catwalk-corner",
+    "bytes": 49600
+  },
+  {
+    "kit": "factory",
+    "model": "catwalk-cross",
+    "bytes": 21080
+  },
+  {
+    "kit": "factory",
+    "model": "catwalk-junction",
+    "bytes": 30332
+  },
+  {
+    "kit": "factory",
+    "model": "catwalk-stairs",
+    "bytes": 66256
+  },
+  {
+    "kit": "factory",
+    "model": "catwalk-straight",
+    "bytes": 33492
+  },
+  {
+    "kit": "factory",
+    "model": "cog-a",
+    "bytes": 13660
+  },
+  {
+    "kit": "factory",
+    "model": "cog-b",
+    "bytes": 16640
+  },
+  {
+    "kit": "factory",
+    "model": "cog-c",
+    "bytes": 13660
+  },
+  {
+    "kit": "factory",
+    "model": "cog-d",
+    "bytes": 13660
+  },
+  {
+    "kit": "factory",
+    "model": "cog-e",
+    "bytes": 19136
+  },
+  {
+    "kit": "factory",
+    "model": "cone",
+    "bytes": 7028
+  },
+  {
+    "kit": "factory",
+    "model": "crane",
+    "bytes": 53396
+  },
+  {
+    "kit": "factory",
+    "model": "crane-magnet",
+    "bytes": 16912
+  },
+  {
+    "kit": "factory",
+    "model": "hopper-high-round",
+    "bytes": 16644
+  },
+  {
+    "kit": "factory",
+    "model": "hopper-high-square",
+    "bytes": 11308
+  },
+  {
+    "kit": "factory",
+    "model": "hopper-round",
+    "bytes": 13700
+  },
+  {
+    "kit": "factory",
+    "model": "hopper-square",
+    "bytes": 10092
+  },
+  {
+    "kit": "factory",
+    "model": "lever-double",
+    "bytes": 18324
+  },
+  {
+    "kit": "factory",
+    "model": "lever-single",
+    "bytes": 17516
+  },
+  {
+    "kit": "factory",
+    "model": "machine",
+    "bytes": 25620
+  },
+  {
+    "kit": "factory",
+    "model": "machine-bed",
+    "bytes": 52136
+  },
+  {
+    "kit": "factory",
+    "model": "machine-fortified",
+    "bytes": 29828
+  },
+  {
+    "kit": "factory",
+    "model": "pipe-large",
+    "bytes": 23156
+  },
+  {
+    "kit": "factory",
+    "model": "pipe-large-bend",
+    "bytes": 44512
+  },
+  {
+    "kit": "factory",
+    "model": "pipe-large-curve",
+    "bytes": 32156
+  },
+  {
+    "kit": "factory",
+    "model": "pipe-large-junction",
+    "bytes": 35796
+  },
+  {
+    "kit": "factory",
+    "model": "pipe-large-long",
+    "bytes": 27288
+  },
+  {
+    "kit": "factory",
+    "model": "pipe-large-valve",
+    "bytes": 42604
+  },
+  {
+    "kit": "factory",
+    "model": "pipe-large-cross",
+    "bytes": 42016
+  },
+  {
+    "kit": "factory",
+    "model": "pipe-glass-large-valve",
+    "bytes": 39712
+  },
+  {
+    "kit": "factory",
+    "model": "piston-round",
+    "bytes": 37736
+  },
+  {
+    "kit": "factory",
+    "model": "piston-square",
+    "bytes": 29404
+  },
+  {
+    "kit": "factory",
+    "model": "screen-hanging-small",
+    "bytes": 8776
+  },
+  {
+    "kit": "factory",
+    "model": "screen-hanging-wide",
+    "bytes": 9764
+  },
+  {
+    "kit": "factory",
+    "model": "screen-small",
+    "bytes": 12352
+  },
+  {
+    "kit": "factory",
+    "model": "screen-wide",
+    "bytes": 13904
+  },
+  {
+    "kit": "factory",
+    "model": "warning-orange",
+    "bytes": 16136
+  },
+  {
+    "kit": "factory",
+    "model": "warning-traffic",
+    "bytes": 18192
+  },
+  {
+    "kit": "factory",
+    "model": "structure-short",
+    "bytes": 25828
+  },
+  {
+    "kit": "factory",
+    "model": "structure-medium",
+    "bytes": 25852
+  },
+  {
+    "kit": "survival",
+    "model": "barrel",
+    "bytes": 34256
+  },
+  {
+    "kit": "survival",
+    "model": "barrel-open",
+    "bytes": 31772
+  },
+  {
+    "kit": "survival",
+    "model": "box",
+    "bytes": 14056
+  },
+  {
+    "kit": "survival",
+    "model": "box-large",
+    "bytes": 14072
+  },
+  {
+    "kit": "survival",
+    "model": "chest",
+    "bytes": 35172
+  },
+  {
+    "kit": "survival",
+    "model": "bucket",
+    "bytes": 7816
+  },
+  {
+    "kit": "survival",
+    "model": "metal-panel",
+    "bytes": 24120
+  },
+  {
+    "kit": "survival",
+    "model": "metal-panel-screws",
+    "bytes": 28256
+  },
+  {
+    "kit": "survival",
+    "model": "rock-a",
+    "bytes": 10812
+  },
+  {
+    "kit": "survival",
+    "model": "rock-b",
+    "bytes": 15184
+  },
+  {
+    "kit": "survival",
+    "model": "structure-metal-wall",
+    "bytes": 10172
+  },
+  {
+    "kit": "survival",
+    "model": "structure-metal-doorway",
+    "bytes": 18532
+  },
+  {
+    "kit": "survival",
+    "model": "structure-metal-floor",
+    "bytes": 33068
+  },
+  {
+    "kit": "survival",
+    "model": "structure-metal-roof",
+    "bytes": 40704
+  },
+  {
+    "kit": "survival",
+    "model": "workbench",
+    "bytes": 26104
+  },
+  {
+    "kit": "survival",
+    "model": "tool-hammer",
+    "bytes": 6520
+  },
+  {
+    "kit": "survival",
+    "model": "signpost",
+    "bytes": 5924
+  },
+  {
+    "kit": "city-industrial",
+    "model": "detail-tank",
+    "bytes": 23456
+  },
+  {
+    "kit": "city-industrial",
+    "model": "chimney-basic",
+    "bytes": 8168
+  },
+  {
+    "kit": "city-industrial",
+    "model": "chimney-small",
+    "bytes": 10536
+  },
+  {
+    "kit": "city-industrial",
+    "model": "chimney-medium",
+    "bytes": 15068
+  },
+  {
+    "kit": "city-industrial",
+    "model": "chimney-large",
+    "bytes": 21408
+  }
+]

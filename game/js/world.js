@@ -25,18 +25,35 @@ export class World {
     this.geo = new THREE.BoxGeometry(1, 1, 1);
     this.cyl = new THREE.CylinderGeometry(1, 1, 1, 10);
     this.sph = new THREE.SphereGeometry(1, 10, 8);
+    this._propJobs = []; // GLB prop placement instructions (filled during _build)
+    this.props = null;
     this._env();
     this._contain();
+    // The whole facility sits on the rock slab; register a base floor so the
+    // seams between adjacent rooms are walkable instead of y=-20 pits.
+    this.floors.push({ minx: -41, maxx: 49, minz: -112, maxz: 30, y: 0 });
     this._build();
     this._drones();
     this.spawn = new THREE.Vector3(0, 0, 8);
   }
 
+  /** Queue a GLB prop placement (resolved later by placeProps). */
+  prop(id, x, y, z, ry = 0, opts = {}) {
+    this._propJobs.push({ id, x, y, z, ry, opts });
+  }
+  usedPropIds() {
+    return [...new Set(this._propJobs.map((j) => j.id))];
+  }
+  placeProps(lib) {
+    this.props = lib;
+    for (const j of this._propJobs) lib.place(j.id, j.x, j.y, j.z, j.ry, j.opts);
+  }
+
   _env() {
     this.scene.add(new THREE.AmbientLight(0x1a1e22, 0.22));
-    const hemi = new THREE.HemisphereLight(kelvinRGB(7500), kelvinRGB(3200), 0.28);
+    const hemi = new THREE.HemisphereLight(kelvinRGB(7500), kelvinRGB(3200), 0.42);
     this.scene.add(hemi);
-    this.moon = new THREE.DirectionalLight(kelvinRGB(6800), 0.18);
+    this.moon = new THREE.DirectionalLight(kelvinRGB(6800), 0.9);
     this.moon.position.set(-20, 40, 8);
     this.scene.add(this.moon);
     this.scene.fog = new THREE.Fog(0x0c1014, 10, 55);
@@ -626,13 +643,27 @@ export class World {
   }
 
   _build() {
+    // GLB prop shorthand (resolved later against data/props.json by PropLibrary)
+    const P = (id, x, y, z, ry = 0, o = {}) => this.prop(id, x, y, z, ry, o);
+
     // 01 ARRIVAL / RECEPTION
     this.room(0, 6, 14, 12, 3.4, this.M.paint, this.M.tile, { s: true });
     this.lamp(0, 3.15, 8, { lm: 1400, k: 3500, dist: 11 });
     this.lamp(-4.2, 3.15, 4.5, { lm: 700, k: 2700, dist: 8, hue: 0.02 });
     this.lamp(4.2, 3.15, 4.5, { lm: 700, k: 4000, dist: 8 });
-    this.desk(-3.4, 8.2);
-    this.desk(3.6, 8.2, Math.PI);
+    // front desk pair (GLB desk object group)
+    // front desk pair (correctly scaled; chairs clear of the desks)
+    P("desk", -3.2, 0, 8.7, 0); P("chairDesk", -3.2, 0, 9.9, 0);
+    P("desk", 3.2, 0, 8.7, Math.PI); P("chairDesk", 3.2, 0, 9.9, Math.PI);
+    // visitor lounge (south-west, clear of the wall cabinets)
+    P("loungeSofaLong", -4.9, 0, 5.6, Math.PI / 2);
+    P("loungeChair", -3.9, 0, 4.8, 0);
+    P("tableCoffeeGlass", -2.9, 0, 5.6, 0);
+    P("rugRound", -4.4, 0, 5.0, 0);
+    P("lampRoundFloor", -6.6, 0, 3.6, 0);
+    P("plantSmall2", -6.6, 0, 5.4, 0);
+    P("plantSmall1", 5.8, 0, 10.4, 0);
+    P("trashcan", -4.2, 0, 2.0, 0);
     this.cabinet(-6.2, 3.2);
     this.cabinet(6.2, 3.4);
     this.shelf(-6.2, 9.4);
@@ -689,6 +720,10 @@ export class World {
     this.box(-3.6, 1.55, -7.0, 0.55, 0.42, 0.08, this.M.emitGreen, false);
     this.box(-1.4, 1.55, -7.0, 0.55, 0.42, 0.08, this.M.emitAmber, false);
     this.clipboard(-2.4, 1.82, -6.85);
+    P("desk", 0.6, 0, -5.6, Math.PI / 2); P("chairDesk", 1.9, 0, -5.6, Math.PI / 2);
+    P("screen-hanging-small", -4.45, 1.7, -4.6, Math.PI / 2);
+    P("screen-hanging-small", -4.45, 1.7, -3.2, Math.PI / 2);
+    P("trashcan", 1.4, 0, -8.4, 0);
     this.interact(-2.4, 1.3, -6.7, "Take Lab B card", () => {
       if (this.flags.card) return { text: "Empty slot." };
       this.flags.card = true;
@@ -713,13 +748,19 @@ export class World {
     this.firstAid(2.35, 1.7, -16);
     this.fluoro(0, 2.98, -16, 2.0);
     this.bin(1.8, -21.5);
+    P("loungeChair", 1.8, 0, -14.2, Math.PI / 2);
+    P("plantSmall2", 2.2, 0, -18.4, 0);
+    P("rugRectangle", 0, 0, -21.0, 0, { s: 0.6 });
+    P("signpost", 2.2, 0, -16.0, Math.PI / 2, { s: 1.4 });
 
     // 04 OFFICES
-    this.room(-10, -16, 12, 10, 3.0, this.M.paint, this.M.tile, { e: true });
+    this.room(-10, -16, 12, 10, 3.0, this.M.paint, this.M.tile, { e: true, w: { ww: 2.2, leaf: false } });
     this.lamp(-10, 2.85, -14, { lm: 1000, k: 4000, dist: 10 });
     this.lamp(-13, 2.85, -18, { lm: 500, k: 2700, dist: 7 });
-    this.desk(-12.5, -13.5);
-    this.desk(-7.5, -18.2, 0.3);
+    P("desk", -12.5, 0, -13.8, 0); P("chairDesk", -12.5, 0, -12.6, Math.PI);
+    P("deskCorner", -8.0, 0, -17.5, 0.4); P("chairDesk", -8.0, 0, -20.1, 0);
+    P("bookcaseClosedDoors", -15.3, 0, -14.0, Math.PI / 2);
+    P("plantSmall3", -15.2, 0, -16.0, 0);
     this.cabinet(-14.8, -12.5);
     this.shelf(-14.6, -19.2);
     this.box(-6.6, 0.22, -13.8, 0.5, 0.44, 0.7, this.M.dark);
@@ -738,7 +779,7 @@ export class World {
     }));
 
     // 05 STORAGE — wall stacks only, aisle clear
-    this.room(10, -16, 12, 10, 3.2, this.M.concWall, this.M.concFloor, { w: true });
+    this.room(10, -16, 12, 10, 3.2, this.M.concWall, this.M.concFloor, { w: true, e: { ew: 2.2, leaf: false } });
     this.lamp(10, 2.95, -16, { lm: 700, k: 2400, dist: 9, hue: 0.03 });
     for (let i = 0; i < 8; i++) {
       const x = 6.6 + (i % 2) * 0.85, z = -12.4 - Math.floor(i / 2) * 0.9;
@@ -754,6 +795,15 @@ export class World {
     this.extinguisher(15.7, 1.15, -16, -Math.PI / 2);
     this.clipboard(10.2, 0.04, -15.5);
     this.breaker(4.25, 1.4, -16, Math.PI / 2);
+    // GLB pallet stacks (factory + survival crates)
+    P("box-large", 8.6, 0, -13.2, 0.3); P("box-large", 8.6, 0.60, -13.2, 0.3);
+    P("box", 9.5, 0, -12.6, -0.4);
+    P("chest", 12.4, 0, -13.2, 0.2);
+    P("barrel", 13.0, 0, -18.6, 0); P("barrel-open", 13.0, 0.88, -18.6, 0.6);
+    P("metal-panel", 15.6, 0, -18.0, Math.PI / 2);
+    P("metal-panel-screws", 15.6, 0, -19.2, Math.PI / 2);
+    P("cardboardBoxClosed", 9.7, 0, -14.0, 0.5);
+    P("cardboardBoxOpen", 9.7, 0.53, -14.0, 0.5);
     this.interact(14.5, 1.2, -19.1, "Search locker", () => ({
       text: "Rain jacket. Note: don't stay after the pumps change pitch.",
     }));
@@ -776,6 +826,10 @@ export class World {
     this.bin(11.2, -23.4);
     this.clipboard(8.4, 0.84, -27.6);
     this.breaker(5.25, 1.4, -28.5);
+    P("workbench", 11.6, 0, -23.6, Math.PI);
+    P("barrel", 13.9, 0, -24.4, 0); P("box", 12.6, 0, -23.6, 0.4);
+    P("box-large", 6.6, 0, -23.4, -0.3);
+    P("cone", 13.2, 0, -24.4, 0);
     this.interact(8, 1.2, -27.5, "Pull spare fuse", () => {
       this.flags.fuse = true;
       return { text: "60A fuse. Generator tray is empty until this goes in.", event: "fuse" };
@@ -787,7 +841,7 @@ export class World {
     this.can(1.1, -26); this.paper(-0.6, -30, 0.5);
 
     // 07 GENERATOR
-    this.room(-4, -42, 20, 16, 5.4, this.M.concWall, this.M.concFloor, { n: true, e: true, s: true });
+    this.room(-4, -42, 20, 16, 5.4, this.M.concWall, this.M.concFloor, { n: true, e: true, s: true, w: { ww: 2.2, leaf: false } });
     this.lamp(-8, 4.6, -42, { lm: 1800, k: 2200, dist: 14, hue: 0.05 });
     this.lamp(4, 4.6, -38, { lm: 900, k: 6500, dist: 12 });
     this.lamp(2, 4.6, -48, { lm: 600, k: 1800, dist: 10, hue: 0.08 });
@@ -806,6 +860,16 @@ export class World {
     this.bin(-2.2, -46);
     this.clipboard(-6.2, 1.72, -40.2);
     this.pegboard(5.6, 1.7, -34.3);
+    // GLB industrial machinery (the heart should look built, not bare)
+    P("machine", -2.6, 0, -46.5, 0); P("machine-fortified", 0.4, 0, -46.5, 0.2);
+    P("machine-bed", -11.6, 0, -36.8, Math.PI / 2);
+    P("hopper-high-round", -11.8, 0, -47.6, 0.4);
+    P("hopper-square", 3.4, 0, -46.8, -0.3);
+    P("piston-round", 0.6, 0, -37.8, 0.5); P("piston-square", 2.7, 0, -36.4, -0.4);
+    P("cog-c", 0.8, 0, -35.9, 0.8);
+    P("screen-wide", -13.2, 2.2, -46.2, Math.PI / 2);
+    P("lever-double", -13.5, 1.2, -44.4, Math.PI / 2);
+    P("box-large", 4.8, 0, -35.4, 0.6);
     this.interact(-5.4, 1.35, -40.5, "Start generator", () => {
       if (!this.flags.fuse) return { text: "Empty fuse tray. Workshop, east of the corridor." };
       if (this.flags.genOn) return { text: "Idle holds. Bus A is live." };
@@ -842,6 +906,11 @@ export class World {
     this.extinguisher(17.7, 1.15, -42, -Math.PI / 2);
     this.firstAid(6.25, 1.7, -46);
     this.clipboard(12, 1.55, -45.6);
+    P("machine", 9.0, 0, -46.8, Math.PI); P("machine-fortified", 15.2, 0, -46.8, 0);
+    P("screen-hanging-wide", 12, 1.8, -36.7, 0);
+    P("stoolBar", 8.0, 0, -44.8, Math.PI / 2); P("stoolBar", 8.7, 0, -44.8, Math.PI / 2);
+    P("tableCloth", 10.2, 0, -44.2, 0);
+    P("plantSmall1", 17.2, 0, -37.4, 0);
     this.box(14.4, 1.05, -46.0, 0.22, 0.35, 0.22, this.M.glass, false);
     this.box(10.0, 1.05, -46.0, 0.22, 0.35, 0.22, this.M.glass, false);
     this.interact(7.8, 1.25, -42, "Use card reader", () => {
@@ -885,10 +954,14 @@ export class World {
     this.bin(8.2, -61.5);
     this.extinguisher(7.25, 1.15, -64);
     this.box(12, 0.06, -66.4, 3.2, 0.04, 1.1, this.M.wet, false);
+    P("warning-orange", 7.5, 1.5, -60.3, 0);
+    P("warning-traffic", 16.7, 1.5, -64.0, Math.PI / 2);
+    P("lever-single", 7.35, 1.1, -66.6, Math.PI / 2);
+    P("box-small", 16.4, 0, -66.0, 0.3);
 
     // 11 TUNNEL
     this.room(12, -74, 4.0, 10, 2.4, this.M.concWall, this.M.concFloor, { n: true, s: true });
-    this.lamp(12, 2.2, -74, { lm: 280, k: 2100, dist: 6 });
+    this.lamp(12, 2.2, -74, { lm: 700, k: 2300, dist: 8 });
     for (let i = 0; i < 8; i++) this.pipe(10.6, 1.9, -70 - i * 0.9, 0.9, "z", this.M.metal, 0.06);
     this.mat(12, -74, 1.1, 1.8);
     this.can(12.6, -72);
@@ -898,10 +971,15 @@ export class World {
     this.floors.push({ minx: -18, maxx: 30, minz: -106, maxz: -78, y: 0 });
     this.open(12, -79, 2.6, 2.6, "z");
     // Yard is open air — no door sitting in empty space.
-    this.lamp(4, 4.2, -88, { lm: 1600, k: 6500, type: "spot", dist: 16, angle: 0.9 });
-    this.lamp(18, 3.6, -96, { lm: 700, k: 2200, dist: 12, hue: 0.04 });
+    this.lamp(4, 4.2, -88, { lm: 3200, k: 6500, type: "spot", dist: 24, angle: 0.9 });
+    this.lamp(18, 3.6, -96, { lm: 2200, k: 2400, dist: 18, hue: 0.04 });
+    this.lamp(6, 6.0, -90, { lm: 4200, k: 6500, type: "spot", dist: 30, angle: 1.0 });
     this.box(6, 1.2, -105.8, 48, 2.4, 0.12, this.M.metal);
-    this.box(6, 1.2, -78.2, 48, 2.4, 0.12, this.M.metal);
+    // north fence split by a gate gap aligned to the tunnel exit (yard must be reachable on foot)
+    this.box(-3.55, 1.2, -78.2, 28.5, 2.4, 0.12, this.M.metal);
+    this.box(21.55, 1.2, -78.2, 16.5, 2.4, 0.12, this.M.metal);
+    this.box(12, 2.3, -78.2, 2.8, 0.16, 0.14, this.M.metal, false);
+    this.open(12, -78.2, 2.6, 2.4, "z");
     this.box(-17.8, 1.2, -92, 0.12, 2.4, 28, this.M.metal);
     this.box(29.8, 1.2, -92, 0.12, 2.4, 28, this.M.metal);
     this.box(-6, 0.45, -98, 3.2, 0.9, 2.2, this.M.rock);
@@ -927,12 +1005,28 @@ export class World {
     pg.setAttribute("position", new THREE.BufferAttribute(arr, 3));
     this.rain = new THREE.Points(pg, new THREE.PointsMaterial({ color: 0x99b0c0, size: 0.05, transparent: true, opacity: 0.45 }));
     this.scene.add(this.rain);
+    // yard clutter — real GLB props, spread so the open space reads as a working yard
+    P("crane", 24.0, 0, -84.0, Math.PI / 2);
+    P("crane-magnet", -13.0, 0, -99.0, 0.4);
+    P("detail-tank", 14.0, 0, -100.0, 0);
+    P("chimney-large", 26.0, 0, -98.0, 0);
+    P("barrel", 8.5, 0, -86.0, 0.3); P("barrel-open", 9.3, 0, -85.2, -0.2);
+    P("barrel", -14.0, 0, -86.0, 0.5); P("barrel", -15.6, 0, -85.3, -0.3);
+    P("box-large", 6.0, 0, -94.0, 0.8); P("box", 7.0, 0, -94.4, -0.4);
+    P("rock-a", -16.0, 0, -100.0, 0.6); P("rock-b", 2.0, 0, -103.0, 0.2);
+    P("structure-metal-wall", 18.0, 0, -78.0, 0);
+    P("metal-panel-screws", 20.0, 0, -78.1, Math.PI / 2);
+    P("warning-traffic", 22.0, 0, -78.1, 0);
+    P("signpost", 3.0, 0, -96.0, 0.3, { s: 1.2 });
 
     // 14 SHACK
     this.room(-8, -98, 8, 8, 2.7, this.M.concWall, this.M.wood, { n: true, leaf: false });
     this.open(-8, -94, 1.8, 2.2, "z");
     this.lamp(-8, 2.4, -98, { lm: 450, k: 2400, dist: 7 });
-    this.desk(-8, -100);
+    P("desk", -8, 0, -100, 0); P("chairDesk", -8, 0, -98.6, Math.PI);
+    P("radio", -8, 0.76, -100, 0);
+    P("rugRectangle", -8, 0, -98.2, 0, { s: 0.6 });
+    P("trashcan", -6.4, 0, -99.4, 0);
     this.mat(-8, -96, 1.2, 0.8);
     this.can(-6.5, -97); this.trash(-5.2, -100);
     this.interact(-8, 1.15, -99.5, "Yard radio", () => ({
@@ -941,7 +1035,8 @@ export class World {
 
     // 15 SEA GATE
     this.box(24, 1.7, -92, 1.5, 3.4, 6, this.M.metal);
-    this.lamp(24, 3.4, -92, { lm: 900, k: 1800, dist: 8, hue: 0.07 });
+    this.lamp(24, 3.4, -92, { lm: 2000, k: 3200, dist: 16, hue: 0.07 });
+    this.lamp(22, 5.5, -92, { lm: 3800, k: 4300, type: "spot", dist: 20, angle: 0.8 });
     this.mat(22, -92, 1.6, 2.0);
     this.barrel(21, -89);
     this.interact(22.8, 1.35, -92, "Sea-gate keypad", () => {
@@ -957,7 +1052,10 @@ export class World {
     this.lamp(-10, 2.8, -5, { lm: 700, k: 2900, dist: 8 });
     this.cabinet(-13.5, -3.2);
     this.shelf(-13.6, -7.2);
-    this.desk(-8, -4);
+    P("desk", -8, 0, -4.6, Math.PI); P("chairDesk", -8, 0, -3.4, 0);
+    P("bookcaseClosedDoors", -14.4, 0, -5.6, Math.PI / 2);
+    P("bookcaseClosedDoors", -5.9, 0, -6.4, -Math.PI / 2);
+    P("rugRectangle", -8, 0, -6, 0, { s: 1.1 });
     this.mat(-10, -5, 1.5, 0.9);
     this.paper(-9, -6, 0.4); this.paper(-8.6, -6.3, 1.2); this.can(-7.2, -3.5);
     this.cork(-10, 1.65, -1.15);
@@ -972,6 +1070,114 @@ export class World {
       this.flags.code = true;
       return { text: "SEA-GATE KEYPAD 4-7-2-1. Tide photos: closer every year.", event: "code" };
     });
+
+    // ================= CREW WING (east) =================
+    // EAST HALL — link storage -> canteen / bunks / locker
+    this.room(18.05, -16, 4.1, 12, 3.1, this.M.concWall, this.M.concFloor,
+      { n: { leaf: false }, s: { leaf: false }, e: { leaf: false }, w: { leaf: false } });
+    this.lamp(18.05, 2.9, -13, { lm: 700, k: 3800, dist: 8 });
+    this.lamp(18.05, 2.9, -19, { lm: 500, k: 2600, dist: 7, hue: 0.03 });
+    P("loungeChair", 19.4, 0, -14.5, Math.PI / 2);
+    P("plantSmall1", 19.7, 0, -18.0, 0);
+    P("rugRectangle", 18.05, 0, -16.0, 0, { s: 0.6 });
+    this.sign(18.05, 2.3, -16, this.M.warn);
+    this.firstAid(19.95, 1.7, -15.0);
+    this.extinguisher(16.15, 1.15, -12.0);
+    this.interact(19.9, 1.3, -12.5, "Wall phone", () => ({
+      text: "Dead line. The handset cord has been pulled out of the wall.",
+    }));
+
+    // CANTEEN — day shift stopped mid-meal
+    this.room(25.1, -16, 10, 10, 3.0, this.M.paint, this.M.tile, { w: { leaf: false } });
+    this.lamp(25.1, 2.85, -14, { lm: 1000, k: 3200, dist: 10 });
+    this.lamp(28.5, 2.85, -18, { lm: 500, k: 2700, dist: 7 });
+    // kitchen run along the north wall
+    P("kitchenFridge", 28.9, 0, -11.7, 0);
+    P("kitchenStove", 27.5, 0, -11.7, 0);
+    P("kitchenSink", 26.1, 0, -11.7, 0);
+    P("kitchenCabinetUpperDouble", 26.1, 1.9, -11.55, 0);
+    // dining
+    P("tableCloth", 24.6, 0, -16.0, 0);
+    P("chairCushion", 24.6, 0, -16.9, Math.PI);
+    P("chairCushion", 24.6, 0, -15.1, 0);
+    P("chairCushion", 23.3, 0, -16.0, Math.PI / 2);
+    P("chairCushion", 25.9, 0, -16.0, -Math.PI / 2);
+    P("rugRectangle", 24.6, 0, -16.0, 0, { s: 1.2 });
+    P("lampSquareFloor", 22.0, 0, -19.8, 0);
+    P("trashcan", 22.2, 0, -11.7, 0);
+    P("plantSmall2", 29.2, 0, -20.2, 0);
+    this.wallClock(25.1, 2.55, -11.6);
+    this.interact(25.1, 1.15, -12.3, "Check the coffee urn", () => ({
+      text: "Still warm. The day shift poured three mugs and never drank them.",
+    }));
+
+    // BUNKS — night-shift rest quarters
+    this.room(18.05, -6, 12, 8, 2.7, this.M.paint, this.M.wood, { s: { leaf: false } });
+    this.lamp(18.05, 2.5, -4, { lm: 600, k: 2800, dist: 8 });
+    this.lamp(14.5, 2.5, -7.5, { lm: 300, k: 2400, dist: 6, hue: 0.02 });
+    P("bedSingle", 13.6, 0, -8.6, Math.PI / 2);
+    P("bedSingle", 16.3, 0, -8.6, Math.PI / 2);
+    P("bedSingle", 13.5, 0, -3.4, Math.PI / 2);
+    P("loungeChair", 20.8, 0, -8.6, Math.PI / 2);
+    P("rugRound", 20.8, 0, -8.4, 0);
+    P("bookcaseClosedDoors", 21.9, 0, -2.8, Math.PI);
+    P("trashcan", 16.2, 0, -2.6, 0);
+    this.interact(15.2, 1.1, -5.0, "Inspect the cots", () => ({
+      text: "Three cots. One is stripped bare and its locker is already empty.",
+    }));
+
+    // LOCKER — showers / washroom
+    this.room(19.5, -27, 8, 10, 2.7, this.M.tile, this.M.tile, { n: { leaf: false } });
+    this.lamp(19.5, 2.5, -25, { lm: 800, k: 5000, dist: 8 });
+    this.lamp(16.5, 2.5, -30, { lm: 350, k: 2200, dist: 6, hue: 0.05 });
+    P("shower", 16.4, 0, -30.2, Math.PI / 2);
+    P("bathtub", 22.2, 0, -29.7, Math.PI / 2);
+    P("toilet", 16.4, 0, -23.6, Math.PI / 2);
+    P("toiletSquare", 17.6, 0, -23.6, Math.PI / 2);
+    P("bathroomSink", 22.4, 0.55, -22.75, -Math.PI / 2);
+    P("bathroomSinkSquare", 22.55, 0, -24.0, -Math.PI / 2);
+    P("bathroomMirror", 22.4, 1.6, -22.15, Math.PI);
+    P("washer", 20.4, 0, -31.2, 0); P("dryer", 23.05, 0, -31.3, 0);
+    this.box(19.5, 0.05, -31.8, 6.4, 0.04, 1.2, this.M.wet, false);
+    this.interact(19.5, 1.15, -22.7, "Read shift roster", () => ({
+      text: "Every name is checked out. Yours is on the board, unchecked.",
+    }));
+
+    // BOILER — basement boiler / pump hall (the knock lives here)
+    this.room(-21, -42, 14, 14, 4.2, this.M.concWall, this.M.concFloor, { e: { leaf: false } });
+    this.lamp(-21, 3.9, -40, { lm: 1200, k: 2400, dist: 12, hue: 0.04 });
+    this.lamp(-26, 3.9, -47, { lm: 500, k: 1800, dist: 9, hue: 0.08 });
+    P("machine", -24.4, 0, -36.4, 0); P("machine-fortified", -22.0, 0, -36.4, 0.2);
+    P("machine-bed", -26.2, 0, -44.0, Math.PI / 2);
+    P("hopper-high-round", -26.6, 0, -40.0, 0.3);
+    P("hopper-high-square", -25.1, 0, -47.4, -0.2);
+    P("piston-round", -18.6, 0, -38.0, 0.4); P("piston-square", -18.6, 0, -46.4, -0.3);
+    P("detail-tank", -15.6, 0, -47.6, 0);
+    P("catwalk-stairs", -16.4, 0, -41.0, -Math.PI / 2);
+    P("catwalk-corner", -26.0, 0, -37.2, 0);
+    P("cog-a", -18.0, 0, -36.2, 0.5); P("cog-b", -24.7, 0, -38.4, 0.9);
+    P("warning-orange", -15.0, 1.6, -42.0, -Math.PI / 2);
+    P("box-large", -23.6, 0, -47.6, 0.4);
+    P("screen-hanging-wide", -21.0, 2.2, -35.6, 0);
+    this.interact(-24.5, 1.2, -44.5, "Read pressure log", () => ({
+      text: "Pressure spikes that don't match any tide table. The knock is in the record.",
+    }));
+
+    // STORE B — deep stores (real door, optional secret shelf)
+    this.room(-20, -16, 8, 10, 3.0, this.M.concWall, this.M.concFloor, { e: { leaf: false } });
+    this.portalDoor(-16, -16, 2.2, "x");
+    this.lamp(-20, 2.8, -14, { lm: 600, k: 2800, dist: 8, hue: 0.02 });
+    P("box-large", -23.2, 0, -12.4, 0.3); P("box", -23.3, 0, -13.9, -0.4);
+    P("box-long", -22.2, 0, -19.4, 0.2);
+    P("chest", -17.2, 0, -19.6, 0.1);
+    P("barrel", -23.4, 0, -17.6, 0); P("barrel-open", -23.4, 0.88, -17.6, 0.5);
+    P("metal-panel", -23.4, 0, -14.8, Math.PI / 2);
+    P("cardboardBoxClosed", -18.4, 0, -13.2, 0.7);
+    P("cardboardBoxOpen", -18.4, 0.53, -13.2, 0.7);
+    P("rock-a", -17.4, 0, -17.0, 0.4);
+    this.interact(-23.0, 1.2, -16.0, "Search quarantine shelf", () => ({
+      text: "Old silt jars, dated next year. Duplicates of the ones in Lab B.",
+    }));
   }
 
   _drones() {

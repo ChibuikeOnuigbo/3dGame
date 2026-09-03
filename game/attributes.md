@@ -249,3 +249,18 @@ SKIPPED AT RUNTIME (too heavy for boot; CC-BY recorded):
 - office is old abandoned dasy444 ~40MB
 - Server Rack Spellkaze ~7MB
 - Filing Cabinet ahmagh2e ~4.8MB
+
+# --- 2026-09-03: Kenney 3D props (CC0) ---
+
+NAME: Kenney Furniture Kit / Factory Kit / Survival Kit / City Kit (Industrial)
+CREATOR: Kenney (kenney.nl)
+SOURCE: https://github.com/shorepine/kenney (mirror of Kenney's CC0 game-asset library, 3d/ kits)
+URL: https://kenney.nl/assets/furniture-kit
+LICENSE: CC0 1.0 Universal (public domain) — attribution not required
+DATE: 2026-09-03
+FILES: game/models/kenney/{furniture,factory,survival,city-industrial}/*.glb (166 curated models)
+USED IN: room dressing via game/data/props.json + game/js/props.js
+
+Curated by qa/sync_kenney.py; 166 GLBs (~3.2 MB). Furniture kit GLBs are
+self-contained; factory/survival/city-industrial GLBs reference a shared
+Textures/colormap.png kept beside each kit folder.

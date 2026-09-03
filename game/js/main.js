@@ -6,6 +6,7 @@ import { AudioSys } from "./audio.js";
 import { saveGame, loadGame, hasSave, saveSettings, loadSettings } from "./save.js";
 import { $, show, setPrompt, setObj, setSub } from "./ui.js";
 import { manager, preload, prototypes } from "./assets.js";
+import { PropLibrary } from "./props.js";
 
 const canvas = document.getElementById("c");
 window.__hcReady = false;
@@ -30,6 +31,7 @@ const input = new Input();
 const audio = new AudioSys();
 const player = new Player(camera, input, audio);
 const world = new World(scene);
+window.__hcWorld = world;
 window.__hcWorldMs = performance.now() - window.__hcT0;
 player.attachLights(scene);
 
@@ -267,6 +269,26 @@ preload().then(() => {
   if (prototypes.door) world.applyDoorMeshes(prototypes.door);
   if (prototypes.warehouse) world.placeWarehouse(prototypes.warehouse);
 }).catch((e) => console.warn(e));
+
+// GLB prop library — loaded after the world is built so the world is never
+// blocked on model fetch. Placements resolve against data/props.json.
+fetch("./data/props.json")
+  .then((r) => r.json())
+  .catch(() => ({}))
+  .then((registry) => {
+    window.__hcPropLib = new PropLibrary(scene, world.solids, registry);
+    return window.__hcPropLib.load(world.usedPropIds(), (done, total, id) => {
+      const fill = document.getElementById("bootFill");
+      const msg = document.getElementById("bootMsg");
+      if (fill) fill.style.width = (total ? (60 + 40 * done / total) : 68) + "%";
+      if (msg && id) msg.textContent = `Props ${done}/${total}…`;
+    });
+  })
+  .then((stats) => {
+    world.placeProps(window.__hcPropLib);
+    window.__hcProps = { loaded: stats.loaded, failed: stats.failed, placed: { ...stats.placed } };
+  })
+  .catch((e) => console.warn("prop load fail", e));
 setTimeout(assetsDone, 2500);
 
 window.hcQA = {
@@ -317,6 +339,8 @@ window.hcQA = {
       debug: { ...player.debug, enemies: world.enemiesOn },
     };
   },
+  floorAt(x, z) { return world.floorAt(x, z); },
+  blocked(x, y, z, r) { return world.blocked(x, y, z, r); },
   rooms() {
     return [
       { id: "reception", x: 0, y: 1.2, z: 8, yaw: 0 },
@@ -324,17 +348,41 @@ window.hcQA = {
       { id: "corridor", x: 0, y: 1.2, z: -16, yaw: 0 },
       { id: "offices", x: -10, y: 1.2, z: -16, yaw: Math.PI / 2 },
       { id: "archives", x: -10, y: 1.2, z: -5, yaw: 0 },
+      { id: "storeB", x: -20, y: 1.2, z: -16, yaw: 0 },
       { id: "storage", x: 10, y: 1.2, z: -16, yaw: -Math.PI / 2 },
+      { id: "easthall", x: 18.05, y: 1.2, z: -16, yaw: 0 },
+      { id: "canteen", x: 25.1, y: 1.2, z: -16, yaw: 0 },
+      { id: "bunks", x: 18.05, y: 1.2, z: -6, yaw: 0 },
+      { id: "locker", x: 19.5, y: 1.2, z: -27, yaw: 0 },
       { id: "workshop", x: 10, y: 1.2, z: -26, yaw: 0 },
       { id: "southhall", x: 0, y: 1.2, z: -28, yaw: 0 },
       { id: "generator", x: -4, y: 1.2, z: -42, yaw: 0 },
+      { id: "boiler", x: -21, y: 1.2, z: -42, yaw: 0 },
       { id: "lab", x: 12, y: 1.2, z: -42, yaw: 0 },
       { id: "maintenance", x: 12, y: 1.2, z: -54, yaw: 0 },
       { id: "valves", x: 12, y: 1.2, z: -64, yaw: 0 },
       { id: "tunnel", x: 12, y: 1.2, z: -74, yaw: 0 },
       { id: "yard", x: 6, y: 1.2, z: -92, yaw: 0 },
       { id: "shack", x: -8, y: 1.2, z: -98, yaw: 0 },
-      { id: "seagate", x: 22, y: 1.2, z: -92, yaw: -Math.PI / 2 },
+      { id: "seagate", x: 22, y: 1.2, z: -92, yaw: Math.PI / 2 },
     ];
   },
+  props() {
+    return {
+      registry: Object.keys(window.__hcPropLib ? window.__hcPropLib.registry : {}).length,
+      loaded: window.__hcProps ? window.__hcProps.loaded : 0,
+      placed: window.__hcProps ? window.__hcProps.placed : {},
+      failed: window.__hcProps ? window.__hcProps.failed : [],
+    };
+  },
+  interactIds() {
+    return world.interacts.map((it) => it.label);
+  },
+  interact(label) {
+    const it = world.interacts.find((i) => i.label.toLowerCase().includes(label.toLowerCase()));
+    if (!it) return { error: "not found", label };
+    const r = it.fn();
+    return { label: it.label, text: r.text, event: r.event, flags: { ...world.flags } };
+  },
+  flags() { return { ...world.flags }; },
 };

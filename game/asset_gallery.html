@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hollow Current — Asset Gallery</title>
+<style>
+  html, body { margin: 0; background: #101215; }
+  #wrap { position: relative; width: 1600px; height: 900px; }
+  #c { display: block; }
+  #labels { position: absolute; left: 0; top: 0; pointer-events: none; }
+  .lbl { position: absolute; transform: translate(-50%, -50%); color: #8ecbff;
+         font: 9px/1 monospace; text-shadow: 0 1px 2px #000; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="c" width="1600" height="900"></canvas>
+  <div id="labels"></div>
+</div>
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from "three";
+import { GLTFLoader } from "./vendor/GLTFLoader.js";
+
+const props = await (await fetch("./data/props.json")).json();
+const entries = Object.entries(props);
+const COLS = 14;
+const CELL = 2.6;
+const ROWS = Math.ceil(entries.length / COLS);
+const GW = COLS * CELL, GD = ROWS * CELL;
+
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("c"), antialias: true });
+renderer.setPixelRatio(1);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x1b1e22);
+
+// top-down orthographic: whole grid visible, uniform screen scale
+const viewH = GD * 1.06, viewW = viewH * (1600 / 900);
+const cam = new THREE.OrthographicCamera(-viewW / 2, viewW / 2, viewH / 2, -viewH / 2, 1, 1000);
+cam.position.set(0, 70, 0);
+cam.lookAt(0, 0, 0);
+cam.up.set(0, 0, -1);
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+const key = new THREE.DirectionalLight(0xffffff, 1.3); key.position.set(40, 60, 15); scene.add(key);
+const rim = new THREE.DirectionalLight(0x8899bb, 0.6); rim.position.set(-30, 50, -20); scene.add(rim);
+
+const loader = new GLTFLoader();
+let placed = 0;
+const failed = [];
+const grid = [];
+for (let i = 0; i < entries.length; i++) {
+  const [id, def] = entries[i];
+  const row = Math.floor(i / COLS), col = i % COLS;
+  const x = (col - COLS / 2 + 0.5) * CELL;
+  const z = (row - ROWS / 2 + 0.5) * CELL;
+  grid.push({ id, x, z });
+  try {
+    const g = await new Promise((res, rej) => loader.load(`./models/kenney/${def.f}.glb`, res, undefined, rej));
+    g.scene.traverse((o) => { if (o.isMesh) o.frustumCulled = false; });
+    const box = new THREE.Box3().setFromObject(g.scene);
+    const size = box.getSize(new THREE.Vector3());
+    const m = Math.max(size.x, size.y, size.z) || 1;
+    const s = 2.1 / m;                       // normalize every prop to ~2.1m
+    g.scene.scale.setScalar(s);
+    g.scene.position.set(x, 0 - box.min.y * s, z);
+    g.scene.rotation.y = -Math.PI / 4;       // 3/4 view of each piece
+    scene.add(g.scene);
+    placed++;
+  } catch (e) { failed.push(`${id} (${e.message})`); }
+}
+
+renderer.render(scene, cam);
+window.__hcGrid = grid;
+window.__hcFailed = failed;
+window.__hcPlaced = placed;
+
+// projected labels
+const scale = 900 / viewH;
+const labels = document.getElementById("labels");
+for (const g of grid) {
+  const sx = 800 + g.x * scale;
+  const sy = 450 + g.z * scale;
+  const d = document.createElement("div");
+  d.className = "lbl";
+  d.style.left = sx + "px";
+  d.style.top = sy + "px";
+  d.textContent = g.id;
+  labels.appendChild(d);
+}
+window.__hcDone = true;
+</script>
+</body>
+</html>

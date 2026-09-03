@@ -41,21 +41,21 @@ Keep exposition on notices, terminals, and objects. No cutscene dump.
 - **Reward:** Card.
 - **Foreshadow:** Scorch later in generator matches the floor scar here.
 
-### Ch.2 — Spine corridor / offices / storage / workshop
-- **Narrative:** Work interrupted, not wrecked.
-- **Gameplay:** Fuse in workshop; office terminal as compass; storage as optional loot.
-- **Environment:** Wainscot, pipes, labeled shelves, tool chest.
-- **Horror:** Coffee still warm-looking. Tools laid out for a job you are now doing.
-- **Reward:** 60A fuse.
+### Ch.2 — Spine corridor / offices / storage / workshop / crew wing
+- **Narrative:** Work interrupted, not wrecked. The crew wing (canteen, bunks, locker room) still holds the day shift's unfinished coffee, unmade cots, and a roster with your name on it.
+- **Gameplay:** Fuse in workshop; office terminal as compass; storage as optional loot; crew wing as optional discovery (canteen coffee urn, cots, shift roster, wall phone).
+- **Environment:** Wainscot, pipes, labeled shelves, tool chest; kitchen run, bunks, showers.
+- **Horror:** Coffee still warm-looking. Tools laid out for a job you are now doing. One cot stripped; its locker already empty.
+- **Reward:** 60A fuse + optional lore.
 - **Foreshadow:** “Don’t stay after the pumps change pitch.”
 
-### Ch.3 — Generator hall
-- **Narrative:** The heart is cold until you feed it.
-- **Gameplay:** Install fuse, start bus; first drone patrol; catwalk.
-- **Environment:** Scale, amber light, tank, stairs.
-- **Horror:** After start, pipes knock once — then wait.
+### Ch.3 — Generator hall + boiler room
+- **Narrative:** The heart is cold until you feed it; the boiler room below it keeps its own record of the pressure.
+- **Gameplay:** Install fuse, start bus; first drone patrol; catwalk. Optional: pressure log in the boiler room.
+- **Environment:** Scale, amber light, tank, stairs; hoppers, pipe runs, pistons.
+- **Horror:** After start, pipes knock once — then wait. The boiler log shows spikes that match no tide table.
 - **Reward:** Power / Lab path.
-- **Foreshadow:** Arc on the floor: something heavy swung more than once.
+- **Foreshadow:** Arc on the floor: something heavy swung more than once. The knock is already in the pressure record.
 
 ### Ch.4 — Lab B
 - **Narrative:** CURRENT-7 is not municipal.
@@ -103,7 +103,7 @@ Explore → notice wrong (name, empty jar, pitch) → interact → survive (dron
 
 ## 4. Room existence test
 
-If a space can be deleted without losing a beat of the loop above, it does not ship. Reception, security, corridor, offices, archives, storage, workshop, generator, lab, maintenance, valves, tunnel, yard, shack, sea-gate each have a unique job.
+If a space can be deleted without losing a beat of the loop above, it does not ship. Reception, security, corridor, offices, archives, storage, workshop, generator, lab, maintenance, valves, tunnel, yard, shack, sea-gate each have a unique job — plus the crew wing (east hall, canteen, bunks, locker), the boiler room, and deep stores (store B), each added to earn its place rather than to pad the map.
 
 ## 5. Style ranks (skill, not kills)
 

@@ -1,0 +1,878 @@
+{
+  "chimney-basic": {
+    "f": "city-industrial/chimney-basic",
+    "name": "chimney-basic",
+    "s": 2.2,
+    "solid": false
+  },
+  "chimney-large": {
+    "f": "city-industrial/chimney-large",
+    "name": "chimney-large",
+    "s": 2.2,
+    "solid": false
+  },
+  "chimney-medium": {
+    "f": "city-industrial/chimney-medium",
+    "name": "chimney-medium",
+    "s": 2.2,
+    "solid": false
+  },
+  "chimney-small": {
+    "f": "city-industrial/chimney-small",
+    "name": "chimney-small",
+    "s": 2.2,
+    "solid": false
+  },
+  "detail-tank": {
+    "f": "city-industrial/detail-tank",
+    "name": "detail-tank",
+    "s": 2.6,
+    "solid": true
+  },
+  "box-large": {
+    "f": "survival/box-large",
+    "name": "box-large",
+    "s": 2.4,
+    "solid": true
+  },
+  "box-long": {
+    "f": "factory/box-long",
+    "name": "box-long",
+    "s": 1.8,
+    "solid": true
+  },
+  "box-small": {
+    "f": "factory/box-small",
+    "name": "box-small",
+    "s": 1.6,
+    "solid": true
+  },
+  "box-wide": {
+    "f": "factory/box-wide",
+    "name": "box-wide",
+    "s": 1.8,
+    "solid": true
+  },
+  "catwalk-corner": {
+    "f": "factory/catwalk-corner",
+    "name": "catwalk-corner",
+    "s": 1.6,
+    "solid": true
+  },
+  "catwalk-cross": {
+    "f": "factory/catwalk-cross",
+    "name": "catwalk-cross",
+    "s": 1.6,
+    "solid": false
+  },
+  "catwalk-junction": {
+    "f": "factory/catwalk-junction",
+    "name": "catwalk-junction",
+    "s": 1.6,
+    "solid": false
+  },
+  "catwalk-stairs": {
+    "f": "factory/catwalk-stairs",
+    "name": "catwalk-stairs",
+    "s": 1.4,
+    "solid": true
+  },
+  "catwalk-straight": {
+    "f": "factory/catwalk-straight",
+    "name": "catwalk-straight",
+    "s": 1.6,
+    "solid": true
+  },
+  "cog-a": {
+    "f": "factory/cog-a",
+    "name": "cog-a",
+    "s": 1.3,
+    "solid": false
+  },
+  "cog-b": {
+    "f": "factory/cog-b",
+    "name": "cog-b",
+    "s": 1.3,
+    "solid": false
+  },
+  "cog-c": {
+    "f": "factory/cog-c",
+    "name": "cog-c",
+    "s": 1.3,
+    "solid": false
+  },
+  "cog-d": {
+    "f": "factory/cog-d",
+    "name": "cog-d",
+    "s": 1.3,
+    "solid": false
+  },
+  "cog-e": {
+    "f": "factory/cog-e",
+    "name": "cog-e",
+    "s": 1.3,
+    "solid": false
+  },
+  "cone": {
+    "f": "factory/cone",
+    "name": "cone",
+    "s": 1.8,
+    "solid": false
+  },
+  "crane-magnet": {
+    "f": "factory/crane-magnet",
+    "name": "crane-magnet",
+    "s": 1.2,
+    "solid": false
+  },
+  "crane": {
+    "f": "factory/crane",
+    "name": "crane",
+    "s": 1.0,
+    "solid": false
+  },
+  "hopper-high-round": {
+    "f": "factory/hopper-high-round",
+    "name": "hopper-high-round",
+    "s": 1.4,
+    "solid": true
+  },
+  "hopper-high-square": {
+    "f": "factory/hopper-high-square",
+    "name": "hopper-high-square",
+    "s": 1.4,
+    "solid": true
+  },
+  "hopper-round": {
+    "f": "factory/hopper-round",
+    "name": "hopper-round",
+    "s": 1.4,
+    "solid": true
+  },
+  "hopper-square": {
+    "f": "factory/hopper-square",
+    "name": "hopper-square",
+    "s": 1.4,
+    "solid": true
+  },
+  "lever-double": {
+    "f": "factory/lever-double",
+    "name": "lever-double",
+    "s": 1.3,
+    "solid": false
+  },
+  "lever-single": {
+    "f": "factory/lever-single",
+    "name": "lever-single",
+    "s": 1.3,
+    "solid": false
+  },
+  "machine-bed": {
+    "f": "factory/machine-bed",
+    "name": "machine-bed",
+    "s": 1.4,
+    "solid": true
+  },
+  "machine-fortified": {
+    "f": "factory/machine-fortified",
+    "name": "machine-fortified",
+    "s": 1.4,
+    "solid": true
+  },
+  "machine": {
+    "f": "factory/machine",
+    "name": "machine",
+    "s": 1.4,
+    "solid": true
+  },
+  "pipe-glass-large-valve": {
+    "f": "factory/pipe-glass-large-valve",
+    "name": "pipe-glass-large-valve",
+    "s": 1.4,
+    "solid": false
+  },
+  "pipe-large-bend": {
+    "f": "factory/pipe-large-bend",
+    "name": "pipe-large-bend",
+    "s": 1.4,
+    "solid": false
+  },
+  "pipe-large-cross": {
+    "f": "factory/pipe-large-cross",
+    "name": "pipe-large-cross",
+    "s": 1.4,
+    "solid": false
+  },
+  "pipe-large-curve": {
+    "f": "factory/pipe-large-curve",
+    "name": "pipe-large-curve",
+    "s": 1.4,
+    "solid": false
+  },
+  "pipe-large-junction": {
+    "f": "factory/pipe-large-junction",
+    "name": "pipe-large-junction",
+    "s": 1.4,
+    "solid": false
+  },
+  "pipe-large-long": {
+    "f": "factory/pipe-large-long",
+    "name": "pipe-large-long",
+    "s": 1.4,
+    "solid": false
+  },
+  "pipe-large-valve": {
+    "f": "factory/pipe-large-valve",
+    "name": "pipe-large-valve",
+    "s": 1.4,
+    "solid": false
+  },
+  "pipe-large": {
+    "f": "factory/pipe-large",
+    "name": "pipe-large",
+    "s": 1.4,
+    "solid": false
+  },
+  "piston-round": {
+    "f": "factory/piston-round",
+    "name": "piston-round",
+    "s": 1.4,
+    "solid": true
+  },
+  "piston-square": {
+    "f": "factory/piston-square",
+    "name": "piston-square",
+    "s": 1.4,
+    "solid": true
+  },
+  "screen-hanging-small": {
+    "f": "factory/screen-hanging-small",
+    "name": "screen-hanging-small",
+    "s": 1.2,
+    "solid": false
+  },
+  "screen-hanging-wide": {
+    "f": "factory/screen-hanging-wide",
+    "name": "screen-hanging-wide",
+    "s": 1.2,
+    "solid": false
+  },
+  "screen-small": {
+    "f": "factory/screen-small",
+    "name": "screen-small",
+    "s": 1.4,
+    "solid": false
+  },
+  "screen-wide": {
+    "f": "factory/screen-wide",
+    "name": "screen-wide",
+    "s": 1.2,
+    "solid": false
+  },
+  "structure-medium": {
+    "f": "factory/structure-medium",
+    "name": "structure-medium",
+    "s": 1.5,
+    "solid": true
+  },
+  "structure-short": {
+    "f": "factory/structure-short",
+    "name": "structure-short",
+    "s": 1.5,
+    "solid": true
+  },
+  "warning-orange": {
+    "f": "factory/warning-orange",
+    "name": "warning-orange",
+    "s": 1.1,
+    "solid": false
+  },
+  "warning-traffic": {
+    "f": "factory/warning-traffic",
+    "name": "warning-traffic",
+    "s": 1.1,
+    "solid": false
+  },
+  "bathroomCabinet": {
+    "f": "furniture/bathroomCabinet",
+    "name": "bathroomCabinet",
+    "s": 1.9,
+    "solid": false
+  },
+  "bathroomCabinetDrawer": {
+    "f": "furniture/bathroomCabinetDrawer",
+    "name": "bathroomCabinetDrawer",
+    "s": 1.9,
+    "solid": false
+  },
+  "bathroomMirror": {
+    "f": "furniture/bathroomMirror",
+    "name": "bathroomMirror",
+    "s": 1.8,
+    "solid": false
+  },
+  "bathroomSink": {
+    "f": "furniture/bathroomSink",
+    "name": "bathroomSink",
+    "s": 1.8,
+    "solid": true
+  },
+  "bathroomSinkSquare": {
+    "f": "furniture/bathroomSinkSquare",
+    "name": "bathroomSinkSquare",
+    "s": 1.8,
+    "solid": true
+  },
+  "bathtub": {
+    "f": "furniture/bathtub",
+    "name": "bathtub",
+    "s": 1.8,
+    "solid": true
+  },
+  "bedBunk": {
+    "f": "furniture/bedBunk",
+    "name": "bedBunk",
+    "s": 1.25,
+    "solid": true
+  },
+  "bedDouble": {
+    "f": "furniture/bedDouble",
+    "name": "bedDouble",
+    "s": 1.25,
+    "solid": true
+  },
+  "bedSingle": {
+    "f": "furniture/bedSingle",
+    "name": "bedSingle",
+    "s": 1.25,
+    "solid": true
+  },
+  "benchCushion": {
+    "f": "furniture/benchCushion",
+    "name": "benchCushion",
+    "s": 1.8,
+    "solid": true
+  },
+  "benchCushionLow": {
+    "f": "furniture/benchCushionLow",
+    "name": "benchCushionLow",
+    "s": 1.8,
+    "solid": true
+  },
+  "bookcaseClosedDoors": {
+    "f": "furniture/bookcaseClosedDoors",
+    "name": "bookcaseClosedDoors",
+    "s": 1.9,
+    "solid": true
+  },
+  "books": {
+    "f": "furniture/books",
+    "name": "books",
+    "s": 1.9,
+    "solid": false
+  },
+  "cabinetBed": {
+    "f": "furniture/cabinetBed",
+    "name": "cabinetBed",
+    "s": 1.6,
+    "solid": true
+  },
+  "cabinetBedDrawer": {
+    "f": "furniture/cabinetBedDrawer",
+    "name": "cabinetBedDrawer",
+    "s": 1.6,
+    "solid": true
+  },
+  "cabinetTelevisionDoors": {
+    "f": "furniture/cabinetTelevisionDoors",
+    "name": "cabinetTelevisionDoors",
+    "s": 1.7,
+    "solid": true
+  },
+  "cardboardBoxClosed": {
+    "f": "furniture/cardboardBoxClosed",
+    "name": "cardboardBoxClosed",
+    "s": 1.9,
+    "solid": false
+  },
+  "cardboardBoxOpen": {
+    "f": "furniture/cardboardBoxOpen",
+    "name": "cardboardBoxOpen",
+    "s": 1.9,
+    "solid": false
+  },
+  "chairCushion": {
+    "f": "furniture/chairCushion",
+    "name": "chairCushion",
+    "s": 1.6,
+    "solid": true
+  },
+  "chairDesk": {
+    "f": "furniture/chairDesk",
+    "name": "chairDesk",
+    "s": 2.0,
+    "solid": true
+  },
+  "chairModernCushion": {
+    "f": "furniture/chairModernCushion",
+    "name": "chairModernCushion",
+    "s": 1.9,
+    "solid": true
+  },
+  "chairModernFrameCushion": {
+    "f": "furniture/chairModernFrameCushion",
+    "name": "chairModernFrameCushion",
+    "s": 1.9,
+    "solid": true
+  },
+  "computerKeyboard": {
+    "f": "furniture/computerKeyboard",
+    "name": "computerKeyboard",
+    "s": 1.6,
+    "solid": false
+  },
+  "computerScreen": {
+    "f": "furniture/computerScreen",
+    "name": "computerScreen",
+    "s": 1.6,
+    "solid": false
+  },
+  "desk": {
+    "f": "furniture/desk",
+    "name": "desk",
+    "s": 2.0,
+    "solid": true
+  },
+  "deskCorner": {
+    "f": "furniture/deskCorner",
+    "name": "deskCorner",
+    "s": 2.0,
+    "solid": true
+  },
+  "dryer": {
+    "f": "furniture/dryer",
+    "name": "dryer",
+    "s": 1.8,
+    "solid": true
+  },
+  "kitchenBar": {
+    "f": "furniture/kitchenBar",
+    "name": "kitchenBar",
+    "s": 1.8,
+    "solid": true
+  },
+  "kitchenBarEnd": {
+    "f": "furniture/kitchenBarEnd",
+    "name": "kitchenBarEnd",
+    "s": 1.8,
+    "solid": true
+  },
+  "kitchenBlender": {
+    "f": "furniture/kitchenBlender",
+    "name": "kitchenBlender",
+    "s": 1.9,
+    "solid": false
+  },
+  "kitchenCabinet": {
+    "f": "furniture/kitchenCabinet",
+    "name": "kitchenCabinet",
+    "s": 1.8,
+    "solid": true
+  },
+  "kitchenCabinetDrawer": {
+    "f": "furniture/kitchenCabinetDrawer",
+    "name": "kitchenCabinetDrawer",
+    "s": 1.8,
+    "solid": true
+  },
+  "kitchenCabinetUpper": {
+    "f": "furniture/kitchenCabinetUpper",
+    "name": "kitchenCabinetUpper",
+    "s": 1.9,
+    "solid": false
+  },
+  "kitchenCabinetUpperDouble": {
+    "f": "furniture/kitchenCabinetUpperDouble",
+    "name": "kitchenCabinetUpperDouble",
+    "s": 1.7,
+    "solid": false
+  },
+  "kitchenCoffeeMachine": {
+    "f": "furniture/kitchenCoffeeMachine",
+    "name": "kitchenCoffeeMachine",
+    "s": 1.5,
+    "solid": false
+  },
+  "kitchenFridge": {
+    "f": "furniture/kitchenFridge",
+    "name": "kitchenFridge",
+    "s": 2.0,
+    "solid": true
+  },
+  "kitchenFridgeLarge": {
+    "f": "furniture/kitchenFridgeLarge",
+    "name": "kitchenFridgeLarge",
+    "s": 2.0,
+    "solid": true
+  },
+  "kitchenFridgeSmall": {
+    "f": "furniture/kitchenFridgeSmall",
+    "name": "kitchenFridgeSmall",
+    "s": 1.8,
+    "solid": true
+  },
+  "kitchenMicrowave": {
+    "f": "furniture/kitchenMicrowave",
+    "name": "kitchenMicrowave",
+    "s": 1.8,
+    "solid": false
+  },
+  "kitchenSink": {
+    "f": "furniture/kitchenSink",
+    "name": "kitchenSink",
+    "s": 1.8,
+    "solid": true
+  },
+  "kitchenStove": {
+    "f": "furniture/kitchenStove",
+    "name": "kitchenStove",
+    "s": 1.9,
+    "solid": true
+  },
+  "kitchenStoveElectric": {
+    "f": "furniture/kitchenStoveElectric",
+    "name": "kitchenStoveElectric",
+    "s": 1.9,
+    "solid": true
+  },
+  "lampRoundFloor": {
+    "f": "furniture/lampRoundFloor",
+    "name": "lampRoundFloor",
+    "s": 1.2,
+    "solid": false
+  },
+  "lampRoundTable": {
+    "f": "furniture/lampRoundTable",
+    "name": "lampRoundTable",
+    "s": 1.3,
+    "solid": false
+  },
+  "lampSquareCeiling": {
+    "f": "furniture/lampSquareCeiling",
+    "name": "lampSquareCeiling",
+    "s": 1.2,
+    "solid": false
+  },
+  "lampSquareFloor": {
+    "f": "furniture/lampSquareFloor",
+    "name": "lampSquareFloor",
+    "s": 1.2,
+    "solid": false
+  },
+  "lampSquareTable": {
+    "f": "furniture/lampSquareTable",
+    "name": "lampSquareTable",
+    "s": 1.3,
+    "solid": false
+  },
+  "lampWall": {
+    "f": "furniture/lampWall",
+    "name": "lampWall",
+    "s": 1.2,
+    "solid": false
+  },
+  "laptop": {
+    "f": "furniture/laptop",
+    "name": "laptop",
+    "s": 1.9,
+    "solid": false
+  },
+  "loungeChair": {
+    "f": "furniture/loungeChair",
+    "name": "loungeChair",
+    "s": 2.0,
+    "solid": true
+  },
+  "loungeChairRelax": {
+    "f": "furniture/loungeChairRelax",
+    "name": "loungeChairRelax",
+    "s": 1.8,
+    "solid": true
+  },
+  "loungeDesignSofa": {
+    "f": "furniture/loungeDesignSofa",
+    "name": "loungeDesignSofa",
+    "s": 2.0,
+    "solid": true
+  },
+  "loungeSofa": {
+    "f": "furniture/loungeSofa",
+    "name": "loungeSofa",
+    "s": 2.0,
+    "solid": true
+  },
+  "loungeSofaCorner": {
+    "f": "furniture/loungeSofaCorner",
+    "name": "loungeSofaCorner",
+    "s": 2.0,
+    "solid": true
+  },
+  "loungeSofaLong": {
+    "f": "furniture/loungeSofaLong",
+    "name": "loungeSofaLong",
+    "s": 2.0,
+    "solid": true
+  },
+  "plantSmall1": {
+    "f": "furniture/plantSmall1",
+    "name": "plantSmall1",
+    "s": 2.0,
+    "solid": false
+  },
+  "plantSmall2": {
+    "f": "furniture/plantSmall2",
+    "name": "plantSmall2",
+    "s": 2.0,
+    "solid": false
+  },
+  "plantSmall3": {
+    "f": "furniture/plantSmall3",
+    "name": "plantSmall3",
+    "s": 2.0,
+    "solid": false
+  },
+  "pottedPlant": {
+    "f": "furniture/pottedPlant",
+    "name": "pottedPlant",
+    "s": 1.9,
+    "solid": false
+  },
+  "radio": {
+    "f": "furniture/radio",
+    "name": "radio",
+    "s": 1.6,
+    "solid": false
+  },
+  "rugRectangle": {
+    "f": "furniture/rugRectangle",
+    "name": "rugRectangle",
+    "s": 1.0,
+    "solid": false
+  },
+  "rugRound": {
+    "f": "furniture/rugRound",
+    "name": "rugRound",
+    "s": 1.0,
+    "solid": false
+  },
+  "rugRounded": {
+    "f": "furniture/rugRounded",
+    "name": "rugRounded",
+    "s": 1.0,
+    "solid": false
+  },
+  "rugSquare": {
+    "f": "furniture/rugSquare",
+    "name": "rugSquare",
+    "s": 1.0,
+    "solid": false
+  },
+  "shower": {
+    "f": "furniture/shower",
+    "name": "shower",
+    "s": 1.0,
+    "solid": true
+  },
+  "sideTable": {
+    "f": "furniture/sideTable",
+    "name": "sideTable",
+    "s": 1.7,
+    "solid": true
+  },
+  "sideTableDrawers": {
+    "f": "furniture/sideTableDrawers",
+    "name": "sideTableDrawers",
+    "s": 1.7,
+    "solid": true
+  },
+  "speaker": {
+    "f": "furniture/speaker",
+    "name": "speaker",
+    "s": 1.9,
+    "solid": false
+  },
+  "speakerSmall": {
+    "f": "furniture/speakerSmall",
+    "name": "speakerSmall",
+    "s": 1.9,
+    "solid": false
+  },
+  "stoolBar": {
+    "f": "furniture/stoolBar",
+    "name": "stoolBar",
+    "s": 1.7,
+    "solid": true
+  },
+  "stoolBarSquare": {
+    "f": "furniture/stoolBarSquare",
+    "name": "stoolBarSquare",
+    "s": 1.7,
+    "solid": true
+  },
+  "tableCloth": {
+    "f": "furniture/tableCloth",
+    "name": "tableCloth",
+    "s": 2.2,
+    "solid": true
+  },
+  "tableCoffeeGlass": {
+    "f": "furniture/tableCoffeeGlass",
+    "name": "tableCoffeeGlass",
+    "s": 1.7,
+    "solid": true
+  },
+  "tableGlass": {
+    "f": "furniture/tableGlass",
+    "name": "tableGlass",
+    "s": 2.2,
+    "solid": true
+  },
+  "televisionModern": {
+    "f": "furniture/televisionModern",
+    "name": "televisionModern",
+    "s": 1.9,
+    "solid": false
+  },
+  "televisionVintage": {
+    "f": "furniture/televisionVintage",
+    "name": "televisionVintage",
+    "s": 1.9,
+    "solid": false
+  },
+  "toaster": {
+    "f": "furniture/toaster",
+    "name": "toaster",
+    "s": 1.6,
+    "solid": false
+  },
+  "toilet": {
+    "f": "furniture/toilet",
+    "name": "toilet",
+    "s": 1.4,
+    "solid": true
+  },
+  "toiletSquare": {
+    "f": "furniture/toiletSquare",
+    "name": "toiletSquare",
+    "s": 1.4,
+    "solid": true
+  },
+  "trashcan": {
+    "f": "furniture/trashcan",
+    "name": "trashcan",
+    "s": 1.4,
+    "solid": false
+  },
+  "washer": {
+    "f": "furniture/washer",
+    "name": "washer",
+    "s": 1.8,
+    "solid": true
+  },
+  "barrel-open": {
+    "f": "survival/barrel-open",
+    "name": "barrel-open",
+    "s": 2.6,
+    "solid": true
+  },
+  "barrel": {
+    "f": "survival/barrel",
+    "name": "barrel",
+    "s": 2.6,
+    "solid": true
+  },
+  "box": {
+    "f": "survival/box",
+    "name": "box",
+    "s": 2.4,
+    "solid": true
+  },
+  "bucket": {
+    "f": "survival/bucket",
+    "name": "bucket",
+    "s": 2.2,
+    "solid": false
+  },
+  "chest": {
+    "f": "survival/chest",
+    "name": "chest",
+    "s": 2.4,
+    "solid": true
+  },
+  "metal-panel-screws": {
+    "f": "survival/metal-panel-screws",
+    "name": "metal-panel-screws",
+    "s": 1.8,
+    "solid": false
+  },
+  "metal-panel": {
+    "f": "survival/metal-panel",
+    "name": "metal-panel",
+    "s": 1.8,
+    "solid": false
+  },
+  "rock-a": {
+    "f": "survival/rock-a",
+    "name": "rock-a",
+    "s": 2.0,
+    "solid": true
+  },
+  "rock-b": {
+    "f": "survival/rock-b",
+    "name": "rock-b",
+    "s": 2.0,
+    "solid": true
+  },
+  "signpost": {
+    "f": "survival/signpost",
+    "name": "signpost",
+    "s": 1.5,
+    "solid": false
+  },
+  "structure-metal-doorway": {
+    "f": "survival/structure-metal-doorway",
+    "name": "structure-metal-doorway",
+    "s": 1.8,
+    "solid": true
+  },
+  "structure-metal-floor": {
+    "f": "survival/structure-metal-floor",
+    "name": "structure-metal-floor",
+    "s": 2.2,
+    "solid": false
+  },
+  "structure-metal-roof": {
+    "f": "survival/structure-metal-roof",
+    "name": "structure-metal-roof",
+    "s": 2.2,
+    "solid": false
+  },
+  "structure-metal-wall": {
+    "f": "survival/structure-metal-wall",
+    "name": "structure-metal-wall",
+    "s": 1.8,
+    "solid": true
+  },
+  "tool-hammer": {
+    "f": "survival/tool-hammer",
+    "name": "tool-hammer",
+    "s": 2.0,
+    "solid": false
+  },
+  "workbench": {
+    "f": "survival/workbench",
+    "name": "workbench",
+    "s": 2.4,
+    "solid": true
+  }
+}

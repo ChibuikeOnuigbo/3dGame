@@ -1,0 +1,16 @@
+# Node shim for headless validation (recreated on demand by qa/validate.mjs)
+node_modules/
+# Python cache
+__pycache__/
+*.pyc
+# Playwright/QA scratch
+qa/.pytest_cache/
+.pytest_cache/
+# Generated QA artifacts (kept in workspace, not in git)
+qa/shots/
+qa/browser_scan.json
+qa/qa_report.json
+visual_review/
+
+# Credentials — never commit
+.sketchfab_token
