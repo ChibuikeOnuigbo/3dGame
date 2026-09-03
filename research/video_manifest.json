@@ -1,0 +1,127 @@
+{
+  "generated": "2026-09-03",
+  "method": "YouTube oEmbed metadata (platform-fetch tool). Direct yt-dlp/curl egress to youtube.com is firewalled in this sandbox; metadata + thumbnails were retrieved via the platform proxy. Frame/transcript extraction requires an environment with YouTube egress — scripts are in tools/video_research/.",
+  "videos": [
+    {
+      "id": "GoVNCfBSxPA",
+      "url": "https://www.youtube.com/watch?v=GoVNCfBSxPA",
+      "title": "INFRA Act 1 100% (Full Game All Collectibles No Commentary)",
+      "author": "Tom Purcell",
+      "channel_url": "https://www.youtube.com/@tompurcell2513",
+      "thumbnail": "https://i.ytimg.com/vi/GoVNCfBSxPA/hqdefault.jpg",
+      "game": "INFRA",
+      "relevance": "PRIMARY",
+      "why": "INFRA is the single closest tonal reference: a structural analyst walks decaying industrial/water/utility infrastructure (dams, pump houses, tunnels, substations). Direct blueprint for Pump Station 7's realistic, functional, aged industrial spaces and 'inspect the facility' pacing."
+    },
+    {
+      "id": "hFf9FB8F0dc",
+      "url": "https://www.youtube.com/watch?v=hFf9FB8F0dc",
+      "title": "SOMA (FULL GAME)",
+      "author": "jacksepticeye",
+      "channel_url": "https://www.youtube.com/@jacksepticeye",
+      "thumbnail": "https://i.ytimg.com/vi/hFf9FB8F0dc/hqdefault.jpg",
+      "game": "SOMA",
+      "relevance": "PRIMARY",
+      "why": "PATHOS-II is an underwater research/power station — coastal-underwater facility horror done right. Reference for underwater pressure-vessel spaces, power/pump machinery, environmental storytelling, and dread through absence rather than jump scares."
+    },
+    {
+      "id": "jBDJ5VUi0gs",
+      "url": "https://www.youtube.com/watch?v=jBDJ5VUi0gs",
+      "title": "AMNESIA THE BUNKER Gameplay Walkthrough FULL GAME (4K 60FPS) No Commentary",
+      "author": "Shirrako",
+      "channel_url": "https://www.youtube.com/@Shirrako",
+      "thumbnail": "https://i.ytimg.com/vi/jBDJ5VUi0gs/hqdefault.jpg",
+      "game": "Amnesia: The Bunker",
+      "relevance": "PRIMARY",
+      "why": "The Bunker's core loop is a generator that must be fuelled and restarted — directly maps to Pump Station 7's fuse -> generator -> power objective. Reference for a single interconnected facility, resource/logic-driven power, and a stalker that responds to light and noise."
+    },
+    {
+      "id": "CGYuUc9pPtQ",
+      "url": "https://www.youtube.com/watch?v=CGYuUc9pPtQ",
+      "title": "SCP Containment Breach Safe Gameplay | No Commentary",
+      "author": "Sesawer",
+      "channel_url": "https://www.youtube.com/@sesawer3418",
+      "thumbnail": "https://i.ytimg.com/vi/CGYuUc9pPtQ/hqdefault.jpg",
+      "game": "SCP: Containment Breach",
+      "relevance": "SECONDARY",
+      "why": "Procedural corridors of a containment facility; cheap but effective dread from darkness, blinking, and a pursuer you hear before you see. Lesson for lighting + sound-driven tension on a small budget."
+    },
+    {
+      "id": "C3upVqVOgrM",
+      "url": "https://www.youtube.com/watch?v=C3upVqVOgrM",
+      "title": "BLACK MESA Full Game Walkthrough - No Commentary (#BlackMesa Full Gameplay)",
+      "author": "RabidRetrospectGames",
+      "channel_url": "https://www.youtube.com/@RabidRetrospectGames",
+      "thumbnail": "https://i.ytimg.com/vi/C3upVqVOgrM/hqdefault.jpg",
+      "game": "Black Mesa (Half-Life)",
+      "relevance": "SECONDARY",
+      "why": "Gold standard for a believable scientific-industrial facility: signage, rail/piping, service areas, and guided-but-not-hand-held level flow. Reference for how a facility's architecture itself teaches the player where to go."
+    },
+    {
+      "id": "mHu6vcsDVL0",
+      "url": "https://www.youtube.com/watch?v=mHu6vcsDVL0",
+      "title": "Portal 2 Full Game (No Commentary) With Extended/hidden Dialogue",
+      "author": "BadShoesGames",
+      "channel_url": "https://www.youtube.com/@badshoesgames",
+      "thumbnail": "https://i.ytimg.com/vi/mHu6vcsDVL0/hqdefault.jpg",
+      "game": "Portal 2",
+      "relevance": "SECONDARY",
+      "why": "Aperture Science: an abandoned research facility told entirely through environment (faded signage, overgrown chambers, office layers). Reference for environmental storytelling and mixing clean/lived-in/ruined zones within one facility."
+    },
+    {
+      "id": "R8gzbOtyodM",
+      "url": "https://www.youtube.com/watch?v=R8gzbOtyodM",
+      "title": "OUTLAST 2 | Full Game Movie | NIGHTMARE Difficulty Walkthrough Gameplay 4K 60FPS ULTRA No Commentary",
+      "author": "HGH Horror Games House",
+      "channel_url": "https://www.youtube.com/@HGHhorrorgameshouse",
+      "thumbnail": "https://i.ytimg.com/vi/R8gzbOtyodM/hqdefault.jpg",
+      "game": "Outlast 2",
+      "relevance": "SECONDARY",
+      "why": "Pursuit/chase horror and camcorder-night-vision framing. Lesson (and caution): relentless chase loops exhaust players; Pump Station 7 should use restraint — tension mostly from the space, chases only at story peaks."
+    },
+    {
+      "id": "jPU-mvM_OSQ",
+      "url": "https://www.youtube.com/watch?v=jPU-mvM_OSQ",
+      "title": "Outlast First five minutes of gameplay (No commentary)",
+      "author": "Shadowy Mist",
+      "channel_url": "https://www.youtube.com/@Sh4d0wymist",
+      "thumbnail": "https://i.ytimg.com/vi/jPU-mvM_OSQ/hqdefault.jpg",
+      "game": "Outlast",
+      "relevance": "SECONDARY",
+      "why": "The asylum's opening: how to build anticipation in the first five minutes (normal entry -> wrongness -> flight). Useful for pacing the arrival at Pump Station 7's reception."
+    },
+    {
+      "id": "goJaqtAnJFQ",
+      "url": "https://www.youtube.com/watch?v=goJaqtAnJFQ",
+      "title": "Alien Isolation Walkthrough Part 1 [1080p HD PC ULTRA] Alien Isolation Gameplay - No Commentary",
+      "author": "MKIceAndFire",
+      "channel_url": "https://www.youtube.com/@MKIceAndFire",
+      "thumbnail": "https://i.ytimg.com/vi/goJaqtAnJFQ/hqdefault.jpg",
+      "game": "Alien: Isolation",
+      "relevance": "PRIMARY",
+      "why": "Sevastopol Station: industrial corridors, vents, and a single unscripted stalker. Reference for sightline manipulation, machinery noise as atmosphere, and a persistent threat that makes every hallway re-traversal tense."
+    },
+    {
+      "id": "bz4MuYw8FBA",
+      "url": "https://www.youtube.com/watch?v=bz4MuYw8FBA",
+      "title": "Phasmophobia Gameplay No Commentary (4K/60fps)",
+      "author": "SHN Survival Horror Network",
+      "channel_url": "https://www.youtube.com/@SHNHorror",
+      "thumbnail": "https://i.ytimg.com/vi/bz4MuYw8FBA/hqdefault.jpg",
+      "game": "Phasmophobia",
+      "relevance": "SECONDARY",
+      "why": "Environmental/ghost horror built on lighting, darkness, and tool-based investigation. Lesson: strong atmosphere from darkness contrast and believable locations on a modest budget; avoid over-lighting every room."
+    },
+    {
+      "id": "to032deYr-Q",
+      "url": "https://youtu.be/to032deYr-Q",
+      "title": "Making Counter Strike in JavaScript because why not",
+      "author": "iercan",
+      "channel_url": "https://www.youtube.com/@iercan1234",
+      "thumbnail": "https://i.ytimg.com/vi/to032deYr-Q/hqdefault.jpg",
+      "game": "Custom Three.js FPS (devlog)",
+      "relevance": "TECHNICAL",
+      "why": "Devlog by the author of the enari-engine reference repo: a real FPS built in Three.js (movement, shooting, level). Primary technical reference for how to structure a Three.js first-person game at our scale."
+    }
+  ]
+}

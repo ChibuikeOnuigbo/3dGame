@@ -1,0 +1,34 @@
+{
+  "id": "hFf9FB8F0dc",
+  "game": "SOMA",
+  "title": "SOMA (FULL GAME)",
+  "source": "design-principle extraction (no verbatim content copied)",
+  "timestamp": null,
+  "confidence_note": "principles at game level, not frame-accurate timestamps",
+  "observations": [
+    {
+      "category": "environment",
+      "observation": "Underwater station = pressure doors, bulkheads, pump/generator machinery, corroded metal, emergency lighting. Machinery rooms dominate.",
+      "importance": "high",
+      "confidence": "high"
+    },
+    {
+      "category": "horror",
+      "observation": "Existential dread + absence. Monster encounters are sparse and earned; most tension is atmosphere and sound.",
+      "importance": "high",
+      "confidence": "high"
+    },
+    {
+      "category": "pacing",
+      "observation": "Slow quiet exploration punctuated by brief intense danger; ambient creaks and distant machinery set mood.",
+      "importance": "high",
+      "confidence": "high"
+    },
+    {
+      "category": "story",
+      "observation": "Environmental storytelling through logs and the decay of a place people lived and fled.",
+      "importance": "medium",
+      "confidence": "high"
+    }
+  ]
+}

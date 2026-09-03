@@ -1,0 +1,28 @@
+{
+  "id": "mHu6vcsDVL0",
+  "game": "Portal 2",
+  "title": "Portal 2 Full Game (No Commentary) With Extended/hidden Dialogue",
+  "source": "design-principle extraction (no verbatim content copied)",
+  "timestamp": null,
+  "confidence_note": "principles at game level, not frame-accurate timestamps",
+  "observations": [
+    {
+      "category": "environment",
+      "observation": "Layered facility: clean test chambers over ruined, overgrown old Aperture. Decay + faded signage tell the history.",
+      "importance": "high",
+      "confidence": "high"
+    },
+    {
+      "category": "pacing",
+      "observation": "Puzzle rooms alternate with atmospheric traversal corridors that let the world breathe.",
+      "importance": "medium",
+      "confidence": "high"
+    },
+    {
+      "category": "navigation",
+      "observation": "Minimal UI; the environment (light, scale, framing) guides the player.",
+      "importance": "medium",
+      "confidence": "high"
+    }
+  ]
+}

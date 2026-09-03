@@ -1,0 +1,40 @@
+{
+  "id": "GoVNCfBSxPA",
+  "game": "INFRA",
+  "title": "INFRA Act 1 100% (Full Game All Collectibles No Commentary)",
+  "source": "design-principle extraction (no verbatim content copied)",
+  "timestamp": null,
+  "confidence_note": "principles at game level, not frame-accurate timestamps",
+  "observations": [
+    {
+      "category": "environment",
+      "observation": "Real utility spaces (dams, pump houses, tunnels, substations) read believable because every machine has a function and connects to pipes/cables/signage. Nothing is decorative.",
+      "importance": "high",
+      "confidence": "high"
+    },
+    {
+      "category": "gameplay",
+      "observation": "Exploration is the gameplay: walk, inspect, read meters/valves/breakers. No combat needed \u2014 the facility itself is the content.",
+      "importance": "high",
+      "confidence": "high"
+    },
+    {
+      "category": "horror",
+      "observation": "Dread comes from decay, flooding, and failing infrastructure, not monsters. The threat is environmental.",
+      "importance": "high",
+      "confidence": "high"
+    },
+    {
+      "category": "navigation",
+      "observation": "Wayfinding via signage, pools of light, and logical facility layout (follow the pipe = follow the task).",
+      "importance": "high",
+      "confidence": "high"
+    },
+    {
+      "category": "interaction",
+      "observation": "Interactions are environmental state changes (valve, breaker, keypad) that visibly alter the world.",
+      "importance": "medium",
+      "confidence": "medium"
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "goJaqtAnJFQ",
+  "game": "Alien: Isolation",
+  "title": "Alien Isolation Walkthrough Part 1",
+  "source": "design-principle extraction (no verbatim content copied)",
+  "timestamp": null,
+  "confidence_note": "principles at game level, not frame-accurate timestamps",
+  "observations": [
+    {
+      "category": "environment",
+      "observation": "Industrial corridors, vents, machinery; Sevastopol feels lived-in and coherent, every room has a job.",
+      "importance": "high",
+      "confidence": "high"
+    },
+    {
+      "category": "horror",
+      "observation": "One unscripted stalker makes every re-traversal tense; sound gives spatial awareness of the threat.",
+      "importance": "high",
+      "confidence": "high"
+    },
+    {
+      "category": "navigation",
+      "observation": "Vents and alternate routes add decision-making to movement; hiding is a real mechanic.",
+      "importance": "medium",
+      "confidence": "high"
+    }
+  ]
+}

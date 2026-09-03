@@ -1,0 +1,22 @@
+{
+  "id": "R8gzbOtyodM",
+  "game": "Outlast 2",
+  "title": "OUTLAST 2 | Full Game Movie | NIGHTMARE Difficulty",
+  "source": "design-principle extraction (no verbatim content copied)",
+  "timestamp": null,
+  "confidence_note": "principles at game level, not frame-accurate timestamps",
+  "observations": [
+    {
+      "category": "horror",
+      "observation": "Pursuit chases and camcorder night-vision framing create panic.",
+      "importance": "medium",
+      "confidence": "high"
+    },
+    {
+      "category": "pacing",
+      "observation": "CAUTION: relentless chase loops exhaust players \u2014 we should use chases only at story peaks, tension from the space otherwise.",
+      "importance": "high",
+      "confidence": "high"
+    }
+  ]
+}

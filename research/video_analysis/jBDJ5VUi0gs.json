@@ -1,0 +1,34 @@
+{
+  "id": "jBDJ5VUi0gs",
+  "game": "Amnesia: The Bunker",
+  "title": "AMNESIA THE BUNKER Gameplay Walkthrough FULL GAME",
+  "source": "design-principle extraction (no verbatim content copied)",
+  "timestamp": null,
+  "confidence_note": "principles at game level, not frame-accurate timestamps",
+  "observations": [
+    {
+      "category": "gameplay",
+      "observation": "The generator is the core loop: power = light = safety; fuel is a scarce resource; leaving the light is a risk/reward decision.",
+      "importance": "high",
+      "confidence": "high"
+    },
+    {
+      "category": "horror",
+      "observation": "A single stalker that responds to light and sound; the player hears it before seeing it. Anticipation is the mechanic.",
+      "importance": "high",
+      "confidence": "high"
+    },
+    {
+      "category": "lighting",
+      "observation": "Light is a gameplay resource, not decoration \u2014 the whole tension system hangs on it.",
+      "importance": "high",
+      "confidence": "high"
+    },
+    {
+      "category": "environment",
+      "observation": "One small interconnected facility, few rooms but each dense with purpose \u2014 quality of a small space over breadth.",
+      "importance": "high",
+      "confidence": "high"
+    }
+  ]
+}

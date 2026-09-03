@@ -1,0 +1,28 @@
+{
+  "id": "C3upVqVOgrM",
+  "game": "Black Mesa",
+  "title": "BLACK MESA Full Game Walkthrough - No Commentary",
+  "source": "design-principle extraction (no verbatim content copied)",
+  "timestamp": null,
+  "confidence_note": "principles at game level, not frame-accurate timestamps",
+  "observations": [
+    {
+      "category": "environment",
+      "observation": "Believable scientific-industrial facility: signage, rail, piping, service areas, labs \u2014 architecture has a real organization.",
+      "importance": "high",
+      "confidence": "high"
+    },
+    {
+      "category": "navigation",
+      "observation": "Architecture itself teaches direction: follow the tram line, the lit path, the open door \u2014 minimal explicit UI.",
+      "importance": "high",
+      "confidence": "high"
+    },
+    {
+      "category": "pacing",
+      "observation": "Exploration, traversal and action alternate; quiet service areas provide contrast to set-piece moments.",
+      "importance": "medium",
+      "confidence": "high"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "jPU-mvM_OSQ",
+  "game": "Outlast",
+  "title": "Outlast First five minutes of gameplay (No commentary)",
+  "source": "design-principle extraction (no verbatim content copied)",
+  "timestamp": null,
+  "confidence_note": "principles at game level, not frame-accurate timestamps",
+  "observations": [
+    {
+      "category": "pacing",
+      "observation": "Opening builds anticipation in stages: normal arrival -> first signs of wrongness -> flight. Good template for arriving at Pump Station 7.",
+      "importance": "high",
+      "confidence": "high"
+    }
+  ]
+}

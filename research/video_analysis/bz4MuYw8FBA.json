@@ -1,0 +1,22 @@
+{
+  "id": "bz4MuYw8FBA",
+  "game": "Phasmophobia",
+  "title": "Phasmophobia 4K/60fps Gameplay No Commentary",
+  "source": "design-principle extraction (no verbatim content copied)",
+  "timestamp": null,
+  "confidence_note": "principles at game level, not frame-accurate timestamps",
+  "observations": [
+    {
+      "category": "environment",
+      "observation": "Believable locations with strong darkness/light contrast; unlit rooms are genuinely unreadable.",
+      "importance": "medium",
+      "confidence": "high"
+    },
+    {
+      "category": "horror",
+      "observation": "Tension from darkness, tools, and audio cues; evidence-gathering loop keeps the player moving.",
+      "importance": "medium",
+      "confidence": "high"
+    }
+  ]
+}

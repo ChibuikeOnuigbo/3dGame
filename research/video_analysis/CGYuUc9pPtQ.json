@@ -1,0 +1,22 @@
+{
+  "id": "CGYuUc9pPtQ",
+  "game": "SCP: Containment Breach",
+  "title": "SCP Containment Breach Safe Gameplay | No Commentary",
+  "source": "design-principle extraction (no verbatim content copied)",
+  "timestamp": null,
+  "confidence_note": "principles at game level, not frame-accurate timestamps",
+  "observations": [
+    {
+      "category": "horror",
+      "observation": "Dread from darkness, blinking, and a pursuer heard before seen \u2014 low asset budget, high tension via lighting+sound+uncertainty.",
+      "importance": "medium",
+      "confidence": "high"
+    },
+    {
+      "category": "pacing",
+      "observation": "Procedural corridors create disorientation; randomness as a tension tool (use sparingly).",
+      "importance": "low",
+      "confidence": "medium"
+    }
+  ]
+}

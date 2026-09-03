@@ -1,0 +1,6 @@
+# Video research pipeline (run on a machine with YouTube egress).
+# NOTE: the Arena sandbox firewalls direct youtube.com egress, so these
+# scripts run locally — metadata/thumbnail research was done here via the
+# platform oEmbed proxy (see research/video_manifest.json).
+yt-dlp>=2024.4.9
+pillow>=10.0.0

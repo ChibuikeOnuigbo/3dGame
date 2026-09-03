@@ -1,0 +1,22 @@
+{
+  "id": "to032deYr-Q",
+  "game": "enari devlog",
+  "title": "Making Counter Strike in JavaScript because why not",
+  "source": "design-principle extraction (no verbatim content copied)",
+  "timestamp": null,
+  "confidence_note": "principles at game level, not frame-accurate timestamps",
+  "observations": [
+    {
+      "category": "technical",
+      "observation": "A real browser FPS is feasible in Three.js: pointer-lock FPS controller, physics (ammo.js), map loading, first-person viewmodels.",
+      "importance": "high",
+      "confidence": "high"
+    },
+    {
+      "category": "technical",
+      "observation": "Clean module separation (Controller/Input/Physics/View/Core) keeps an FPS maintainable.",
+      "importance": "high",
+      "confidence": "high"
+    }
+  ]
+}
