@@ -1,0 +1,223 @@
+[
+  {
+    "NAME": "concrete_floor_worn_001",
+    "CREATOR": "Poly Haven contributors",
+    "SOURCE": "Poly Haven",
+    "URL": "https://polyhaven.com/a/concrete_floor_worn_001",
+    "LICENSE": "CC0",
+    "ATTRIBUTION": "not required",
+    "DATE": "2026-09-02",
+    "FILE": "/home/user/game/tex/concrete_floor_worn_001_diff_1k.jpg",
+    "USED IN": "materials"
+  },
+  {
+    "NAME": "concrete_wall_008",
+    "CREATOR": "Poly Haven contributors",
+    "SOURCE": "Poly Haven",
+    "URL": "https://polyhaven.com/a/concrete_wall_008",
+    "LICENSE": "CC0",
+    "ATTRIBUTION": "not required",
+    "DATE": "2026-09-02",
+    "FILE": "/home/user/game/tex/concrete_wall_008_diff_1k.jpg",
+    "USED IN": "materials"
+  },
+  {
+    "NAME": "metal_plate",
+    "CREATOR": "Poly Haven contributors",
+    "SOURCE": "Poly Haven",
+    "URL": "https://polyhaven.com/a/metal_plate",
+    "LICENSE": "CC0",
+    "ATTRIBUTION": "not required",
+    "DATE": "2026-09-02",
+    "FILE": "/home/user/game/tex/metal_plate_diff_1k.jpg",
+    "USED IN": "materials"
+  },
+  {
+    "NAME": "wood_floor_deck",
+    "CREATOR": "Poly Haven contributors",
+    "SOURCE": "Poly Haven",
+    "URL": "https://polyhaven.com/a/wood_floor_deck",
+    "LICENSE": "CC0",
+    "ATTRIBUTION": "not required",
+    "DATE": "2026-09-02",
+    "FILE": "/home/user/game/tex/wood_floor_deck_diff_1k.jpg",
+    "USED IN": "materials"
+  },
+  {
+    "NAME": "brown_mud_03",
+    "CREATOR": "Poly Haven contributors",
+    "SOURCE": "Poly Haven",
+    "URL": "https://polyhaven.com/a/brown_mud_03",
+    "LICENSE": "CC0",
+    "ATTRIBUTION": "not required",
+    "DATE": "2026-09-02",
+    "FILE": "/home/user/game/tex/brown_mud_03_diff_1k.jpg",
+    "USED IN": "materials"
+  },
+  {
+    "NAME": "aerial_rocks_02",
+    "CREATOR": "Poly Haven contributors",
+    "SOURCE": "Poly Haven",
+    "URL": "https://polyhaven.com/a/aerial_rocks_02",
+    "LICENSE": "CC0",
+    "ATTRIBUTION": "not required",
+    "DATE": "2026-09-02",
+    "FILE": "/home/user/game/tex/aerial_rocks_02_diff_1k.jpg",
+    "USED IN": "materials"
+  },
+  {
+    "NAME": "rusty_metal_02",
+    "CREATOR": "Poly Haven contributors",
+    "SOURCE": "Poly Haven",
+    "URL": "https://polyhaven.com/a/rusty_metal_02",
+    "LICENSE": "CC0",
+    "ATTRIBUTION": "not required",
+    "DATE": "2026-09-02",
+    "FILE": "/home/user/game/tex/rusty_metal_02_diff_1k.jpg",
+    "USED IN": "materials"
+  },
+  {
+    "NAME": "painted_plaster_wall",
+    "CREATOR": "Poly Haven contributors",
+    "SOURCE": "Poly Haven",
+    "URL": "https://polyhaven.com/a/painted_plaster_wall",
+    "LICENSE": "CC0",
+    "ATTRIBUTION": "not required",
+    "DATE": "2026-09-02",
+    "FILE": "/home/user/game/tex/painted_plaster_wall_diff_1k.jpg",
+    "USED IN": "materials"
+  },
+  {
+    "NAME": "floor_tiles_06",
+    "CREATOR": "Poly Haven contributors",
+    "SOURCE": "Poly Haven",
+    "URL": "https://polyhaven.com/a/floor_tiles_06",
+    "LICENSE": "CC0",
+    "ATTRIBUTION": "not required",
+    "DATE": "2026-09-02",
+    "FILE": "/home/user/game/tex/floor_tiles_06_diff_1k.jpg",
+    "USED IN": "materials"
+  },
+  {
+    "NAME": "rock_wall_09",
+    "CREATOR": "Poly Haven contributors",
+    "SOURCE": "Poly Haven",
+    "URL": "https://polyhaven.com/a/rock_wall_09",
+    "LICENSE": "CC0",
+    "ATTRIBUTION": "not required",
+    "DATE": "2026-09-02",
+    "FILE": "/home/user/game/tex/rock_wall_09_diff_1k.jpg",
+    "USED IN": "materials"
+  },
+  {
+    "NAME": "asphalt_02",
+    "CREATOR": "Poly Haven contributors",
+    "SOURCE": "Poly Haven",
+    "URL": "https://polyhaven.com/a/asphalt_02",
+    "LICENSE": "CC0",
+    "ATTRIBUTION": "not required",
+    "DATE": "2026-09-02",
+    "FILE": "/home/user/game/tex/asphalt_02_diff_1k.jpg",
+    "USED IN": "materials"
+  },
+  {
+    "NAME": "gravelly_sand",
+    "CREATOR": "Poly Haven contributors",
+    "SOURCE": "Poly Haven",
+    "URL": "https://polyhaven.com/a/gravelly_sand",
+    "LICENSE": "CC0",
+    "ATTRIBUTION": "not required",
+    "DATE": "2026-09-02",
+    "FILE": "/home/user/game/tex/gravelly_sand_diff_1k.jpg",
+    "USED IN": "materials"
+  },
+  {
+    "NAME": "roof_07",
+    "CREATOR": "Poly Haven contributors",
+    "SOURCE": "Poly Haven",
+    "URL": "https://polyhaven.com/a/roof_07",
+    "LICENSE": "CC0",
+    "ATTRIBUTION": "not required",
+    "DATE": "2026-09-02",
+    "FILE": "/home/user/game/tex/roof_07_diff_1k.jpg",
+    "USED IN": "materials"
+  },
+  {
+    "NAME": "Kenney Game Assets",
+    "CREATOR": "Kenney",
+    "SOURCE": "kenney.nl",
+    "URL": "https://kenney.nl/assets",
+    "LICENSE": "CC0",
+    "ATTRIBUTION": "Kenney.nl (not required)",
+    "DATE": "2026-09-02",
+    "USED IN": "props if packs resolve"
+  },
+  {
+    "NAME": "Survival escape horror game - A 3D model collection by thomaslinxin - Sketchfab",
+    "CREATOR": "thomaslinxin (collection curator)",
+    "SOURCE": "Sketchfab",
+    "URL": "https://sketchfab.com/thomaslinxin/collections/survival-escape-horror-game-735670546cf3471fa83afc73bc83ccf6",
+    "LICENSE": "per-model (filtered downloadable CC licenses on listing)",
+    "ATTRIBUTION": "See individual Sketchfab model pages; login required to fetch GLB",
+    "DATE": "2026-09-02",
+    "USED IN": "discovery only \u2014 binaries blocked without Sketchfab auth"
+  },
+  {
+    "NAME": "https://opengameart.org/content/faq",
+    "CREATOR": "macuseri686",
+    "SOURCE": "OpenGameArt",
+    "URL": "https://opengameart.org/content/faq",
+    "LICENSE": "Aren't CC-BY and CC-BY-SA incompatible with the GPL?",
+    "ATTRIBUTION": "macuseri686 / OpenGameArt \u2014 https://opengameart.org/content/faq",
+    "DATE": "2026-09-02",
+    "FILES": []
+  },
+  {
+    "NAME": "https://opengameart.org/content/forum-rules#comment-14075",
+    "CREATOR": "bart",
+    "SOURCE": "OpenGameArt",
+    "URL": "https://opengameart.org/content/forum-rules#comment-14075",
+    "LICENSE": "see page",
+    "ATTRIBUTION": "bart / OpenGameArt \u2014 https://opengameart.org/content/forum-rules#comment-14075",
+    "DATE": "2026-09-02",
+    "FILES": []
+  },
+  {
+    "NAME": "https://opengameart.org/content/pixel-texture-pack",
+    "CREATOR": "Frenchyboy",
+    "SOURCE": "OpenGameArt",
+    "URL": "https://opengameart.org/content/pixel-texture-pack",
+    "LICENSE": "CC-BY 4.0",
+    "ATTRIBUTION": "Frenchyboy / OpenGameArt \u2014 https://opengameart.org/content/pixel-texture-pack",
+    "DATE": "2026-09-02",
+    "FILES": [
+      "https://opengameart.org/sites/default/files/covertest.png",
+      "https://opengameart.org/sites/default/files/PixelTexturePack.zip"
+    ]
+  },
+  {
+    "NAME": "https://opengameart.org/content/computer-gibber-inspection-panels-stairs-transition-elements",
+    "CREATOR": "jwadden",
+    "SOURCE": "OpenGameArt",
+    "URL": "https://opengameart.org/content/computer-gibber-inspection-panels-stairs-transition-elements",
+    "LICENSE": "CC0",
+    "ATTRIBUTION": "jwadden / OpenGameArt \u2014 https://opengameart.org/content/computer-gibber-inspection-panels-stairs-transition-elements",
+    "DATE": "2026-09-02",
+    "FILES": [
+      "https://opengameart.org/sites/default/files/computergibber2_0.png"
+    ]
+  },
+  {
+    "NAME": "https://opengameart.org/content/cerulean-sword",
+    "CREATOR": "qubodup",
+    "SOURCE": "OpenGameArt",
+    "URL": "https://opengameart.org/content/cerulean-sword",
+    "LICENSE": "CC-BY 3.0",
+    "ATTRIBUTION": "qubodup / OpenGameArt \u2014 https://opengameart.org/content/cerulean-sword",
+    "DATE": "2026-09-02",
+    "FILES": [
+      "https://opengameart.org/sites/default/files/cerulean%20sword%20preview.png",
+      "https://opengameart.org/sites/default/files/cerulean%20sword.png"
+    ]
+  }
+]

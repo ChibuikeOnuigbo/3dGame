@@ -1,0 +1,86 @@
+:root {
+  --bg: #07080a;
+  --panel: rgba(10, 12, 14, 0.92);
+  --line: #2a3338;
+  --text: #d7ddd8;
+  --dim: #8a948c;
+  --accent: #8fd4b8;
+  --warn: #c9a46a;
+  --danger: #c45c4a;
+  --font: "Segoe UI", "Iosevka", system-ui, sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font); }
+#c { display: block; width: 100%; height: 100%; }
+#hud {
+  position: fixed; inset: 0; pointer-events: none;
+  display: flex; flex-direction: column; justify-content: flex-end;
+}
+.crosshair {
+  position: absolute; top: 50%; left: 50%; width: 10px; height: 10px;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(223, 232, 226, 0.45);
+  border-radius: 50%;
+}
+.prompt {
+  align-self: center; margin-bottom: 14vh; min-height: 1.4em;
+  letter-spacing: 0.14em; font-size: 13px; color: var(--accent);
+  text-shadow: 0 0 12px #000;
+}
+.obj {
+  position: absolute; top: 28px; left: 28px; max-width: 420px;
+  font-size: 13px; color: var(--dim); letter-spacing: 0.08em;
+}
+.stamina {
+  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+  width: 160px; height: 3px; background: #1a1e1c;
+}
+.stamina > i { display: block; height: 100%; background: var(--accent); width: 100%; }
+.sub {
+  position: absolute; bottom: 18%; left: 50%; transform: translateX(-50%);
+  max-width: 640px; text-align: center; font-size: 15px; color: #e8ece8;
+  background: rgba(0,0,0,0.45); padding: 8px 14px; display: none;
+}
+.hint { position: absolute; bottom: 48px; right: 28px; font-size: 11px; color: #66706a; letter-spacing: 0.12em; }
+
+.overlay {
+  position: fixed; inset: 0; background: radial-gradient(ellipse at center, #121618 0%, #050607 70%);
+  display: flex; align-items: center; justify-content: center; z-index: 40;
+  pointer-events: auto;
+}
+.overlay button, .overlay input { pointer-events: auto; position: relative; z-index: 41; }
+.panel {
+  width: min(560px, 92vw); padding: 36px 40px 28px;
+  background: var(--panel); border: 1px solid var(--line);
+}
+.logo { font-size: 28px; letter-spacing: 0.42em; font-weight: 500; }
+.logo span { display: block; font-size: 11px; letter-spacing: 0.28em; color: var(--dim); margin-top: 8px; }
+.menu { margin-top: 28px; display: flex; flex-direction: column; gap: 6px; }
+.menu button, .row button, .bind {
+  background: transparent; color: var(--text); border: 1px solid transparent;
+  text-align: left; padding: 10px 12px; font: inherit; letter-spacing: 0.16em;
+  cursor: pointer;
+}
+.menu button:hover, .menu button:focus, .row button:hover { border-color: var(--line); color: var(--accent); outline: none; }
+.menu button:disabled { color: #444; cursor: default; }
+.hidden { display: none !important; }
+.settings { max-height: 70vh; overflow: auto; }
+.cat { font-size: 11px; letter-spacing: 0.24em; color: var(--warn); margin: 18px 0 8px; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 0; font-size: 13px; }
+.row input[type=range] { width: 160px; }
+.bind { min-width: 120px; text-align: right; border-color: var(--line); }
+.credits { font-size: 13px; color: var(--dim); line-height: 1.6; }
+.style { position: fixed; right: 18px; bottom: 28px; letter-spacing: 0.2em; font-size: 11px; color: #8fd4b8; opacity: 0.75; }
+.dmg { position: fixed; inset: 0; pointer-events: none; background: rgba(90,10,8,0); z-index: 5; }
+#boot {
+  position: fixed; inset: 0; z-index: 80; background: #07080a; color: #d7ddd8;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  letter-spacing: 0.28em;
+}
+#boot.hidden { display: none !important; }
+.boot-logo { font-size: 22px; }
+.boot-sub { font-size: 11px; color: #8a948c; }
+.boot-bar { width: 240px; height: 4px; background: #1a1e1c; }
+.boot-bar > i { display: block; height: 100%; width: 8%; background: #8fd4b8; transition: width 0.2s; }
+.boot-msg { font-size: 11px; color: #66706a; }
+.flash { position: fixed; inset: 0; pointer-events: none; background: #000; opacity: 0; z-index: 6; }

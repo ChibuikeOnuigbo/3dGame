@@ -1,0 +1,11 @@
+Model Information:
+* title:	Low Poly Double Industrial Door
+* source:	https://sketchfab.com/3d-models/low-poly-double-industrial-door-208d85a4dfcc4f15bd846cb4bb486820
+* author:	ECEL_GAMES_official (https://sketchfab.com/ECEL_GAMES)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Low Poly Double Industrial Door" (https://sketchfab.com/3d-models/low-poly-double-industrial-door-208d85a4dfcc4f15bd846cb4bb486820) by ECEL_GAMES_official (https://sketchfab.com/ECEL_GAMES) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,21 @@
+{
+  "facility": "Pump Station 7",
+  "rooms": [
+    {"id":"reception","purpose":"Arrival, lockdown list, name already logged","focus":"glass notice + two duty desks","interact":"notice, terminal","empty":"no","emotion":"unease"},
+    {"id":"security","purpose":"Card, cameras without operators","focus":"console desk","interact":"Lab B card","empty":"no","emotion":"abandonment"},
+    {"id":"corridor","purpose":"Spine, wayfinding","focus":"overhead pipes + sign","interact":"none required","empty":"intentional transit","emotion":"anticipation"},
+    {"id":"offices","purpose":"Compass terminal after power","focus":"lived-in desks","interact":"office terminal","empty":"no","emotion":"interrupted work"},
+    {"id":"archives","purpose":"Code 4721, tide photos","focus":"drawer wall","interact":"archive drawer","empty":"no","emotion":"wrong dates"},
+    {"id":"storage","purpose":"Optional locker note","focus":"aisle of crates","interact":"locker","empty":"no","emotion":"hoarding"},
+    {"id":"workshop","purpose":"Fuse","focus":"workbench + fuse tray","interact":"spare fuse","empty":"no","emotion":"job waiting"},
+    {"id":"southhall","purpose":"Link workshop to generator","focus":"mat + cans","interact":"none","empty":"short transit","emotion":"pressure drop"},
+    {"id":"generator","purpose":"Power the station","focus":"genset + tank","interact":"start generator, scorch","empty":"no","emotion":"scale"},
+    {"id":"lab","purpose":"CURRENT-7, shutter","focus":"jars / bench","interact":"card reader, jars","empty":"no","emotion":"protocol broken"},
+    {"id":"maintenance","purpose":"Squeeze encounter","focus":"closing walls","interact":"survive","empty":"yes-exposure","emotion":"trap"},
+    {"id":"valves","purpose":"Pump interlock","focus":"three wheels","interact":"valves","empty":"no","emotion":"pitch change"},
+    {"id":"tunnel","purpose":"Yard threshold","focus":"pipe run","interact":"none","empty":"short","emotion":"threshold"},
+    {"id":"yard","purpose":"Open threat, gate","focus":"sea-gate lights","interact":"keypad, radio via shack","empty":"yes-exposure","emotion":"exposed"},
+    {"id":"shack","purpose":"Radio lore","focus":"desk radio","interact":"yard radio","empty":"no","emotion":"delay"},
+    {"id":"seagate","purpose":"Ending","focus":"keypad slab","interact":"keypad","empty":"no","emotion":"false exit"}
+  ]
+}
