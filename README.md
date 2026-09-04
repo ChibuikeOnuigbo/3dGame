@@ -47,6 +47,7 @@ Automated, real-browser playthrough (Playwright + SwiftShader):
 
 ```bash
 cd tools/qa && ./setup_browser.sh   # one-time
+python3 verify_world.py             # torch/doors/map-sealing/overlap audit
 python3 smoke.py                    # boot + console + per-room shots/stats
 python3 critical_path.py            # full 7-objective playthrough: 40/40 checks
 python3 analyze_shots.py            # programmatic visual analysis of qa/shots/
