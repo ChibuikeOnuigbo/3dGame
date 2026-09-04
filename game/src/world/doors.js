@@ -149,16 +149,18 @@ export class Door {
     const speed = this.kind === "hinge" ? 1.6 : 0.24; // gate is slow/grindy
     if (this.state === "opening") {
       this.t = Math.min(1, this.t + dt * speed);
-      if (this.kind === "hinge") this.group.rotation.y = this.baseYaw + backOut(this.t) * this.openSign * -1.85;
-      else this.group.position.y = this.baseY + this.t * (this.height * 0.92);
+      const ease = this.t * this.t; // Quadratic.In — heavy door accelerates open
+      if (this.kind === "hinge") this.group.rotation.y = this.baseYaw + ease * this.openSign * -1.85;
+      else this.group.position.y = this.baseY + ease * (this.height * 0.92);
       if (this.t >= 1) {
         this.state = "open";
         if (this.onEndSound) this.onEndSound();
       }
     } else if (this.state === "closing") {
       this.t = Math.max(0, this.t - dt * speed);
-      if (this.kind === "hinge") this.group.rotation.y = this.baseYaw + backOut(this.t) * this.openSign * -1.85;
-      else this.group.position.y = this.baseY + this.t * (this.height * 0.92);
+      const ease = 1 - (1 - this.t) * (1 - this.t); // Quadratic.Out — decelerates shut
+      if (this.kind === "hinge") this.group.rotation.y = this.baseYaw + ease * this.openSign * -1.85;
+      else this.group.position.y = this.baseY + ease * (this.height * 0.92);
       if (this.t <= 0) {
         this.state = "closed";
         if (this.onCloseSound) this.onCloseSound();

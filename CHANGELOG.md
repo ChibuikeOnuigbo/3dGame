@@ -49,6 +49,15 @@ First complete, playable build. All gates §215–216 green.
 - Overlap audit added (verify_world.py); 2 locker placements fixed.
 - setup_browser.sh: ESM-safe @sparticuz/chromium bootstrap.
 
+### Revision 3 — council iteration pass
+- FIXED critical materials.js bug: textures loaded but never attached to
+  materials (async spread race) — surfaces rendered untextured since v1.0.
+- World-scale UV density baked in box() (uniform ~1.5–2 m tiles).
+- Lighting re-balanced for real PBR albedos; torch beam stronger.
+- Repo adoptions: triomonnezza asymmetric door easing, enari sprint-FOV
+  kick, layered viewmodel sway (FPS2 principle).
+- Stair judder made perceptible; barrels textured.
+
 ### QA tooling (`tools/qa/`)
 - `setup_browser.sh` / `pw_common.py` — Playwright + SwiftShader bootstrap.
 - `smoke.py` — boot, console-error capture, per-room screenshots + tri/draw

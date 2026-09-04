@@ -110,7 +110,7 @@ export class Player {
             if (proj < 0) inner.rotation.y += Math.PI; // glass at back -> flip
           }
           // scale to hand-torch length
-          const s = 0.3 / Math.max(0.001, len);
+          const s = 0.34 / Math.max(0.001, len);
           inner.scale.setScalar(s);
           // swap into the viewmodel container (keeps sway/lamp wiring)
           while (this.vmLamp.children.length) this.vmLamp.remove(this.vmLamp.children[0]);
@@ -142,10 +142,10 @@ export class Player {
   update(dt) {
     const inp = this.input;
     if (inp.wasPressed("FLASHLIGHT") && this.enabled) this.toggleLamp();
-    this.lamp.intensity += ((this.lampOn ? 34 : 0) - this.lamp.intensity) * Math.min(1, dt * 12);
-    if (this.vmHead) this.vmHead.material.emissiveIntensity = this.lamp.intensity / 34 * 1.6;
+    this.lamp.intensity += ((this.lampOn ? 42 : 0) - this.lamp.intensity) * Math.min(1, dt * 12);
+    if (this.vmHead) this.vmHead.material.emissiveIntensity = this.lamp.intensity / 42 * 1.6;
     if (this._torchGlass) {
-      const glow = (this.lamp.intensity / 34) * 1.8;
+      const glow = (this.lamp.intensity / 42) * 1.8;
       for (const gm of this._torchGlass) gm.emissiveIntensity = glow;
     }
 
@@ -262,6 +262,12 @@ export class Player {
   }
 
   _applyCamera(dt, hSpeed) {
+    // dynamic FOV (enari FPSRenderer pattern): slight widening at sprint
+    const fovTarget = (hSpeed > WALK * 1.15) ? 81 : 75;
+    if (Math.abs(this.camera.fov - fovTarget) > 0.05) {
+      this.camera.fov += (fovTarget - this.camera.fov) * Math.min(1, dt * 6);
+      this.camera.updateProjectionMatrix();
+    }
     // head bob
     const targetAmp = Math.min(1, hSpeed / (WALK * SPRINT_MULT));
     this.bobAmp += (targetAmp - this.bobAmp) * Math.min(1, dt * 6);
@@ -273,18 +279,20 @@ export class Player {
 
     const t = performance.now() / 1000;
     // stair/ramp judder: tiny high-frequency vibration while moving on slopes
-    const judder = this.bobAmp * this._slope * Math.sin(t * 34) * 0.009;
+    const judder = this.bobAmp * this._slope * Math.sin(t * 34) * 0.022;
     const camY = this.pos.y + EYE + this._bobY + judder - this._landDip;
     this._landDip *= Math.exp(-dt * 5.5);
     this.camera.position.set(this.pos.x + this._bobX * 0.4, camY, this.pos.z);
     this.camera.rotation.set(this.pitch, this.yaw, 0, "YXZ");
 
     // viewmodel sway
+    const idle = Math.max(0, 1 - this.bobAmp * 1.6); // sway fades while moving
     this.vmLamp.position.set(
-      this._vmBase.x + Math.sin(t * 1.1) * 0.004 - this._bobX * 0.15,
-      this._vmBase.y + Math.sin(t * 1.7) * 0.003 + this._bobY * 0.4,
-      this._vmBase.z
+      this._vmBase.x + Math.sin(t * 1.1) * 0.004 - this._bobX * 0.15 + Math.sin(t * 0.6) * 0.006 * idle,
+      this._vmBase.y + Math.sin(t * 1.7) * 0.003 + this._bobY * 0.4 + Math.sin(t * 0.83 + 1.2) * 0.005 * idle,
+      this._vmBase.z + Math.cos(t * 0.45) * 0.004 * idle
     );
+    this.vmLamp.rotation.z = Math.sin(t * 0.5) * 0.01 * idle;
     // lamp aims where camera aims
     const fwd = new THREE.Vector3(0, 0, -1).applyEuler(this.camera.rotation);
     this.lampTarget.position.copy(fwd.multiplyScalar(6)).add(this.lamp.position);

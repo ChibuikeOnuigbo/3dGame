@@ -43,9 +43,32 @@ export class World {
 
   // ---------------- primitives ----------------
 
+  // Bake world-scale UVs so texture density is uniform (~tile meters per
+  // repeat) no matter how large the surface — otherwise a 20 m wall stretches
+  // ONE texture tile across it and reads as flat color.
+  static scaleBoxUVs(geo, sx, sy, sz, tile, mat) {
+    const rx = (mat && mat.map && mat.map.repeat.x) || 1;
+    const ry = (mat && mat.map && mat.map.repeat.y) || 1;
+    const uv = geo.attributes.uv;
+    const reps = [
+      [sz / tile / rx, sy / tile / ry], [sz / tile / rx, sy / tile / ry], // +x -x
+      [sx / tile / rx, sz / tile / ry], [sx / tile / rx, sz / tile / ry], // +y -y
+      [sx / tile / rx, sy / tile / ry], [sx / tile / rx, sy / tile / ry], // +z -z
+    ];
+    for (let f = 0; f < 6; f++) {
+      for (let v = 0; v < 4; v++) {
+        const i = f * 4 + v;
+        uv.setXY(i, uv.getX(i) * reps[f][0], uv.getY(i) * reps[f][1]);
+      }
+    }
+    uv.needsUpdate = true;
+  }
+
   box(cx, cy, cz, sx, sy, sz, mat, opts = {}) {
-    const { collide = true, cast = true, receive = true, variant = null } = opts;
-    const m = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz), variant || mat);
+    const { collide = true, cast = true, receive = true, variant = null, tile = 1.5 } = opts;
+    const geo = new THREE.BoxGeometry(sx, sy, sz);
+    if (!variant && mat && mat.map) World.scaleBoxUVs(geo, sx, sy, sz, tile, mat);
+    const m = new THREE.Mesh(geo, variant || mat);
     m.position.set(cx, cy, cz);
     m.castShadow = cast;
     m.receiveShadow = receive;
@@ -223,7 +246,7 @@ export class World {
     halo.position.copy(moonPos).addScaledVector(moonDir, -0.5);
     halo.lookAt(0, 4, -13);
     this.scene.add(halo);
-    this.moonLight = new THREE.DirectionalLight(0xbdd0f0, 0.5);
+    this.moonLight = new THREE.DirectionalLight(0xbdd0f0, 0.7);
     this.moonLight.position.copy(moonDir.clone().multiplyScalar(30));
     this.scene.add(this.moonLight);
   }
@@ -231,10 +254,9 @@ export class World {
   _street() {
     // asphalt around kiosk — built AROUND the stairwell shaft (the shaft
     // descends south of the kiosk; a slab across it swept players off the ramp)
-    const asph = this.mats.variant("asphalt", 6, 6);
-    this.slab(-10, 10, 3.05, 3.2, -20, -11.3, this.mats.get("asphalt"), { variant: asph });
-    this.slab(-10, -1.3, 3.05, 3.2, -11.3, -10.4, this.mats.get("asphalt"), { variant: asph });
-    this.slab(1.3, 10, 3.05, 3.2, -11.3, -10.4, this.mats.get("asphalt"), { variant: asph });
+    this.slab(-10, 10, 3.05, 3.2, -20, -11.3, this.mats.get("asphalt"), { tile: 2.0 });
+    this.slab(-10, -1.3, 3.05, 3.2, -11.3, -10.4, this.mats.get("asphalt"), { tile: 2.0 });
+    this.slab(1.3, 10, 3.05, 3.2, -11.3, -10.4, this.mats.get("asphalt"), { tile: 2.0 });
     this.ground(-10, 10, -20, -10.9, 3.2, "asphalt");
     this.room({ id: "street", name: "Stadtfeld Street", min: [-10, 3, -20], max: [10, 8, -10.9], zone: "street" });
 
@@ -261,8 +283,8 @@ export class World {
 
     // ---- grass verges inside the street parcel (CC0 Ground037) ----
     const vergeMat = this.mats.get("grass");
-    this.slab(-10, -7.6, 3.2, 3.28, -20, -10.9, vergeMat, { cast: false });
-    this.slab(7.6, 10, 3.2, 3.28, -20, -10.9, vergeMat, { cast: false });
+    this.slab(-10, -7.6, 3.2, 3.28, -20, -10.9, vergeMat, { cast: false, tile: 1.2 });
+    this.slab(7.6, 10, 3.2, 3.28, -20, -10.9, vergeMat, { cast: false, tile: 1.2 });
     this.ground(-10, -7.6, -20, -10.9, 3.28, "grass");
     this.ground(7.6, 10, -20, -10.9, 3.28, "grass");
     // soil strip in front of the buildings (CC0 Ground054)

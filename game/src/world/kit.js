@@ -237,7 +237,7 @@ export function locker(materials) {
 
 export function barrel(materials) {
   const g = new THREE.Group();
-  const b = cyl(0.3, 0.3, 0.9, materials.get("bluePaint"), 0, 0.45, 0);
+  const b = cyl(0.3, 0.3, 0.9, materials.get("metalPainted"), 0, 0.45, 0); // textured steel drum
   g.add(b);
   for (const y of [0.15, 0.45, 0.75]) {
     const ring = cyl(0.315, 0.315, 0.04, materials.get("darkMetal"), 0, y, 0);

@@ -32,3 +32,14 @@ Date: 2026-09-04. All 9 repos shallow-cloned into research/github/repos/ (gitign
 - `final-project-triomonnezza/src/world/maps/Map{Easy,Medium,Hard}.js` — grid-labyrinth hub structure (rooms around corridors; goal door with green light landmark).
 - `threejs-liminality/src/Maze.js` — procedural backrooms chunk flow.
 See files for room/route analysis.
+
+
+## Adoption receipts (Revision 3, from re-clones)
+- `final-project-triomonnezza/src/core/DoorController.js` — Quadratic.In open /
+  Quadratic.Out close easing (lines 81–161): ADOPTED in our doors.js.
+- `enari-engine/src/View/Renderer/PlayerRenderer/FPSRenderer.ts` — dynamic FOV
+  switching (lines 271–281): ADOPTED as sprint FOV kick.
+- `threejs-liminality/public/assets/models/flashlight/` — CC-BY-4.0 Sketchfab
+  model (Brandon Baldwin) with license.txt: USED as the hand torch.
+- FPS2 — animation excellence is in GLB clips + AnimationMixer (bundled JS not
+  readable): principle adopted as layered procedural sway.

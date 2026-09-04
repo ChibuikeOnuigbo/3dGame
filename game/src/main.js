@@ -45,7 +45,7 @@ class Game {
     this.camera = new THREE.PerspectiveCamera(this.settings.data.fov, innerWidth / innerHeight, 0.08, 90);
     this.scene.add(this.camera);
 
-    this.hemi = new THREE.HemisphereLight(0x46536a, 0x1a1712, 0.55);
+    this.hemi = new THREE.HemisphereLight(0x4d5c76, 0x201c16, 0.78); // raised: real PBR albedos absorb more than blank mats
     this.scene.add(this.hemi);
 
     this.input = new Input(this.settings);

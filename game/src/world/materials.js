@@ -31,11 +31,16 @@ export class Materials {
 
   loadAll(onProgress) {
     const loader = new THREE.TextureLoader();
-    const jobs = [];
     const loaded = { n: 0 };
+    // Load every set FIRST; materials are created only once their textures
+    // are in hand. (Regression fixed: materials used to be built while the
+    // loader promises were pending, so ...texes spread an empty object and
+    // maps were never attached — the game rendered untextured.)
+    const store = {}; // key -> { map, normalMap, roughnessMap }
+    const jobs = [];
     for (const [key, cfg] of Object.entries(SETS)) {
       const maps = { map: "Color", normalMap: "NormalGL", roughnessMap: "Roughness" };
-      const texes = {};
+      store[key] = {};
       for (const [slot, suffix] of Object.entries(maps)) {
         jobs.push(
           new Promise((resolve, reject) => {
@@ -46,7 +51,7 @@ export class Materials {
                 t.repeat.set(cfg.repeat[0], cfg.repeat[1]);
                 t.anisotropy = 4;
                 if (slot === "map") t.colorSpace = THREE.SRGBColorSpace;
-                texes[slot] = t;
+                store[key][slot] = t;
                 loaded.n++;
                 if (onProgress) onProgress(loaded.n);
                 resolve();
@@ -57,14 +62,20 @@ export class Materials {
           })
         );
       }
-      const mat = new THREE.MeshStandardMaterial({
-        roughness: cfg.rough,
-        metalness: cfg.metal,
-        ...texes,
-      });
-      mat.normalScale.set(0.85, 0.85);
-      this.mats.set(key, mat);
     }
+    const textured = Promise.all(jobs).then(() => {
+      for (const [key, cfg] of Object.entries(SETS)) {
+        const mat = new THREE.MeshStandardMaterial({
+          roughness: cfg.rough,
+          metalness: cfg.metal,
+          map: store[key].map,
+          normalMap: store[key].normalMap,
+          roughnessMap: store[key].roughnessMap,
+        });
+        mat.normalScale.set(0.85, 0.85);
+        this.mats.set(key, mat);
+      }
+    });
 
     // Non-textured utility materials
     this.mats.set("trim", new THREE.MeshStandardMaterial({ color: 0x23262a, roughness: 0.85, metalness: 0.3 }));
@@ -80,7 +91,7 @@ export class Materials {
     this.mats.set("paper", new THREE.MeshStandardMaterial({ color: 0xd8d2bd, roughness: 0.95 }));
     this.mats.set("lampOff", new THREE.MeshStandardMaterial({ color: 0x9aa0a6, roughness: 0.4, metalness: 0.6 }));
 
-    return Promise.all(jobs);
+    return textured;
   }
 
   get(key) {

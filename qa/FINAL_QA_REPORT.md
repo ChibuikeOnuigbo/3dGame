@@ -129,3 +129,40 @@ User-reported issues and their resolution, all verified by `verify_world.py`
 - "Too dark / no moon / no sky": star field (460 pts), moon disc + halo,
   moonlight directional (0.5), sky/fog retuned — pre-restore atrium now
   lum 42.8 (was 2.7), gate-open beat 64.0 (was 3.9).
+
+
+## Revision 3 (iterative council pass, 2026-09-04)
+
+Multi-persona iteration loop (Critic / Domain Expert / Pragmatist / QA Auditor).
+Findings and fixes, each verified:
+
+- **CRITICAL — textures never rendered before this revision.** Root cause in
+  `materials.js loadAll()`: materials were constructed with `...texes` while
+  texture promises were pending — the spread captured an empty object, so
+  `map/normalMap/roughnessMap` were never attached. Every previous build
+  rendered untextured (only 17 meshes had maps — torch GLTF + canvas signs).
+  Fixed: materials are now created only after all textures resolve.
+  Verified: 247/609 meshes carry PBR maps; per-room color diversity rose
+  (corridor 57 distinct colors, street 54).
+- **World-scale UV density.** Big surfaces mapped one tile per face (a 20 m
+  wall = one stretched smear). `box()` now bakes UVs at ~1.5–2 m per tile,
+  divided by each material's repeat so density stays uniform. Verified:
+  measured tile spans 2.1–4.0 m-equivalent on large meshes (was 8–20+).
+- **Lighting re-compensated** for real albedo absorption (hemi 0.55→0.78,
+  moonlight 0.5→0.7, torch beam 34→42): pre-restore atrium 24.1, street 42.8,
+  corridor 44.5 — 15/15 shot checks.
+- **Feel adoptions from the studied repos (with receipts):**
+  - triomonnezza `DoorController.js` (lines 81–161): asymmetric easing —
+    Quadratic.In opening / Quadratic.Out closing (also removes the old
+    close-overshoot rough edge).
+  - enari-engine `FPSRenderer.ts` (lines 271–281): dynamic FOV — sprint kick
+    75→81 with smooth lerp.
+  - FPS2 (animation via GLB clips + mixer; bundled JS unreadable): principle
+    adopted as layered procedural sway — idle figure-8 + roll on the torch,
+    fading out while moving.
+- Stair judder amplitude 0.009→0.022 (imperceptible→felt); torch scale
+  0.30→0.34; barrels switched from flat blue paint to textured steel.
+- Sandbox recycles twice wiped the uncommitted preview state; recovered from
+  GitHub each time. Live build re-verified after final restore:
+  `verify_world` 13/13, `critical_path` 40/40, shots 15/15, zero console
+  errors.
