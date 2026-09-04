@@ -1,0 +1,101 @@
+{
+  "story_title": "STILL WATER",
+  "beats": [
+    {
+      "story_event": "Arrival: technician enters street kiosk to find an unexplained power draw",
+      "location": "kiosk",
+      "object": "kiosk door + street sign",
+      "interaction": "door open (E), walk in",
+      "player_action": "enter, descend stairs",
+      "world_change": "kiosk door slams shut + locks (commitment beat)",
+      "audio": "street tone fades, door boom, metal stairs footsteps",
+      "animation": "door hinge swing + slam",
+      "visual_feedback": "door rattle prompt 'Locked' if retried",
+      "next_objective": "O1 find the station logbook"
+    },
+    {
+      "story_event": "The station is not dead: reception logbook shows 9 years of phantom maintenance entries",
+      "location": "atrium",
+      "object": "logbook on desk",
+      "interaction": "read",
+      "player_action": "interact, read page overlay",
+      "world_change": "objective advances; corridor door highlighted by flicker-fix",
+      "audio": "paper sound, soft chime",
+      "animation": "book opens (page overlay UI)",
+      "visual_feedback": "note overlay; objective toast",
+      "next_objective": "O2 restore the lighting circuit"
+    },
+    {
+      "story_event": "Someone kept the lights alive on an emergency circuit",
+      "location": "breakernook",
+      "object": "breaker box",
+      "interaction": "flip breaker",
+      "player_action": "interact",
+      "world_change": "station lighting circuit ON (atrium/corridor/pumphall lights up)",
+      "audio": "clack + relay thunk + hum swells",
+      "animation": "breaker lever rotation",
+      "visual_feedback": "lights fade in room-by-room with slight stagger",
+      "next_objective": "O3 investigate the pump hall"
+    },
+    {
+      "story_event": "The pumps are RUNNING on an illegal re-route; tape note on pump #2",
+      "location": "pumphall",
+      "object": "control panel + taped note",
+      "interaction": "read + inspect",
+      "player_action": "cross hall, read note",
+      "world_change": "reveals valve gallery route; door D3 unlocked",
+      "audio": "deep pump hum (loop), note chime",
+      "animation": "pump flywheels rotate continuously",
+      "visual_feedback": "note overlay; east door sign lights",
+      "next_objective": "O4 drain the valve gallery"
+    },
+    {
+      "story_event": "Draining the gallery reveals the sealed lower level",
+      "location": "valvegallery",
+      "object": "intake valve A + drain valve B",
+      "interaction": "close A (multi-turn), open B (multi-turn)",
+      "player_action": "hold-interact each valve wheel",
+      "world_change": "water level animates down; stair opening revealed",
+      "audio": "valve ratchet turns, water rush draining, level drops",
+      "animation": "valve wheel rotation; water plane translate; gate bars lift",
+      "visual_feedback": "waterline falls; splash sounds; door light",
+      "next_objective": "O5 search the lower level"
+    },
+    {
+      "story_event": "The nest: someone lived here keeping the pumps alive; the last note explains the sealed tunnel",
+      "location": "sump",
+      "object": "bedroll/crate desk/radio/calendar + last note",
+      "interaction": "read last note",
+      "player_action": "explore nest, read",
+      "world_change": "scripted beat: single thud + string lights dip",
+      "audio": "radio static loop, drip field; scripted thud + flicker",
+      "animation": "string lights sway-dim",
+      "visual_feedback": "note overlay; lights dip 1s",
+      "next_objective": "O6 shut down the master breaker"
+    },
+    {
+      "story_event": "The technician does their job: the station finally dies",
+      "location": "sump",
+      "object": "master breaker cabinet",
+      "interaction": "pull master breaker",
+      "player_action": "interact",
+      "world_change": "pumps stop; hum dies; station goes to emergency lighting; winch gate armed",
+      "audio": "big clunk; hum spools down to silence; distant water shifts",
+      "animation": "lever rotation; gate status lamp turns green",
+      "visual_feedback": "darkness + red e-light; gate floodlight turns on (own circuit)",
+      "next_objective": "O7 crank the service gate and climb out"
+    },
+    {
+      "story_event": "Escape + payoff: gate cranks open, ladder to dawn",
+      "location": "sump/shaft",
+      "object": "winch + service gate + ladder",
+      "interaction": "hold crank (progress), climb ladder (walk-up ramp)",
+      "player_action": "crank gate, climb",
+      "world_change": "gate rises; dawn sky visible; ending card",
+      "audio": "ratchet crank, chain rattle, gate grind, street ambience returns, end sting",
+      "animation": "gate rises on chain; ladder climb bob",
+      "visual_feedback": "dawn light shaft from above",
+      "next_objective": "END — epilogue card (notes-found tally)"
+    }
+  ]
+}

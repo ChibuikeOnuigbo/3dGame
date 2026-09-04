@@ -1,0 +1,10 @@
+.sketchfab_token
+*.secret
+.env
+node_modules/
+research/github/repos/
+research/videos/*.mp4
+research/video_frames/*.jpg
+
+game/dist/
+.sudo_as_admin_successful
