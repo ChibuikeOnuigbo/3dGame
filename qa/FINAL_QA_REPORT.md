@@ -166,3 +166,16 @@ Findings and fixes, each verified:
   GitHub each time. Live build re-verified after final restore:
   `verify_world` 13/13, `critical_path` 40/40, shots 15/15, zero console
   errors.
+
+
+## Revision 4 (doorway pass, 2026-09-05)
+- User report "door opens but collision blocks the entrance": root cause =
+  anti-crush guard froze the leaf collider at its CLOSED pose whenever a door
+  was opened while the player stood in the threshold; the stale box never
+  refreshed after the door settled. Fix: disable collision during a crushing
+  sweep + force resync at settle. Regression check `walk_through_open_door`
+  reproduces the exact scenario (passes), `all_doorways_clear_when_open`
+  asserts no active collider covers any hinge-door gap center (6 doors).
+- Doors cloned with the same jamb-hinge logic: door_d4 (breaker nook),
+  door_d5 (stairwell->atrium; opens away from the approaching player).
+- verify_world 15/15, critical_path 40/40 (atrium walk now opens door_d5).

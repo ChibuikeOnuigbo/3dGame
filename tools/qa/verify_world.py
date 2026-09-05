@@ -73,6 +73,62 @@ try:
     moved = abs(d1o["colBox"][0] - d1["colBox"][0]) > 0.2 or abs(d1o["colBox"][2] - d1["colBox"][2]) > 0.2
     check("door_collider_follows_leaf", moved and d1o["colActive"], json.dumps(d1o))
 
+    # ---- REGRESSION (user report): open a door while standing in its
+    # threshold, then walk through — the doorway must be physically clear ----
+    page.evaluate("() => window.game.world.doors.get('door_d1').door.close()")
+    page.wait_for_function(
+        "() => window.game.world.doors.get('door_d1').door.state === 'closed'", timeout=30000)
+    page.evaluate("() => window.swQA.pose(0, 0, 1.0, 0, 0)")  # corridor side, facing -z toward the door (yaw 0)
+    page.evaluate("() => window.swQA.interact('door_d1')")
+    page.wait_for_function(
+        "() => window.game.world.doors.get('door_d1').door.state === 'open'", timeout=30000)
+    page.keyboard.down("KeyW")
+    page.wait_for_timeout(5200)  # SwiftShader runs ~3 fps — budget real frames
+    page.keyboard.up("KeyW")
+    pos = page.evaluate("() => window.game.player.pos.toArray().map(v => +v.toFixed(2))")
+    check("walk_through_open_door", pos[2] < -0.2, f"pos={pos}")
+
+    # ---- every hinge door: after opening, the gap center must be clear of
+    # ALL active colliders (no invisible blockers in any doorway) ----
+    clear = page.evaluate("""() => {
+        const out = [];
+        for (const [id, { door }] of window.game.world.doors) {
+            if (door.kind !== 'hinge') continue;
+            if (door.state !== 'open') door.open();
+        }
+        return new Promise((resolve) => {
+            const check = () => {
+                let allOpen = true;
+                for (const [, { door }] of window.game.world.doors)
+                    if (door.kind === 'hinge' && door.state !== 'open') allOpen = false;
+                if (!allOpen) { requestAnimationFrame(check); return; }
+                const bad = [];
+                for (const [id, { door }] of window.game.world.doors) {
+                    if (door.kind !== 'hinge') continue;
+                    // gap center = hinge + (width/2) along the closed-leaf dir
+                    const yaw = door.baseYaw, sgn = door.openSign;
+                    const dx = Math.cos(yaw) * sgn, dz = -Math.sin(yaw) * sgn;
+                    const cx = door.group.position.x + dx * door.width / 2;
+                    const cz = door.group.position.z + dz * door.width / 2;
+                    const cy = door.group.position.y + 1.0;
+                    for (const c of window.game.world.colliders) {
+                        if (!c.active) continue;
+                        const b = c.box, M = 0.12;
+                        if (cx > b.min.x - M && cx < b.max.x + M &&
+                            cz > b.min.z - M && cz < b.max.z + M &&
+                            cy > b.min.y && cy < b.max.y) {
+                            bad.push({ id, blocker: c.door ? 'door:' + c.door : (c.tag || 'arch'),
+                                at: [+cx.toFixed(2), +cz.toFixed(2)] });
+                        }
+                    }
+                }
+                resolve(bad);
+            };
+            requestAnimationFrame(check);
+        });
+    }""")
+    check("all_doorways_clear_when_open", len(clear) == 0, json.dumps(clear[:8]))
+
     # ---- map sealing: walk probes at every edge ----
     probes = [
         ("street_west", -9.0, 3.2, -15.5, -1.5708),   # face west, walk

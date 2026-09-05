@@ -5,6 +5,7 @@ Timing note: headless Chromium renders via SwiftShader (~1-3 fps at this
 scene complexity), so all waits poll GAME state, not wall-clock.
 """
 import json
+import time
 import os
 import sys
 
@@ -53,7 +54,19 @@ try:
     page.evaluate("() => window.swQA.interact('door_street')")
     poll("() => window.swQA.doors().find(d=>d.id==='door_street').state === 'open'")
     page.keyboard.down("KeyW")
-    ok = poll("() => window.swQA.roomAt() === 'atrium'", timeout_s=120)
+    # door_d5 (stairwell->atrium archway) must be opened mid-walk
+    opened_d5 = False
+    t0 = time.time()
+    ok = False
+    while time.time() - t0 < 120:
+        room = page.evaluate("() => window.swQA.roomAt()")
+        if room == "stairwell" and not opened_d5:
+            page.evaluate("() => window.swQA.interact('door_d5')")
+            opened_d5 = True
+        if room == "atrium":
+            ok = True
+            break
+        page.wait_for_timeout(400)
     page.keyboard.up("KeyW")
     check("walk_to_atrium", ok, f"room={page.evaluate('() => window.swQA.roomAt()')}")
     flags = page.evaluate("() => window.swQA.state().flags")

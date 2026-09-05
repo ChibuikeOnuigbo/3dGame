@@ -58,6 +58,18 @@ First complete, playable build. All gates §215–216 green.
   kick, layered viewmodel sway (FPS2 principle).
 - Stair judder made perceptible; barrels textured.
 
+### Revision 4 — doorway pass
+- FIXED the "invisible wall in the open doorway": the anti-crush guard used to
+  freeze a door's collider at its closed pose when the door was opened while
+  standing in the threshold. Now the collider disables during a crushing
+  sweep and force-resyncs to the resting pose the moment the door settles.
+- Cloned the jamb-hinge door pattern onto two more doorways: door_d4 (breaker
+  nook, corridor west wall) and door_d5 (stairwell->atrium archway, opens
+  away from the approaching player).
+- New QA: walk-through-open-door regression (open from threshold, walk
+  through) + all-doorways-clear audit (no active collider may cover any gap
+  center when open). verify_world now 15/15; critical_path 40/40.
+
 ### QA tooling (`tools/qa/`)
 - `setup_browser.sh` / `pw_common.py` — Playwright + SwiftShader bootstrap.
 - `smoke.py` — boot, console-error capture, per-room screenshots + tri/draw

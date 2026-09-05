@@ -214,8 +214,8 @@ class Game {
     location.reload();
   }
 
-  _addDoor(id, position, yaw, openSign) {
-    const d = new Door({ id, materials: this.mats, position, yaw, width: 1.06, openSign });
+  _addDoor(id, position, yaw, openSign, width = 1.06) {
+    const d = new Door({ id, materials: this.mats, position, yaw, width, openSign });
     this.world.addDoor(d);
     d.onOpenSound = () => this.audio.doorCreak();
     d.onEndSound = () => this.audio.doorThunk();
@@ -275,6 +275,13 @@ class Game {
     this._addDoor("door_d1", [0.545, 0, 0.35], 0, -1);
     this._addDoor("door_d2", [-0.545, 0, 12.35], Math.PI, -1);
     this._addDoor("door_d3", [7.15, 0, 18.205], Math.PI / 2, 1);
+    // cloned doors — same jamb-hinge logic (gap edges from wall segments):
+    // d4: breaker-nook doorway (west wall gap z 8.9..10.9), hinge north edge,
+    //     opens into the corridor; d5: stairwell->atrium archway (south wall
+    //     gap x -0.8..0.8), hinge west edge, opens into the atrium away from
+    //     the approaching player
+    this._addDoor("door_d4", [-1.45, 0, 10.855], Math.PI / 2, 1, 1.96);
+    this._addDoor("door_d5", [-0.78, 0, -6.35], 0, 1, 1.56);
 
     // --- atrium: logbook (O1) ---
     this.interact.add({
