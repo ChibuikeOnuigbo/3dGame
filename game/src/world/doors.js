@@ -29,9 +29,15 @@ export class Door {
     this.group.rotation.y = yaw;
 
     // static frame (jambs + header) — never rotates with the leaf, so the
-    // hinges visibly attach to something solid instead of floating in air
+    // hinges visibly attach to something solid instead of floating in air.
+    // MATH: the hinge pivot sits at one EDGE of the doorway, so the frame
+    // must be offset by width/2 along the closed-leaf direction to land on
+    // the GAP CENTER. (Bug this fixes: frame at the hinge origin put one
+    // jamb + header mid-doorway — the "pillar in the open door".)
+    // closed-leaf unit direction in world = (cos(yaw)*openSign, 0, -sin(yaw)*openSign)
     this.frame = new THREE.Group();
-    this.frame.position.set(...position);
+    const leafDx = Math.cos(yaw) * openSign, leafDz = -Math.sin(yaw) * openSign;
+    this.frame.position.set(position[0] + leafDx * (width / 2), position[1], position[2] + leafDz * (width / 2));
     this.frame.rotation.y = yaw;
 
     if (kind === "hinge") {
@@ -87,7 +93,7 @@ export class Door {
         barrel.position.set(0, hy, 0);
         this.group.add(barrel);
         const knuckle = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.13, 0.06), darkMetal);
-        knuckle.position.set(-openSign * 0.028, hy, 0);
+        knuckle.position.set(-openSign * (width / 2 - 0.035), hy, 0); // hinge edge of the gap
         this.frame.add(knuckle);
       }
       this.panel = panel;

@@ -179,3 +179,13 @@ Findings and fixes, each verified:
 - Doors cloned with the same jamb-hinge logic: door_d4 (breaker nook),
   door_d5 (stairwell->atrium; opens away from the approaching player).
 - verify_world 15/15, critical_path 40/40 (atrium walk now opens door_d5).
+
+
+## Revision 5 (doorway visuals + torch direction, 2026-09-05)
+- User report "pillar top-to-bottom mid-doorway when open": frames were
+  hinge-relative; fixed to gap-centered via pivot + (width/2)·closed-leaf-dir.
+  Numeric check (6 doors, err 0.000) + screenshot center-edge scan (no pillar
+  gradient at any doorway center; shots in qa/shots/doors/).
+- User report "torch points the wrong way": glass-end sign detection on the
+  long axis + runtime camera-space verification (mouth forward of body).
+- shoot_doors.py: 18 Playwright shots. verify_world 16/16, critical 40/40.

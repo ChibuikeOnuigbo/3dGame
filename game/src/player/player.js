@@ -87,15 +87,16 @@ export class Player {
           const size = box.getSize(new THREE.Vector3());
           const center = box.getCenter(new THREE.Vector3());
           model.position.sub(center);
-          // longest axis -> Z (beam axis)
+          // longest axis = beam axis; the GLASS (mouth/lens) end must point
+          // at camera -Z. Method (fixes the backwards torch): detect which
+          // signed end of the longest axis carries the glass, then pick the
+          // single axis rotation that maps THAT end to -Z. (The old code
+          // tried to flip by spinning about the long axis — a roll, not a
+          // reversal — leaving the mouth pointing backwards.)
           const axes = [["x", size.x], ["y", size.y], ["z", size.z]].sort((a, b) => b[1] - a[1]);
           const [longest, len] = axes[0];
-          const inner = new THREE.Group();
-          inner.add(model);
-          if (longest === "y") inner.rotation.x = -Math.PI / 2; // +Y -> -Z
-          else if (longest === "x") inner.rotation.y = Math.PI / 2; // +X -> -Z
-          // if longest z: leave (flip handled below if needed)
-          // find which end has the glass (lens) meshes -> that end faces forward
+          // glass end detection (raw model space)
+          let headSign = 1; // assume positive end if no glass found
           const glassBoxes = new THREE.Box3();
           let hasGlass = false;
           model.traverse((o) => {
@@ -106,9 +107,14 @@ export class Player {
           });
           if (hasGlass) {
             const gc = glassBoxes.getCenter(new THREE.Vector3());
-            const proj = longest === "y" ? gc.y : longest === "x" ? gc.x : gc.z;
-            if (proj < 0) inner.rotation.y += Math.PI; // glass at back -> flip
+            const proj = longest === "x" ? gc.x : longest === "y" ? gc.y : gc.z;
+            headSign = proj >= 0 ? 1 : -1;
           }
+          const inner = new THREE.Group();
+          inner.add(model);
+          if (longest === "y") inner.rotation.x = headSign > 0 ? -Math.PI / 2 : Math.PI / 2;
+          else if (longest === "x") inner.rotation.y = headSign > 0 ? Math.PI / 2 : -Math.PI / 2;
+          else inner.rotation.x = headSign > 0 ? Math.PI : 0; // +Z -> -Z needs a half turn
           // scale to hand-torch length
           const s = 0.34 / Math.max(0.001, len);
           inner.scale.setScalar(s);
@@ -117,14 +123,36 @@ export class Player {
           this.vmLamp.add(inner);
           this.vmHead = null; // procedural head gone; glow handled on glass
           this._torchGlass = [];
+          this._torchGlassMeshes = [];
           model.traverse((o) => {
             if (o.isMesh && o.material && /glass/i.test(o.material.name || "")) {
               o.material = o.material.clone();
               o.material.emissive = new THREE.Color(0xffe2b0);
               this._torchGlass.push(o.material);
+              this._torchGlassMeshes.push(o);
             }
           });
           this.torchReady = true;
+          // runtime self-check: glass (mouth) must be further FORWARD (-Z in
+          // camera space) than the torch body; if not, flip end-for-end.
+          const glassMesh = (this._torchGlassMeshes || [])[0];
+          if (glassMesh) {
+            const verify = () => {
+              try {
+                const gw = glassMesh.getWorldPosition(new THREE.Vector3());
+                const bw = this.vmLamp.getWorldPosition(new THREE.Vector3());
+                const gl = this.camera.worldToLocal(gw.clone());
+                const bl = this.camera.worldToLocal(bw.clone());
+                if (gl.z > bl.z - 0.04) {
+                  this.vmLamp.rotation.set(0.1, Math.PI - 0.12, 0.05); // end-for-end flip about camera up
+                  this._torchFlipped = true;
+                }
+              } catch (e) { /* matrix not ready — retry next frame */ }
+            };
+            let tries = 0;
+            const tick = () => { verify(); if (++tries < 90 && !this._torchFlipped) requestAnimationFrame(tick); };
+            requestAnimationFrame(tick);
+          }
         } catch (e) {
           console.warn("torch model setup failed, keeping procedural", e);
         }

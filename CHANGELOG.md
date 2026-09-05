@@ -70,6 +70,22 @@ First complete, playable build. All gates §215–216 green.
   through) + all-doorways-clear audit (no active collider may cover any gap
   center when open). verify_world now 15/15; critical_path 40/40.
 
+### Revision 5 — doorway visuals + torch direction
+- FIXED mid-doorway "pillar": door frames were positioned at the HINGE
+  origin, so one jamb + header landed in the middle of the gap. Frames now
+  center on the gap via hinge math (frame = pivot + width/2 along the
+  closed-leaf direction); knuckles moved to the hinge edge. Verified
+  geometrically (frame↔gap error 0.000 for all 6 doors) and photographically
+  (center-strip edge scan of every open-door shot: no pillar signature).
+- FIXED backwards torch: end-for-end orientation now uses signed glass-end
+  detection on the model's long axis (old code "flipped" by rolling about
+  the long axis — a spin, not a reversal), plus a runtime camera-space
+  self-check that verifies the mouth sits forward of the body.
+- New tools/qa/shoot_doors.py: 18-shot Playwright pass (every door closed +
+  open, note overlay, torch off/on, service gate open, all rooms).
+- verify_world 16/16 (new door_frames_centered_on_gap check);
+  critical_path 40/40.
+
 ### QA tooling (`tools/qa/`)
 - `setup_browser.sh` / `pw_common.py` — Playwright + SwiftShader bootstrap.
 - `smoke.py` — boot, console-error capture, per-room screenshots + tri/draw

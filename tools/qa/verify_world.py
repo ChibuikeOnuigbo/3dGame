@@ -40,6 +40,22 @@ try:
         moonI: window.game.world.moonLight ? window.game.world.moonLight.intensity : 0 })""")
     check("moonlight_present", sky["moon"] and sky["moonI"] > 0, json.dumps(sky))
 
+    # ---- door frames centered on doorway gaps (anti "pillar mid-doorway") ----
+    frames = page.evaluate("""() => {
+        const out = [];
+        for (const [id, { door }] of window.game.world.doors) {
+            if (door.kind !== 'hinge' || !door.frame) continue;
+            const yaw = door.baseYaw, s = door.openSign, w = door.width;
+            const gapX = door.group.position.x + Math.cos(yaw) * s * w / 2;
+            const gapZ = door.group.position.z - Math.sin(yaw) * s * w / 2;
+            out.push({ id, err: Math.hypot(door.frame.position.x - gapX, door.frame.position.z - gapZ) });
+        }
+        return out;
+    }""")
+    worst = max((f["err"] for f in frames), default=1)
+    check("door_frames_centered_on_gap", len(frames) >= 6 and worst < 0.05,
+          f"frames={len(frames)} worst_err={worst:.3f}")
+
     # ---- doors: closed leaf covers its gap; collider follows when open ----
     doors = page.evaluate("""() => {
         const out = [];
