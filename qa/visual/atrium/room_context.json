@@ -1,0 +1,114 @@
+{
+ "room_id": "atrium",
+ "room_name": "Reception",
+ "purpose": "first big interior; logbook objective; dressing density",
+ "expected_focal_point": "reception desk group: desk + chair + logbook + toolbox",
+ "expected_player_route": "stairwell to desk to corridor",
+ "expected_important_objects": [
+  "reception desk",
+  "chair",
+  "logbook",
+  "notice board",
+  "lockers",
+  "toolbox"
+ ],
+ "expected_lighting": "atrium fixture + sign spill",
+ "environment_pack": "procedural + ambientCG",
+ "objective": "find_logbook",
+ "visual_target_reference": "abandoned admin corner, lived-in",
+ "semantic_visual_review": "BLOCKED (no vision runtime) \u2014 human inspection required",
+ "player_pos_at_capture": {
+  "entry": [
+   0,
+   0,
+   -5.6
+  ],
+  "focal": [
+   -2.3,
+   0,
+   -4.4
+  ],
+  "path": [
+   0,
+   0,
+   -4.88
+  ],
+  "interaction": [
+   -2.3,
+   0,
+   -3.3
+  ],
+  "exit": [
+   0,
+   0,
+   -0.4
+  ],
+  "secondary": [
+   3.1,
+   0,
+   -4.6
+  ]
+ },
+ "views": {
+  "entry": {
+   "camera_feet": [
+    0,
+    0,
+    -5.6
+   ],
+   "yaw": 0,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "focal": {
+   "camera_feet": [
+    -2.3,
+    0,
+    -4.4
+   ],
+   "yaw": -2.2,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "path": {
+   "camera_feet": [
+    0,
+    0,
+    -4.5
+   ],
+   "yaw": 0,
+   "pitch": 0.0,
+   "capture": "walk"
+  },
+  "interaction": {
+   "camera_feet": [
+    -2.3,
+    0,
+    -3.3
+   ],
+   "yaw": 1.9,
+   "pitch": -0.25,
+   "capture": "pose"
+  },
+  "exit": {
+   "camera_feet": [
+    0,
+    0,
+    -0.4
+   ],
+   "yaw": 0,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "secondary": {
+   "camera_feet": [
+    3.1,
+    0,
+    -4.6
+   ],
+   "yaw": -2.0,
+   "pitch": 0.0,
+   "capture": "pose"
+  }
+ }
+}

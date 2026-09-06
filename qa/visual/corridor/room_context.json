@@ -1,0 +1,112 @@
+{
+ "room_id": "corridor",
+ "room_name": "Service Corridor",
+ "purpose": "circulation spine; tension build; breaker nook",
+ "expected_focal_point": "long receding walls, door frames, cable trays",
+ "expected_player_route": "atrium north to pump hall",
+ "expected_important_objects": [
+  "cable trays",
+  "doors",
+  "breaker nook",
+  "clipboard"
+ ],
+ "expected_lighting": "dead fixtures + nook spill",
+ "environment_pack": "procedural + ambientCG",
+ "objective": "restore_power",
+ "visual_target_reference": "liminal service-corridor, ratty but real",
+ "semantic_visual_review": "BLOCKED (no vision runtime) \u2014 human inspection required",
+ "player_pos_at_capture": {
+  "entry": [
+   0,
+   0,
+   1
+  ],
+  "focal": [
+   0,
+   0,
+   6.5
+  ],
+  "path": [
+   0,
+   0,
+   2.62
+  ],
+  "interaction": [
+   0,
+   0,
+   8.6
+  ],
+  "exit": [
+   0,
+   0,
+   11.9
+  ],
+  "secondary": [
+   0,
+   0,
+   5
+  ]
+ },
+ "views": {
+  "entry": {
+   "camera_feet": [
+    0,
+    0,
+    1.0
+   ],
+   "yaw": 0,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "focal": {
+   "camera_feet": [
+    0,
+    0,
+    6.5
+   ],
+   "yaw": 0,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "path": {
+   "camera_feet": [
+    0,
+    0,
+    3.0
+   ],
+   "yaw": 0,
+   "pitch": 0.0,
+   "capture": "walk"
+  },
+  "interaction": {
+   "camera_feet": [
+    0,
+    0,
+    8.6
+   ],
+   "yaw": -1.8,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "exit": {
+   "camera_feet": [
+    0,
+    0,
+    11.9
+   ],
+   "yaw": 0,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "secondary": {
+   "camera_feet": [
+    0,
+    0,
+    5.0
+   ],
+   "yaw": 3.1416,
+   "pitch": 0.0,
+   "capture": "pose"
+  }
+ }
+}

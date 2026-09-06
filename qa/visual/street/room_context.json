@@ -1,0 +1,113 @@
+{
+ "room_id": "street",
+ "room_name": "Stadtfeld Street",
+ "purpose": "outdoor night approach; establish place + lock-in",
+ "expected_focal_point": "lit STORMWATER STATION 6 kiosk sign + sodium lamp",
+ "expected_player_route": "south toward kiosk door, then stairwell",
+ "expected_important_objects": [
+  "kiosk",
+  "sodium lamp",
+  "fences",
+  "grass verges",
+  "moon"
+ ],
+ "expected_lighting": "moon + sodium lamp + sign glow",
+ "environment_pack": "procedural + ambientCG",
+ "objective": "find_logbook",
+ "visual_target_reference": "industrial-night street, INFRA-style",
+ "semantic_visual_review": "BLOCKED (no vision runtime) \u2014 human inspection required",
+ "player_pos_at_capture": {
+  "entry": [
+   0,
+   3.2,
+   -17.5
+  ],
+  "focal": [
+   1.6,
+   3.2,
+   -14.9
+  ],
+  "path": [
+   0,
+   3.2,
+   -15.62
+  ],
+  "interaction": [
+   0,
+   3.2,
+   -15.6
+  ],
+  "exit": [
+   0,
+   2.76,
+   -10.6
+  ],
+  "secondary": [
+   -5.5,
+   3.2,
+   -13.5
+  ]
+ },
+ "views": {
+  "entry": {
+   "camera_feet": [
+    0,
+    3.2,
+    -17.5
+   ],
+   "yaw": 3.1416,
+   "pitch": 0.02,
+   "capture": "pose"
+  },
+  "focal": {
+   "camera_feet": [
+    1.6,
+    3.2,
+    -14.9
+   ],
+   "yaw": 2.2,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "path": {
+   "camera_feet": [
+    0,
+    3.2,
+    -16.0
+   ],
+   "yaw": 3.1416,
+   "pitch": 0.0,
+   "capture": "walk"
+  },
+  "interaction": {
+   "camera_feet": [
+    0,
+    3.2,
+    -15.6
+   ],
+   "yaw": 3.1416,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "exit": {
+   "camera_feet": [
+    0,
+    3.0,
+    -10.6
+   ],
+   "yaw": 0,
+   "pitch": 0.05,
+   "capture": "pose"
+  },
+  "secondary": {
+   "camera_feet": [
+    -5.5,
+    3.2,
+    -13.5
+   ],
+   "yaw": 2.45,
+   "pitch": 0.0,
+   "capture": "pose"
+  }
+ }
+}

@@ -854,11 +854,17 @@ export class World {
     // switchback ramps: 3 flights 45deg, landings
     // chimney lamps (visual QA: switchbacks read as a black void without them)
     this.place(kit.wallLamp(m, { on: true }), 26.45, -2.4, 19.78, Math.PI, { collide: false });
-    this.light(26.3, -2.2, 20.3, { color: 0xffd9a0, intensity: 8, distance: 7 });
+    this.light(26.3, -2.2, 20.3, { color: 0xffd9a0, intensity: 8, distance: 7, circuit: "emergency" });
     this.place(kit.wallLamp(m, { on: true }), 26.45, 0.4, 19.78, Math.PI, { collide: false });
-    this.light(26.3, 0.6, 20.3, { color: 0xffd9a0, intensity: 8, distance: 7 });
-    this.place(kit.wallLamp(m, { on: true }), 26.45, 2.6, 19.78, Math.PI, { collide: false });
-    this.light(26.3, 2.8, 20.3, { color: 0xffd9a0, intensity: 8, distance: 7 });
+    this.light(26.3, 0.6, 20.3, { color: 0xffd9a0, intensity: 8, distance: 7, circuit: "emergency" });
+    this.place(kit.wallLamp(m, { on: true }), 26.45, 3.3, 19.78, Math.PI, { collide: false });
+    this.light(26.3, 3.4, 20.3, { color: 0xffd9a0, intensity: 11, distance: 6, circuit: "emergency" });  // above the top platform (y3.2): a lamp below it is occluded by the grate
+    // mid-chimney fill + gate-approach lamp (visual QA recapture: west-facing
+    // landings and the winch read at mean-luma 0.4-2.4 with east-wall lamps
+    // alone — the climb must be readable from every leg, not just from east)
+    this.light(26.0, 0.2, 21.2, { color: 0xffd9a0, intensity: 6, distance: 6, circuit: "emergency" });
+    this.place(kit.wallLamp(m, { on: true }), 24.3, -1.7, 19.72, Math.PI, { collide: false });
+    this.light(24.4, -1.6, 20.4, { color: 0xffd9a0, intensity: 5, distance: 5, circuit: "emergency" });
     // step-edge markers: high-visibility strips along each ramp's outer edge
     // every 0.55m of climb (visual QA: the 45deg flights were invisible)
     const marks = (xa, xb, z, y0, y1) => {

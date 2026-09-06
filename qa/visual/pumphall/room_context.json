@@ -1,0 +1,115 @@
+{
+ "room_id": "pumphall",
+ "room_name": "Pump Hall",
+ "purpose": "machine room; pumps objective; noise + scale",
+ "expected_focal_point": "pump trains under high bays + control panel",
+ "expected_player_route": "corridor D1 to pumps, workbench SW, D3 east",
+ "expected_important_objects": [
+  "pump trains",
+  "control panel",
+  "valve wheel",
+  "workbench",
+  "radio",
+  "toolbox",
+  "barrels"
+ ],
+ "expected_lighting": "high bay fluorescents (circuit)",
+ "environment_pack": "procedural + ambientCG",
+ "objective": "restore_pumps",
+ "visual_target_reference": "functional machine hall",
+ "semantic_visual_review": "BLOCKED (no vision runtime) \u2014 human inspection required",
+ "player_pos_at_capture": {
+  "entry": [
+   0,
+   0,
+   13.2
+  ],
+  "focal": [
+   0,
+   0,
+   18.5
+  ],
+  "path": [
+   0,
+   0,
+   15.12
+  ],
+  "interaction": [
+   -5.2,
+   0,
+   18.4
+  ],
+  "exit": [
+   5.5,
+   0,
+   16.5
+  ],
+  "secondary": [
+   -1.9,
+   0,
+   21.7
+  ]
+ },
+ "views": {
+  "entry": {
+   "camera_feet": [
+    0,
+    0,
+    13.2
+   ],
+   "yaw": 0,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "focal": {
+   "camera_feet": [
+    0,
+    0,
+    18.5
+   ],
+   "yaw": 0,
+   "pitch": 0.05,
+   "capture": "pose"
+  },
+  "path": {
+   "camera_feet": [
+    0,
+    0,
+    15.5
+   ],
+   "yaw": 0,
+   "pitch": 0.0,
+   "capture": "walk"
+  },
+  "interaction": {
+   "camera_feet": [
+    -5.2,
+    0,
+    18.4
+   ],
+   "yaw": 0.9,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "exit": {
+   "camera_feet": [
+    5.5,
+    0,
+    16.5
+   ],
+   "yaw": -1.5708,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "secondary": {
+   "camera_feet": [
+    -1.9,
+    0,
+    21.7
+   ],
+   "yaw": 3.1416,
+   "pitch": 0.0,
+   "capture": "pose"
+  }
+ }
+}

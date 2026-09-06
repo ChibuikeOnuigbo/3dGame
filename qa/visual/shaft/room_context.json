@@ -1,0 +1,114 @@
+{
+ "room_id": "shaft",
+ "room_name": "Service Shaft",
+ "purpose": "final climb; switchback ramps under the street",
+ "expected_focal_point": "3-flight switchback ramps with step markers + lamps",
+ "expected_player_route": "gate -> F1 -> L1 -> F2 -> L2 -> F3 -> top",
+ "expected_important_objects": [
+  "ramps",
+  "step-edge markers",
+  "wall lamps",
+  "gate",
+  "winch",
+  "gratings"
+ ],
+ "expected_lighting": "3 chimney wall lamps",
+ "environment_pack": "procedural + ambientCG",
+ "objective": "escape",
+ "visual_target_reference": "readable vertical climb",
+ "semantic_visual_review": "BLOCKED (no vision runtime) \u2014 human inspection required",
+ "player_pos_at_capture": {
+  "entry": [
+   24.6,
+   -3.4,
+   20.9
+  ],
+  "focal": [
+   25.4,
+   -2.3,
+   20.3
+  ],
+  "path": [
+   26.2,
+   -1.2,
+   21.5
+  ],
+  "interaction": [
+   24.4,
+   -3.3,
+   20.7
+  ],
+  "exit": [
+   25.7,
+   3.2,
+   20.4
+  ],
+  "secondary": [
+   24,
+   0.66,
+   21.4
+  ]
+ },
+ "views": {
+  "entry": {
+   "camera_feet": [
+    24.6,
+    -3.4,
+    20.9
+   ],
+   "yaw": -1.5708,
+   "pitch": 0.1,
+   "capture": "pose"
+  },
+  "focal": {
+   "camera_feet": [
+    25.4,
+    -2.2,
+    20.3
+   ],
+   "yaw": -1.5708,
+   "pitch": 0.15,
+   "capture": "pose"
+  },
+  "path": {
+   "camera_feet": [
+    26.2,
+    -1.2,
+    21.5
+   ],
+   "yaw": 1.5708,
+   "pitch": 0.1,
+   "capture": "pose"
+  },
+  "interaction": {
+   "camera_feet": [
+    24.4,
+    -3.4,
+    20.7
+   ],
+   "yaw": 0.5,
+   "pitch": 0.1,
+   "capture": "pose"
+  },
+  "exit": {
+   "camera_feet": [
+    25.7,
+    3.2,
+    20.4
+   ],
+   "yaw": -1.5708,
+   "pitch": -0.25,
+   "capture": "pose"
+  },
+  "secondary": {
+   "camera_feet": [
+    24.0,
+    0.9,
+    21.4
+   ],
+   "yaw": 0.8,
+   "pitch": 0.1,
+   "capture": "pose"
+  }
+ }
+}
