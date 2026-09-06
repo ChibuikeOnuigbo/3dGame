@@ -225,8 +225,8 @@ export class Player {
     const nz = this.pos.z + this.vel.z * dt;
     this._tryAxis("z", nz);
 
-    // gravity + ground follow
-    const g = this.world.groundAt(this.pos.x, this.pos.z);
+    // gravity + ground follow (y-aware: ghost-climb fix — see world.groundNear)
+    const g = this.world.groundNear(this.pos.x, this.pos.z, this.pos.y);
     const gdy = g.y - this.pos.y;
     this._slope = Math.min(1, Math.abs(gdy) * 5);
     if (!this.airborne && gdy < -STEPH) this.airborne = true; // walked off an edge

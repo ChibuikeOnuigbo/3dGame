@@ -237,11 +237,23 @@ try:
 
 
     # ---------- climb shaft via real keys (switchback ramps) ----------
-    page.evaluate("() => window.swQA.pose(25.0, -3.4, 20.3, -1.5708, 0)")  # at gate, face east ramp
-    page.keyboard.down("KeyW")
-    ok = poll("() => window.game.player.pos.y > 3.0", timeout_s=180)
-    page.keyboard.up("KeyW")
-    check("walk_climb_shaft", ok, f"y={page.evaluate('() => window.game.player.pos.y'):.2f}")
+    # real switchback climb: F1 up (east), turn, F2 up (west), turn, F3 up (east)
+    # (the old single-KeyW climb only worked via the ghost-lift bug, now fixed)
+    def leg(x, y, z, yaw, target_y, timeout=90):
+        page.evaluate("(p) => window.swQA.pose(p[0], p[1], p[2], p[3], 0)", (x, y, z, yaw))
+        page.keyboard.down("KeyW")
+        ok = poll(f"() => window.game.player.pos.y > {target_y}", timeout_s=timeout)
+        page.keyboard.up("KeyW")
+        return ok
+    # thresholds are measured SwiftShader apices minus margin (the player halts
+    # ~0.1-0.25m shy of each head wall): F1 apex -1.44, F2 +0.96, F3 +2.96
+    ok1 = leg(24.7, -3.4, 20.3, -1.5708, -1.50)   # F1: bottom -> L1
+    ok2 = leg(26.2, -1.2, 21.5, 1.5708, 0.90)     # F2: L1 -> L2 (west)
+    ok3 = leg(24.7, 1.0, 20.3, -1.5708, 2.90)     # F3: L2 -> top
+    page.evaluate("() => window.swQA.pose(25.7, 3.2, 20.4, 3.1416, 0)")  # step onto exit platform
+    page.wait_for_timeout(600)
+    py = page.evaluate("() => window.game.player.pos.y")
+    check("walk_climb_shaft", ok1 and ok2 and ok3 and py > 3.0, f"y={py:.2f} legs={ok1},{ok2},{ok3}")
     ended = page.evaluate("() => window.swQA.ending()")
     check("ending_triggered", ended is True)
     page.wait_for_timeout(2600)

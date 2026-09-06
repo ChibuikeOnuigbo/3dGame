@@ -473,6 +473,9 @@ export class World {
     // lockers east wall + crates
     this.place(kit.locker(m), 3.69, 0, -5.2, -Math.PI / 2); // flush to east wall (face at x=4.0)
     this.place(kit.locker(m), 3.69, 0, -4.5, -Math.PI / 2);
+    // dressing: toolbox beside the logbook desk (visual QA: lone-desk read;
+    // kept clear of the desk and west wall colliders)
+    this.place(kit.toolbox(m), -3.45, 0, -3.6, 0.2);
     this.place(kit.crate(m, 0.6), 3.3, 0, -1.2, 0.3);
     this.place(kit.barrel(m), -3.5, 0, -0.9, 0);
 
@@ -625,8 +628,18 @@ export class World {
     // barrels + toolbox + drum
     this.place(kit.barrel(m), 6.3, 0, 22.6, 0);
     this.place(kit.barrel(m), 5.6, 0, 22.9, 0);
-    this.place(kit.toolbox(m), -2.2, 0, 22.8, 0.5);
+    // (original toolbox at (-2.2,0,22.8) removed — it sat inside the new
+    // workbench desk footprint; QA pair-probe found the penetration)
     this.place(kit.crate(m, 0.8), 6.4, 0, 13.3, 0.15);
+
+    // dressing: maintenance workbench against the south wall (visual QA:
+    // dead SW corner read as unfinished space) — desk + radio + toolbox,
+    // each clear of every other collider (~0.1+ margins)
+    this.place(kit.desk(m), -1.9, 0, 22.75, 0);
+    const benchRadio = kit.radioSet(m, true);
+    this.place(benchRadio, -1.6, 0.78, 22.7, Math.PI, { collide: false });
+    this.radios.push(benchRadio);
+    this.place(kit.toolbox(m), -3.2, 0, 22.2, 0.4);
 
     // signage on east wall by D3
     const s = kit.signPlane(m, makeSignTexture(["VALVE GALLERY"], { w: 512, h: 110, color: "#d8c26a", arrow: "right" }), 1.2, 0.26, { backing: true, lit: true });
@@ -727,7 +740,15 @@ export class World {
     const m = this.mats;
     // floor + ground
     this.slab(15, 27, -3.7, -3.4, 13.5, 22.5, m.get("concreteDark"));
-    this.ground(15, 27, 13.5, 22.5, -3.4, "concrete");
+    // pit floor — carved around the switchback chimney (QA-found: this region
+    // under F1 kept winning groundNear's closest-match at the ramp foot, making
+    // F1 unboardable by real walking once the ghost-climb fix landed; the north
+    // lane now belongs to the F1 slope alone)
+    this.ground(15, 24.3, 13.5, 22.5, -3.4, "concrete");      // west of chimney (gate approach)
+    this.ground(24.3, 27, 13.5, 19.75, -3.4, "concrete");     // north of chimney
+    this.ground(24.3, 27, 22.05, 22.5, -3.4, "concrete");     // south strip
+    this.ground(24.3, 26.5, 20.95, 22.05, -3.4, "concrete");  // south lane base, under F2
+    this.ground(24.3, 26.5, 20.85, 20.95, -3.4, "concrete");  // center gap (gate entry)
     // ramp from gallery opening down (ground + visual + fill)
     this.ground(17.0, 21.4, 16.2, 19.2, 0, "metal", { axis: "x", from: 17.0, to: 21.4, y0: 0, y1: -3.4 });
     const rampVis = new THREE.Mesh(new THREE.BoxGeometry(4.4, 0.25, 3.0), m.variant("metalRaw", 3, 1));
@@ -782,6 +803,10 @@ export class World {
     // --- the nest (SW corner) ---
     this.place(kit.bedroll(m), 16.6, -3.4, 21.6, 0);
     this.place(kit.shelfUnit(m, 3), 19.5, -3.4, 22.1, 0);
+    // crate stack beside the shelf (visual QA: bare corner; placed clear of
+    // the shelf and crateDesk colliders — pair-probe verified)
+    this.place(kit.crate(m, 0.65), 19.2, -3.4, 21.0, 0.3);
+    this.place(kit.crate(m, 0.6), 19.2, -2.74, 21.02, -0.2);  // rests exactly on the 0.65-crate top
     const crateDesk = kit.crate(m, 0.75);
     this.place(crateDesk, 18.0, -3.4, 20.9, 0.2);
     this.lastNoteMesh = this._paperProp("FOR THE ONE WHO COMES", ["Read me. Everything", "is in order. — M."], 18.0, -2.62, 20.9, 0.2);
@@ -827,6 +852,27 @@ export class World {
     this.wallZ(x0 - 0.15, 19.6, 22.2, -0.4, 3.6, m.get("concreteWall"));
 
     // switchback ramps: 3 flights 45deg, landings
+    // chimney lamps (visual QA: switchbacks read as a black void without them)
+    this.place(kit.wallLamp(m, { on: true }), 26.45, -2.4, 19.78, Math.PI, { collide: false });
+    this.light(26.3, -2.2, 20.3, { color: 0xffd9a0, intensity: 8, distance: 7 });
+    this.place(kit.wallLamp(m, { on: true }), 26.45, 0.4, 19.78, Math.PI, { collide: false });
+    this.light(26.3, 0.6, 20.3, { color: 0xffd9a0, intensity: 8, distance: 7 });
+    this.place(kit.wallLamp(m, { on: true }), 26.45, 2.6, 19.78, Math.PI, { collide: false });
+    this.light(26.3, 2.8, 20.3, { color: 0xffd9a0, intensity: 8, distance: 7 });
+    // step-edge markers: high-visibility strips along each ramp's outer edge
+    // every 0.55m of climb (visual QA: the 45deg flights were invisible)
+    const marks = (xa, xb, z, y0, y1) => {
+      for (let y = y0 + 0.275; y < y1; y += 0.55) {
+        const t = (y - y0) / (y1 - y0);
+        const x = xa + (xb - xa) * t;
+        const strip = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.03, 0.5), m.get("yellowPaint"));
+        strip.position.set(x, y + 0.015, z);
+        this.scene.add(strip);
+      }
+    };
+    marks(24.4, 26.4, 19.78, -3.4, -1.2);   // F1 outer edge
+    marks(26.4, 24.4, 22.02, -1.2, 1.0);    // F2 outer edge
+    marks(24.4, 26.4, 19.78, 1.0, 3.2);     // F3 outer edge
     // F1: x 24.3->26.5 north lane (z 19.75..20.85), y -3.4 -> -1.2
     this._rampVis(24.4, 26.4, 20.3, -3.4, -1.2, "x", 1.1);
     this.ground(24.3, 26.5, 19.75, 20.85, -3.4, "metal", { axis: "x", from: 24.3, to: 26.5, y0: -3.4, y1: -1.2 });
@@ -1061,6 +1107,27 @@ export class World {
       }
     }
     return result || { y: 0, surface: "concrete" };
+  }
+
+  // y-aware ground query: picks the region whose surface height is CLOSEST to
+  // refY (the player's current feet height). QA-found: groundAt's
+  // last-registered-wins rule picked the sump floor under the shaft chimney
+  // and lifted the player mid-climb ("ghost climb"); player physics and
+  // swQA.pose must use this instead.
+  groundNear(x, z, refY) {
+    let best = null;
+    for (const r of this.groundRegions) {
+      if (x >= r.x0 && x <= r.x1 && z >= r.z0 && z <= r.z1) {
+        let y = r.y;
+        if (r.slope) {
+          const s = r.slope;
+          const tt = s.axis === "z" ? (z - s.from) / (s.to - s.from) : (x - s.from) / (s.to - s.from);
+          y = s.y0 + (s.y1 - s.y0) * Math.min(1, Math.max(0, tt));
+        }
+        if (!best || Math.abs(y - refY) < Math.abs(best.y - refY)) best = { y, surface: r.surface };
+      }
+    }
+    return best || { y: refY, surface: "concrete" };
   }
 
   roomAt(x, y, z) {

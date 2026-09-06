@@ -51,12 +51,21 @@ export class QADebug {
         return r ? r.id : null;
       },
       pose: (x, y, z, yaw = 0, pitch = 0) => {
-        g.player.pos.set(x, y, z);
+        // Ground the player: snap to the support surface unless the caller
+        // deliberately asks for elevation (>0.6 above ground). Without this,
+        // gravity drops a mid-air pose ~2m before the first frame renders,
+        // silently ruining every staged screenshot (QA-found).
+        const gr = g.world.groundNear(x, z, y);
+        const fy = y - gr.y > 0.6 ? y : gr.y;
+        g.player.pos.set(x, fy, z);
         g.player.yaw = yaw;
         g.player.pitch = pitch;
         g.player.vel.set(0, 0, 0);
+        g.player.vy = 0;
+        g.player.airborne = false;
       },
       groundAt: (x, z) => g.world.groundAt(x, z),
+      groundNear: (x, z, refY) => g.world.groundNear(x, z, refY),
       noclip: (on) => { g.player.noclip = !!on; },
       interact: (id) => {
         const item = g.interact.items.get(id);
