@@ -45,7 +45,7 @@ export class Player {
     this.lampTarget = new THREE.Object3D();
     this.camera.add(this.lamp);
     this.camera.add(this.lampTarget);
-    this.lamp.position.set(0.25, -0.22, 0.1);
+    this.lamp.position.set(-0.15, -0.2, 0.1); // beam origin at the torch (left-of-center, matches the viewmodel)
     this.lamp.target = this.lampTarget;
 
     // viewmodel lamp body
@@ -63,7 +63,7 @@ export class Player {
     head.rotation.x = Math.PI / 2.4;
     head.position.set(0, 0.115, -0.085);
     vm.add(head);
-    vm.position.set(0.26, -0.25, -0.42);
+    vm.position.set(-0.17, -0.26, -0.42); // left-of-center (user-directed; was right at +0.26)
     vm.rotation.set(0.1, -0.12, 0.05);
     this.camera.add(vm);
     this.vmLamp = vm;
@@ -133,26 +133,16 @@ export class Player {
             }
           });
           this.torchReady = true;
-          // runtime self-check: glass (mouth) must be further FORWARD (-Z in
-          // camera space) than the torch body; if not, flip end-for-end.
-          const glassMesh = (this._torchGlassMeshes || [])[0];
-          if (glassMesh) {
-            const verify = () => {
-              try {
-                const gw = glassMesh.getWorldPosition(new THREE.Vector3());
-                const bw = this.vmLamp.getWorldPosition(new THREE.Vector3());
-                const gl = this.camera.worldToLocal(gw.clone());
-                const bl = this.camera.worldToLocal(bw.clone());
-                if (gl.z > bl.z - 0.04) {
-                  this.vmLamp.rotation.set(0.1, Math.PI - 0.12, 0.05); // end-for-end flip about camera up
-                  this._torchFlipped = true;
-                }
-              } catch (e) { /* matrix not ready — retry next frame */ }
-            };
-            let tries = 0;
-            const tick = () => { verify(); if (++tries < 90 && !this._torchFlipped) requestAnimationFrame(tick); };
-            requestAnimationFrame(tick);
-          }
+          // FIXED orientation (probe-measured, 2026-09-06): with rotation
+          // (0.1, -0.12, 0.05) the big head + glass lens point FORWARD
+          // (vertex-sampled: big-end mean depth 0.565 vs small-end 0.318 in
+          // camera space before the fix that mirrored it). The old runtime
+          // "self-check" compared glass-origin z vs body-origin z with a
+          // 0.04 threshold — the glass origin sits only ~0.037 forward, so
+          // it FALSE-TRIGGERED and flipped a CORRECT torch end-for-end
+          // ~1s after load, every load: the "keeps reverting to back"
+          // glitch. Removed. This rotation is final and deterministic.
+          this.vmLamp.rotation.set(0.1, -0.12, 0.05);
         } catch (e) {
           console.warn("torch model setup failed, keeping procedural", e);
         }

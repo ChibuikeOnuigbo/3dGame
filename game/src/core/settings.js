@@ -13,6 +13,8 @@ export const DEFAULT_BINDINGS = {
   FLASHLIGHT: "KeyF",
   PAUSE: "Escape",
   DEBUG: "Backquote",
+  DEBUG_SHOT: "KeyN",
+  DEBUG_COLLIDERS: "KeyB",
 };
 
 export const ACTION_LABELS = {
@@ -25,6 +27,8 @@ export const ACTION_LABELS = {
   FLASHLIGHT: "Hand lamp",
   PAUSE: "Pause",
   DEBUG: "Debug overlay",
+  DEBUG_SHOT: "Debug: save screenshot",
+  DEBUG_COLLIDERS: "Debug: collider boxes",
 };
 
 export const DEFAULT_SETTINGS = {
@@ -35,6 +39,7 @@ export const DEFAULT_SETTINGS = {
   fov: 72,
   quality: "medium", // low | medium | high
   brightness: 1.0,
+  debugMode: false, // human QA loop: N saves a screenshot, B toggles colliders
   bindings: { ...DEFAULT_BINDINGS },
 };
 

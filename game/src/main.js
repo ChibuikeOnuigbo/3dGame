@@ -168,7 +168,54 @@ class Game {
     const q = s.quality;
     this.renderer.shadowMap.enabled = q !== "low";
     this.renderer.setPixelRatio(q === "high" ? Math.min(devicePixelRatio, 2) : q === "medium" ? Math.min(devicePixelRatio, 1.5) : 1);
+    // debug mode implies the info overlay (fps/pos/room) — it can still be
+    // toggled individually with the DEBUG key (backquote)
+    if (s.debugMode && this.started && !this.qa.visible) this.qa.toggle();
   }
+
+  // Debug mode (Options -> DEBUG, human QA loop): save exactly what the
+  // player sees as a PNG download. Render + readback in the SAME task so
+  // toDataURL is valid without preserveDrawingBuffer (QA-proven pattern).
+  debugSnapshot() {
+    this.renderer.render(this.scene, this.camera);
+    const url = this.renderer.domElement.toDataURL("image/png");
+    const p = this.player.pos;
+    const r = this.world.roomAt(p.x, p.y, p.z);
+    const ts = new Date().toTimeString().slice(0, 8).replace(/:/g, "");
+    const name = `stillwater_${r ? r.id : "nowhere"}_x${p.x.toFixed(1)}_y${p.y.toFixed(1)}_z${p.z.toFixed(1)}_${ts}.png`;
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    this.hud.toast(`DEBUG — saved ${name}`);
+  }
+
+  // Debug mode: wireframe boxes for every active collider, color-coded
+  // (yellow=prop, blue=architecture, red=door leaf, green=soft/no-collide).
+  // Lets a human photograph placements, overlaps and floating props.
+  debugColliders() {
+    if (!this._colliderGroup) {
+      const g = new THREE.Group();
+      for (const c of this.world.colliders) {
+        if (!c.box) continue;
+        const b = c.box;
+        const box = new THREE.Box3(
+          new THREE.Vector3(b.min.x, b.min.y, b.min.z),
+          new THREE.Vector3(b.max.x, b.max.y, b.max.z)
+        );
+        const col = c.door ? 0xff5555 : c.tag === "prop" ? 0xffdd44 : c.soft ? 0x55ff99 : 0x5599ff;
+        g.add(new THREE.Box3Helper(box, col));
+      }
+      this.scene.add(g);
+      g.visible = false; // created hidden; the toggle below flips it ON
+      this._colliderGroup = g;
+    }
+    this._colliderGroup.visible = !this._colliderGroup.visible;
+    this.hud.toast(`DEBUG — colliders ${this._colliderGroup.visible ? "ON" : "OFF"}`);
+  }
+
 
   _lockPointer() {
     try {
@@ -530,6 +577,12 @@ class Game {
       if (this.hud.noteOpen) this.hud.closeNote();
       else if (this.menus.open) this.resume();
       else if (this.player.enabled) this.pause();
+    }
+    // human-QA debug mode (Options -> DEBUG): N saves a screenshot of the
+    // current view as a PNG download; B toggles collider wireframe boxes.
+    if (this.started && this.settings.data.debugMode && !this.menus.open) {
+      if (this.input.wasPressed("DEBUG_SHOT")) this.debugSnapshot();
+      if (this.input.wasPressed("DEBUG_COLLIDERS")) this.debugColliders();
     }
     if (this.hud.noteOpen && this.input.wasPressed("INTERACT")) {
       this.hud.closeNote();

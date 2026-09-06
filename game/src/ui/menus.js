@@ -82,6 +82,12 @@ export class Menus {
       ${this._slider("Brightness", "brightness", s.brightness, 0.5, 1.8)}
       ${this._select("Quality", "quality", ["low", "medium", "high"], s.quality)}
       ${this._btn("Toggle fullscreen", "fullscreen")}
+      <div class="sec">DEBUG (human QA)</div>
+      ${this._check("Debug mode", "debugMode", s.debugMode)}
+      <div class="mrow" style="opacity:.7;font-size:.82em;line-height:1.5">In game (debug mode on):<br>
+        <b>N</b> — save a full screenshot of what you see (PNG download: room + position in the filename)<br>
+        <b>B</b> — show/hide collider boxes (yellow=props, blue=architecture, red=door leafs, green=soft)<br>
+        <b>\`</b> — info overlay (fps, position, room, objective)</div>
       <div class="row">${this._btn("Reset all defaults", "resetall")}</div>`;
     this._wire();
   }
@@ -90,6 +96,11 @@ export class Menus {
     return `<label class="mrow"><span class="mlabel">${label}</span>
       <input type="range" min="${min}" max="${max}" step="${step}" value="${val}" data-set="${key}"/>
       <span class="mval" data-val="${key}">${(+val).toFixed(step === 1 ? 0 : 2)}</span></label>`;
+  }
+
+  _check(label, key, val) {
+    return `<label class="mrow"><span class="mlabel">${label}</span>
+      <input type="checkbox" data-set="${key}" ${val ? "checked" : ""}/></label>`;
   }
 
   _select(label, key, options, val) {
@@ -168,7 +179,7 @@ export class Menus {
     this.body.querySelectorAll("[data-set]").forEach((inp) => {
       const handler = () => {
         const key = inp.dataset.set;
-        const val = inp.type === "range" ? parseFloat(inp.value) : inp.value;
+        const val = inp.type === "range" ? parseFloat(inp.value) : inp.type === "checkbox" ? inp.checked : inp.value;
         this.settings.set(key, val);
         const valEl = this.body.querySelector(`[data-val="${key}"]`);
         if (valEl) valEl.textContent = valEl.step === undefined ? val : (+val).toFixed(0);
