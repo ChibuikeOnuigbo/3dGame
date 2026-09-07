@@ -176,6 +176,9 @@ class Game {
   // Debug mode (Options -> DEBUG, human QA loop): save exactly what the
   // player sees as a PNG download. Render + readback in the SAME task so
   // toDataURL is valid without preserveDrawingBuffer (QA-proven pattern).
+  // If the preview iframe blocks programmatic downloads, an in-game viewer
+  // opens with the image so it can be saved via right-click (user-reported:
+  // "N didn't save to Downloads").
   debugSnapshot() {
     this.renderer.render(this.scene, this.camera);
     const url = this.renderer.domElement.toDataURL("image/png");
@@ -189,7 +192,51 @@ class Game {
     document.body.appendChild(a);
     a.click();
     a.remove();
-    this.hud.toast(`DEBUG — saved ${name}`);
+    this.hud.toast(`DEBUG — captured ${name}`);
+    this._debugShotViewer(url, name);
+  }
+
+  // Screenshot viewer: shown alongside the download attempt. In sandboxed
+  // iframes <a download> is silently blocked — the Save button retries, and
+  // right-clicking the image always works. N or the button closes it.
+  _debugShotViewer(url, name) {
+    this._closeDebugShot();
+    const d = document.createElement("div");
+    d.id = "debugshot";
+    d.style.cssText = "position:fixed;inset:0;z-index:400;background:rgba(4,6,10,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font:13px system-ui;color:#cfd6e4";
+    const img = document.createElement("img");
+    img.src = url;
+    img.style.cssText = "max-width:92vw;max-height:72vh;border:1px solid #4a5568;box-shadow:0 0 30px #000";
+    img.title = name;
+    const row = document.createElement("div");
+    row.style.cssText = "display:flex;gap:10px";
+    const mk = (label, fn) => {
+      const b = document.createElement("button");
+      b.textContent = label;
+      b.style.cssText = "padding:7px 14px;background:#232a38;border:1px solid #4a5568;color:#e8edf6;border-radius:4px;cursor:pointer";
+      b.onclick = fn;
+      return b;
+    };
+    const save = mk("Save PNG", () => {
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    });
+    const close = mk("Close (N)", () => this._closeDebugShot());
+    row.append(save, close);
+    const hint = document.createElement("div");
+    hint.style.cssText = "opacity:.75;max-width:80vw;text-align:center;line-height:1.5";
+    hint.textContent = `${name} — if Save does nothing (preview iframe blocks downloads), right-click the image → "Save image as…", or open this page in its own browser tab.`;
+    d.append(img, row, hint);
+    document.body.appendChild(d);
+    this._debugShotEl = d;
+  }
+
+  _closeDebugShot() {
+    if (this._debugShotEl) { this._debugShotEl.remove(); this._debugShotEl = null; }
   }
 
   // Debug mode: wireframe boxes for every active collider, color-coded
@@ -581,7 +628,10 @@ class Game {
     // human-QA debug mode (Options -> DEBUG): N saves a screenshot of the
     // current view as a PNG download; B toggles collider wireframe boxes.
     if (this.started && this.settings.data.debugMode && !this.menus.open) {
-      if (this.input.wasPressed("DEBUG_SHOT")) this.debugSnapshot();
+      if (this.input.wasPressed("DEBUG_SHOT")) {
+        if (this._debugShotEl) this._closeDebugShot(); // N toggles the viewer closed
+        else this.debugSnapshot();
+      }
       if (this.input.wasPressed("DEBUG_COLLIDERS")) this.debugColliders();
     }
     if (this.hud.noteOpen && this.input.wasPressed("INTERACT")) {

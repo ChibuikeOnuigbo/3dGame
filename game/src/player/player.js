@@ -45,7 +45,7 @@ export class Player {
     this.lampTarget = new THREE.Object3D();
     this.camera.add(this.lamp);
     this.camera.add(this.lampTarget);
-    this.lamp.position.set(-0.15, -0.2, 0.1); // beam origin at the torch (left-of-center, matches the viewmodel)
+    this.lamp.position.set(0.15, -0.2, 0.1); // beam origin at the torch (right hand, matches the viewmodel)
     this.lamp.target = this.lampTarget;
 
     // viewmodel lamp body
@@ -63,7 +63,7 @@ export class Player {
     head.rotation.x = Math.PI / 2.4;
     head.position.set(0, 0.115, -0.085);
     vm.add(head);
-    vm.position.set(-0.17, -0.26, -0.42); // left-of-center (user-directed; was right at +0.26)
+    vm.position.set(0.17, -0.26, -0.42); // RIGHT hand (user-directed 2026-09-07; left trial rejected)
     vm.rotation.set(0.1, -0.12, 0.05);
     this.camera.add(vm);
     this.vmLamp = vm;
@@ -311,9 +311,14 @@ export class Player {
       this._vmBase.z + Math.cos(t * 0.45) * 0.004 * idle
     );
     this.vmLamp.rotation.z = Math.sin(t * 0.5) * 0.01 * idle;
-    // lamp aims where camera aims
-    const fwd = new THREE.Vector3(0, 0, -1).applyEuler(this.camera.rotation);
-    this.lampTarget.position.copy(fwd.multiplyScalar(6)).add(this.lamp.position);
+    // lamp aims where the camera looks. FRAME FIX (user-reported: beam sat off
+    // centre / behind and only moved when the player rotated): the old code
+    // wrote a WORLD-space forward direction into lampTarget.position, which is
+    // CAMERA-LOCAL (the target is a child of the camera) — a mixed-frames bug
+    // that only pointed true at yaw 0 and swung the beam sideways/backwards as
+    // you turned. Camera-local forward is simply -Z: aim at a point on the
+    // view axis so the beam pool converges at the centre of the screen.
+    this.lampTarget.position.set(0, 0, -6);
   }
 
   eyePosition() {
