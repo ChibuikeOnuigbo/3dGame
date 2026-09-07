@@ -599,6 +599,12 @@ class Game {
       }
     }
     this.audio.updateZones(targets, dt);
+    // rare muffled distant gunshots while in the street zone (CC0 sample)
+    this._shotT = (this._shotT ?? 14) - dt;
+    if (room?.zone === "street" && this._shotT <= 0) {
+      this._shotT = 18 + Math.random() * 30;
+      this.audio.distantShot();
+    }
     let fogD = 0.032, fogC = 0x05070a;
     if (room?.zone === "street") { fogD = 0.012; fogC = 0x131a2a; }
     else if (room?.zone === "sump" || room?.zone === "shaft") { fogD = 0.05; fogC = 0x04050a; }

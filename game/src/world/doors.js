@@ -21,6 +21,7 @@ export class Door {
     this.openSign = openSign; // swing direction (+1/-1)
     this.state = "closed"; // closed|opening|open|closing
     this.t = 0; // 0 closed -> 1 open
+    this.rise = 0; // current vertical travel (gates) — drives chains/weights
     this.width = width;
     this.height = height;
 
@@ -30,14 +31,17 @@ export class Door {
 
     // static frame (jambs + header) — never rotates with the leaf, so the
     // hinges visibly attach to something solid instead of floating in air.
-    // MATH: the hinge pivot sits at one EDGE of the doorway, so the frame
-    // must be offset by width/2 along the closed-leaf direction to land on
-    // the GAP CENTER. (Bug this fixes: frame at the hinge origin put one
+    // MATH: for a HINGE door the pivot sits at one EDGE of the doorway, so the
+    // frame must be offset by width/2 along the closed-leaf direction to land
+    // on the GAP CENTER. (Bug this fixes: frame at the hinge origin put one
     // jamb + header mid-doorway — the "pillar in the open door".)
-    // closed-leaf unit direction in world = (cos(yaw)*openSign, 0, -sin(yaw)*openSign)
+    // For a GATE the panel is centered on the group origin, so the frame
+    // (guide rails) must NOT be offset — the old shared offset put one rail
+    // dead-center in the opening (QA 2026-09-08, user screenshot).
     this.frame = new THREE.Group();
+    const frameOff = kind === "hinge" ? width / 2 : 0;
     const leafDx = Math.cos(yaw) * openSign, leafDz = -Math.sin(yaw) * openSign;
-    this.frame.position.set(position[0] + leafDx * (width / 2), position[1], position[2] + leafDz * (width / 2));
+    this.frame.position.set(position[0] + leafDx * frameOff, position[1], position[2] + leafDz * frameOff);
     this.frame.rotation.y = yaw;
 
     if (kind === "hinge") {
@@ -165,7 +169,7 @@ export class Door {
       this.t = Math.min(1, this.t + dt * speed);
       const ease = this.t * this.t; // Quadratic.In — heavy door accelerates open
       if (this.kind === "hinge") this.group.rotation.y = this.baseYaw + ease * this.openSign * -1.85;
-      else this.group.position.y = this.baseY + ease * (this.height * 0.92);
+      else { this.group.position.y = this.baseY + ease * (this.height * 0.92); this.rise = ease * (this.height * 0.92); }
       if (this.t >= 1) {
         this.state = "open";
         if (this.onEndSound) this.onEndSound();

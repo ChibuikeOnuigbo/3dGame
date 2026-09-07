@@ -199,13 +199,45 @@ try:
                 if (a.soft) continue;
                 const p = pen(pr, a);
                 const horiz = Math.min(p.x, p.z);
-                if (horiz > 0.06 && p.y > 0.3)
+                // shallow vertical bite = wall-mounted (gun rack); deep bite = buried
+                if (horiz > 0.06 && p.y > 0.5)
                     out.push({ kind: 'prop-arch', pen: [+p.x.toFixed(2), +p.y.toFixed(2), +p.z.toFixed(2)] });
             }
         return { pairs: out, propCount: props.length };
     }""")
     check("props_registered", overlaps["propCount"] >= 8, f"props={overlaps['propCount']}")
     check("no_solid_overlaps", len(overlaps["pairs"]) == 0, json.dumps(overlaps["pairs"][:12]))
+
+    # ---- floater audit (user 2026-09-08: "no floating asset"): every solid
+    # prop's AABB floor must sit on the support surface, not hover above it
+    grounded = page.evaluate("""() => {
+        const props = window.game.world.colliders.filter(c => c.active && c.tag === 'prop');
+        const bad = [];
+        for (const c of props) {
+            const cx = (c.box.min.x + c.box.max.x) / 2, cz = (c.box.min.z + c.box.max.z) / 2;
+            const g = window.game.world.groundAt(cx, cz);
+            let sup = g.y; // support = ground OR another prop's top (stacked crates)
+            for (const o of props) {
+                if (o === c) continue;
+                if (cx > o.box.min.x && cx < o.box.max.x && cz > o.box.min.z && cz < o.box.max.z)
+                    sup = Math.max(sup, o.box.max.y);
+            }
+            // ...or an architecture slab top directly beneath (mezzanine over sump)
+            // ...or wall-mounted: arch collider touching/adjacent with vertical overlap
+            for (const o of window.game.world.colliders) {
+                if (!o.active || o === c || o.door || o.soft) continue;
+                if (cx > o.box.min.x && cx < o.box.max.x && cz > o.box.min.z && cz < o.box.max.z &&
+                    o.box.max.y <= c.box.min.y + 0.26) { sup = Math.max(sup, o.box.max.y); continue; }
+                const gapX = Math.max(o.box.min.x - c.box.max.x, c.box.min.x - o.box.max.x);
+                const gapZ = Math.max(o.box.min.z - c.box.max.z, c.box.min.z - o.box.max.z);
+                const vOv = Math.min(o.box.max.y, c.box.max.y) - Math.max(o.box.min.y, c.box.min.y);
+                if (Math.min(gapX, gapZ) < 0.12 && vOv > 0.1) sup = Math.max(sup, c.box.min.y);
+            }
+            if (c.box.min.y - sup > 0.25) bad.push({ miny: +c.box.min.y.toFixed(2), sup: +sup.toFixed(2) });
+        }
+        return bad;
+    }""")
+    check("props_grounded", len(grounded) == 0, json.dumps(grounded[:8]))
 
     check("no_page_errors", len(errors) == 0, "; ".join(errors[:4]))
 finally:

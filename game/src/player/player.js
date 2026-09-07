@@ -218,11 +218,15 @@ export class Player {
       this.audio.jump();
     }
 
-    // sprint exertion breaths (user request: run SFX)
+    // FMOD-style exertion parameter (2026-09-08): sustained sprint ramps a
+    // 0..1 value that drives the audio engine's wind/breath/pulse layers.
+    // (Replaces the old discrete breath one-shots — user found them heavy.)
     if (sprint && Math.hypot(this.vel.x, this.vel.z) > WALK * 0.9) {
-      this._breathT = (this._breathT || 0) + dt;
-      if (this._breathT > 1.9) { this._breathT = 0; this.audio.exert(); }
+      this._exert = Math.min(1, (this._exert || 0) + dt / 6);
+    } else {
+      this._exert = Math.max(0, (this._exert || 0) - dt / 4);
     }
+    this.audio.setExertion(this._exert, dt);
 
     // accelerate/decelerate (snappy but smoothed)
     const target = wish.multiplyScalar(speed);

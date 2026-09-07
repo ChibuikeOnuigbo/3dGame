@@ -251,8 +251,15 @@ export class World {
     // are 25m+ outside the playable bounds: no colliders, no lights, cheap
     // basic materials. Layered bands give the horizon real depth instead of
     // one row of blocks.
+    // QA 2026-09-08: near band swaps my box towers for real low-poly CC0
+    // buildings (Quaternius, via trebeljahr/quaternius-showcase) — textured
+    // facades/rooflines mid-ground; far band stays cheap silhouette boxes.
+    const decoPick = (bh) =>
+      bh >= 14 ? ["6Story_Stack_Mat.glb", 20] :
+      bh >= 11 ? ["4Story_Mat.glb", 14] :
+      bh >= 9 ? ["3Story_Balcony_Mat.glb", 11] : ["2Story_Wide_Mat.glb", 8];
     const bands = [
-      { list: blocks, tint: 0x3a4350 }, // near band (existing)
+      { list: blocks, deco: true }, // near band: real buildings
       { list: [ // far band: taller, hazier towers
           [-44, 26, -58], [-16, 34, -66], [10, 30, -62], [34, 24, -52], [52, 38, -40],
           [-48, 22, -10], [-42, 30, 16], [46, 28, 22], [40, 20, 40], [-30, 24, 42],
@@ -260,8 +267,26 @@ export class World {
     ];
     const winMatCool = new THREE.MeshBasicMaterial({ color: 0xbfd4ff });
     for (const band of bands) {
-      const mat = band.tint === 0x3a4350 ? skyMat : new THREE.MeshStandardMaterial({ color: band.tint, roughness: 0.95 });
+      const mat = new THREE.MeshStandardMaterial({ color: band.tint || 0x3a4350, roughness: 0.95 });
       for (const [bx, bh, bz] of band.list) {
+        if (band.deco) {
+          const [file, est] = decoPick(bh);
+          const yaw = ((Math.abs(bx) + Math.abs(bz)) % 4) * Math.PI / 2;
+          const sc = bh / est;
+          this._decoProp("assets/models/quaternius/" + file, bx, 3.15, bz, yaw, sc, { glow: true });
+          // sparse lit windows on the viewer-facing (+z) facade
+          const nWin = 2 + ((Math.abs(bx) + Math.abs(bz)) & 3);
+          for (let i = 0; i < nWin; i++) {
+            const win = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 0.7), i % 3 === 2 ? winMatCool : winMat);
+            win.position.set(
+              bx - 3 + ((i * 2.7 + Math.abs(bz)) % 6),
+              3.2 + 3 + ((i * 3.3 + Math.abs(bx)) % Math.max(2, bh - 4)),
+              bz + 3.2 * sc + 0.25
+            );
+            this.scene.add(win);
+          }
+          continue;
+        }
         const bw = 7 + ((Math.abs(bx) * 7 + Math.abs(bz) * 3) % 5);
         const bd = 5 + ((Math.abs(bz) * 5 + Math.abs(bx)) % 4);
         const bld = new THREE.Mesh(new THREE.BoxGeometry(bw, bh, bd), mat);
@@ -416,30 +441,14 @@ export class World {
       bulb.position.set(lx, 5.35, lz);
       this.scene.add(bulb);
     }
-    // bushes on the verges (dark foliage clumps, solid)
-    const leaf = new THREE.MeshStandardMaterial({ color: 0x274d22, roughness: 0.95 });
-    const bushSpots = [[-8.9, -19.2], [-8.4, -16.8], [-9.1, -13.9], [8.3, -19.0], [8.9, -16.2], [8.4, -12.6]];
-    for (const [bx, bz] of bushSpots) {
-      const bush = new THREE.Group();
-      for (let i = 0; i < 4; i++) {
-        const s = 0.28 + Math.random() * 0.3;
-        const b = new THREE.Mesh(new THREE.IcosahedronGeometry(s, 1), leaf);
-        b.position.set((Math.random() - 0.5) * 0.5, s * 0.8, (Math.random() - 0.5) * 0.5);
-        b.scale.y = 0.75;
-        bush.add(b);
-      }
-      this.place(bush, bx, 3.28, bz, 0, { collide: false });
-      // QA 2026-09-07: bushes were walk-through ghosts (probe swept straight
-      // through ~1m dark masses). Give each a soft collider so they read as
-      // solid planting, matching their silhouette.
-      this.colliders.push({
-        box: new THREE.Box3(
-          new THREE.Vector3(bx - 0.5, 3.28, bz - 0.5),
-          new THREE.Vector3(bx + 0.5, 4.1, bz + 0.5)
-        ),
-        active: true, soft: true, tag: "bush",
-      });
-    }
+    // QA 2026-09-08 (user: "delete some of the nonsense"): the icosahedron
+    // bush blobs are gone — replaced by CC0 Quaternius street furniture
+    // (real low-poly models, solid colliders added on load).
+    this._decoProp("assets/models/quaternius/Streetlight_Double.glb", -8.8, 3.28, -19.2, 0, 1, { solid: true });
+    this._decoProp("assets/models/quaternius/Streetlight_Single.glb", 8.7, 3.28, -16.2, Math.PI, 1, { solid: true });
+    this._decoProp("assets/models/quaternius/TrafficLight.glb", 8.6, 3.28, -19.0, -Math.PI / 2, 1, { solid: true });
+    this._decoProp("assets/models/quaternius/Sign_Stop.glb", -8.6, 3.28, -12.6, Math.PI / 2, 1, { solid: true });
+    this._decoProp("assets/models/quaternius/Sign_NoParking.glb", 8.6, 3.28, -11.6, -Math.PI / 2, 1, { solid: true });
 
     // ---- perimeter fence at the slab edge: the street parcel is sealed ----
     const post = this.mats.get("darkMetal");
@@ -526,7 +535,7 @@ export class World {
   // gets a matching AABB collider so nothing reads as a walk-through ghost.
   _streetProps() {
     // fridge against the east kerb, facing the roadway (CC-BY Eric Chadwick)
-    this._gltfProp("assets/models/CommercialRefrigerator.glb", 6.45, 3.2, -13.4, -Math.PI / 2, { dim: "height", size: 1.95, solid: true });
+    this._gltfProp("assets/models/CommercialRefrigerator.glb", 8.4, 3.2, -15.0, -Math.PI / 2, { dim: "height", size: 1.95, solid: true });
     // traffic cones on the tarmac (CC-BY hinndia)
     this._gltfProp("assets/models/TrafficCone/TrafficCone.gltf", 2.6, 3.2, -12.3, 0.5, { dim: "height", size: 0.62, solid: false });
     this._gltfProp("assets/models/TrafficCone/TrafficCone.gltf", -3.4, 3.2, -17.3, -1.2, { dim: "height", size: 0.62, solid: false });
@@ -574,32 +583,89 @@ export class World {
         return b;
       };
       const cap = Math.max(size * 6, 3);
-      const bb = unionBox(meshBoxes(root), cap);
+      // QA 2026-09-08 (robot-arm incident): the helper-mesh exclusion is
+      // decided in PRE-SCALE space and the surviving boxes are carried
+      // through scaling. Re-filtering after scale let giant helper meshes
+      // sneak back under the cap and blow up the collider.
+      let incl = meshBoxes(root).filter((b) => {
+        const e = b.getSize(new THREE.Vector3());
+        return Math.max(e.x, e.y, e.z) <= cap;
+      });
+      if (incl.length === 0) {
+        // cm-scale models (whole mesh over the cap): fall back to every
+        // non-flat mesh so the prop still sizes and collides (ToyCar,
+        // wide_books_shelf incidents).
+        incl = meshBoxes(root).filter((b) => {
+          const e = b.getSize(new THREE.Vector3());
+          return Math.min(e.x, e.y, e.z) > 1e-3;
+        });
+      }
+      const bb = new THREE.Box3();
+      incl.forEach((b) => bb.union(b));
       const cur = dim === "height" ? bb.max.y - bb.min.y : Math.max(bb.max.x - bb.min.x, bb.max.z - bb.min.z);
       const s = cur > 0 ? size / cur : 1;
       root.scale.setScalar(s);
-      const bb2 = unionBox(meshBoxes(root), cap);
-      const cx = (bb2.min.x + bb2.max.x) / 2, cz = (bb2.min.z + bb2.max.z) / 2;
+      const cx = ((bb.min.x + bb.max.x) / 2) * s, cz = ((bb.min.z + bb.max.z) / 2) * s;
       // re-center inside a wrapper so yaw rotates around the prop's own center
-      root.position.set(-cx, -bb2.min.y, -cz);
+      root.position.set(-cx, -bb.min.y * s, -cz);
       const wrap = new THREE.Group();
       wrap.add(root);
       wrap.position.set(x, y, z);
       wrap.rotation.y = yaw;
       this.scene.add(wrap);
-      const bb3 = unionBox(meshBoxes(wrap), cap);
+      root.updateWorldMatrix(true, false);
+      const bb3 = new THREE.Box3();
+      incl.forEach((b) => bb3.union(b.clone().applyMatrix4(root.matrixWorld)));
+      // degenerate (empty-union => NaN) boxes never become colliders
+      if (!isFinite(bb3.min.x + bb3.min.y + bb3.min.z + bb3.max.x + bb3.max.y + bb3.max.z)) {
+        console.warn(`[world] prop bbox degenerate, no collider: ${url}`);
+        return;
+      }
       const pad = solid ? 0.02 : 0.0;
       this.colliders.push({
         box: new THREE.Box3(
           new THREE.Vector3(bb3.min.x - pad, bb3.min.y, bb3.min.z - pad),
-          new THREE.Vector3(bb3.max.x + pad, bb3.max.y, bb3.max.z + pad)
+          new THREE.Vector3(bb3.max.x + pad, bb3.max.y + 0.0, bb3.max.z + pad)
         ),
-        active: true, soft: !solid, tag: "prop",
+        active: true, soft: !solid, tag: "prop", url,
       });
     }, undefined, (err) => {
       this.propsPending--;
       console.warn(`[world] optional prop failed to load: ${url} (${err?.message || err})`);
     });
+  }
+
+  // Decorative GLB instance (CC0 packs — see research/download-manifest.json).
+  // Base sits at (x,y,z); optional solid collider once loaded. Skyline use
+  // stays non-collidable: those are 25m+ outside the playable bounds.
+  _decoProp(url, x, y, z, yaw = 0, scale = 1, { solid = false, glow = false } = {}) {
+    const loader = new GLTFLoader();
+    loader.setMeshoptDecoder(MeshoptDecoder);
+    loader.load(url, (gltf) => {
+      const root = gltf.scene;
+      root.traverse((o) => {
+        if (!o.isMesh) return;
+        o.castShadow = false; o.receiveShadow = false;
+        if (glow) { // night skyline: unlit PBR reads black — lift with a dim city-glow emissive
+          for (const mm of Array.isArray(o.material) ? o.material : [o.material]) {
+            if (mm && mm.emissive) { mm.emissive.setHex(0x18222e); mm.emissiveIntensity = 1; }
+          }
+        }
+      });
+      const bb = new THREE.Box3().setFromObject(root);
+      root.position.set(-(bb.min.x + bb.max.x) / 2, -bb.min.y, -(bb.min.z + bb.max.z) / 2);
+      const wrap = new THREE.Group();
+      wrap.add(root);
+      wrap.position.set(x, y, z);
+      wrap.rotation.y = yaw;
+      wrap.scale.setScalar(scale);
+      this.scene.add(wrap);
+      if (solid) {
+        wrap.updateWorldMatrix(true, true);
+        const wb = new THREE.Box3().setFromObject(wrap);
+        this.colliders.push({ box: wb, active: true, soft: false, tag: "prop", url });
+      }
+    }, undefined, (err) => console.warn(`[world] deco prop failed: ${url} (${err?.message || err})`));
   }
 
   _kiosk() {
@@ -642,6 +708,11 @@ export class World {
     // small meter box
     const meter = kit.breakerBox(m, { levers: 2 });
     this.place(meter, 1.55, 4.3, -13.0, Math.PI / 2, { collide: false });
+    // QA 2026-09-08 (user: "guns rather than blocks"): CC0 flat-guns rack on
+    // the kiosk west wall — the station kiosk doubles as a security post.
+    this.box(-1.67, 4.2, -13.3, 0.05, 0.55, 1.15, m.get("wood"), { collide: false });
+    this._gltfProp("assets/models/guns/rifle.glb", -1.6, 4.28, -12.9, Math.PI / 2, { dim: "length", size: 0.85 });
+    this._gltfProp("assets/models/guns/pistol.glb", -1.6, 4.08, -13.8, Math.PI / 2, { dim: "length", size: 0.28 });
     // kiosk interior lamp so the first room isn't a black box
     const kl = kit.wallLamp(m, { on: true });
     this.place(kl, -1.7, 4.6, -13.0, Math.PI / 2, { collide: false });
@@ -904,7 +975,15 @@ export class World {
     this.place(kit.barrel(m), 5.6, 0, 22.9, 0);
     // (original toolbox at (-2.2,0,22.8) removed — it sat inside the new
     // workbench desk footprint; QA pair-probe found the penetration)
-    this.place(kit.crate(m, 0.8), 6.4, 0, 13.3, 0.15);
+    // QA 2026-09-08 (user: replace procedural dressing with real PBR props):
+    // MIT warehouse-3d pack (hookex/warehouse-3d) — cardboard box + electrical
+    // cabinet + racks + robot arm instead of procedural crate/box blobs.
+    this._gltfProp("assets/models/warehouse/box/scene.gltf", 6.4, 0, 13.3, 0.15, { dim: "height", size: 0.8, solid: true });
+    this._gltfProp("assets/models/warehouse/battery/scene.gltf", -6.55, 0, 13.2, Math.PI / 2, { dim: "height", size: 1.7, solid: true });
+    this._gltfProp("assets/models/warehouse/shelf/scene.gltf", -6.5, 0, 15.6, Math.PI / 2, { dim: "height", size: 1.6, solid: true });
+    this._gltfProp("assets/models/warehouse/shelf/scene.gltf", -6.5, 0, 16.7, Math.PI / 2, { dim: "height", size: 1.6, solid: true });
+    this._gltfProp("assets/models/warehouse/wide_books_shelf/scene.gltf", -6.5, 0, 20.0, Math.PI / 2, { dim: "height", size: 1.8, solid: true });
+    this._gltfProp("assets/models/warehouse/robotarm/scene.gltf", 15.6, 0, 15.6, Math.PI, { dim: "length", size: 2.2, solid: true });
 
     // dressing: maintenance workbench against the south wall (visual QA:
     // dead SW corner read as unfinished space) — desk + radio + toolbox,
@@ -944,17 +1023,83 @@ export class World {
     this.wallX(20.85, 7.15, 17.15, 0, 3.2, m.get("concreteWall"));
     this.wallZ(17.15, 14.55, 16.2, 0, 3.2, m.get("concreteWall"));
     this.wallZ(17.15, 19.2, 20.85, 0, 3.2, m.get("concreteWall"));
-    this.wallZ(17.15, 16.2, 19.2, 2.6, 3.2, m.get("concreteWall")); // header over sluice opening
-    this.slab(7.15, 17.15, 3.2, 3.5, 14.55, 20.85, m.get("concreteDark"));
+    // QA 2026-09-08 (user screenshots): the sluice leaf was built yaw 0 while
+    // its opening sits in an X-normal wall — the panel stood PERPENDICULAR to
+    // the hole (edge-on beam mid-doorway) and, raised, slammed into the solid
+    // header/slab instead of a slot. Rebuild: leaf yaw PI/2, slotted header,
+    // ceiling hole + hood housing, visible sprocket/chain/counterweight rig.
+    this.slab(17.0, 17.05, 2.6, 3.2, 16.2, 19.2, m.get("concreteWall")); // header west sheet
+    this.slab(17.25, 17.3, 2.6, 3.2, 16.2, 19.2, m.get("concreteWall")); // header east sheet (slot 17.05..17.25)
+    // ceiling with a slot hole over the leaf path (was one solid slab the
+    // raised leaf intersected)
+    this.slab(7.15, 17.05, 3.2, 3.5, 14.55, 20.85, m.get("concreteDark"));
+    this.slab(17.05, 17.15, 3.2, 3.5, 14.55, 16.2, m.get("concreteDark"));
+    this.slab(17.05, 17.15, 3.2, 3.5, 19.2, 20.85, m.get("concreteDark"));
+    this.slab(17.25, 17.3, 3.2, 3.5, 16.2, 19.2, m.get("concreteDark"));
+    // hood housing above the ceiling: the hole the leaf rises into
+    this.slab(17.0, 17.05, 3.5, 5.15, 16.1, 19.3, m.get("metalRaw"));
+    this.slab(17.25, 17.3, 3.5, 5.15, 16.1, 19.3, m.get("metalRaw"));
+    this.slab(17.0, 17.3, 5.15, 5.25, 16.1, 19.3, m.get("metalRaw"));
+    this.slab(17.0, 17.3, 3.5, 5.15, 16.1, 16.2, m.get("metalRaw"));
+    this.slab(17.0, 17.3, 3.5, 5.15, 19.2, 19.3, m.get("metalRaw"));
 
     // sluice gate in east opening (closed until drained)
     const sluice = new Door({
-      id: "sluice", materials: m, position: [17.15, 0, 17.7], yaw: 0,
+      id: "sluice", materials: m, position: [17.15, 0, 17.7], yaw: Math.PI / 2,
       width: 3.0, height: 2.6, thickness: 0.12, kind: "gate", locked: true,
       lockedMessage: "Chained — the water holds it shut",
     });
     this.addDoor(sluice, { swingCollider: true });
     this.sluice = sluice;
+
+    // lifting rig: two sprockets over the header, chains dropping into the
+    // slot, counterweights on guide rods that descend as the leaf rises
+    const rig = { weights: [], chains: [], sprockets: [] };
+    for (const z of [16.5, 18.9]) {
+      const sp = new THREE.Group();
+      const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.05, 12), m.get("darkMetal"));
+      wheel.rotation.x = Math.PI / 2;
+      sp.add(wheel);
+      for (let k = 0; k < 4; k++) {
+        const spoke = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.24, 0.03), m.get("darkMetal"));
+        spoke.rotation.z = (Math.PI / 4) + (k * Math.PI) / 2 - Math.PI / 2;
+        sp.add(spoke);
+      }
+      sp.position.set(16.93, 2.82, z);
+      this.scene.add(sp);
+      rig.sprockets.push(sp);
+      // guide rod + counterweight (gallery side, visible)
+      const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 2.4, 6), m.get("darkMetal"));
+      rod.position.set(16.9, 1.5, z);
+      this.scene.add(rod);
+      const weight = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.5, 0.16), m.get("metalRaw"));
+      weight.position.set(16.9, 2.15, z);
+      weight.userData.y0 = 2.15;
+      this.scene.add(weight);
+      rig.weights.push(weight);
+      // chain: weight top -> sprocket (dynamic length)
+      const chain = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 1, 6), m.get("darkMetal"));
+      chain.geometry.translate(0, 0.5, 0);
+      this.scene.add(chain);
+      chain.userData.z = z;
+      rig.chains.push(chain);
+      // chain stub from sprocket into the slot (the "pull" side)
+      const stub = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.5, 6), m.get("darkMetal"));
+      stub.position.set(17.15, 2.85, z);
+      this.scene.add(stub);
+    }
+    // crank gearbox on the wall between the sprockets
+    const gbox = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.34, 0.3), m.get("yellowPaint"));
+    gbox.position.set(16.95, 2.82, 17.7);
+    this.scene.add(gbox);
+    const gcrank = new THREE.Group();
+    const garm = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.3, 0.04), m.get("darkMetal"));
+    garm.position.y = -0.15;
+    gcrank.add(garm);
+    gcrank.position.set(16.86, 2.82, 17.7);
+    this.scene.add(gcrank);
+    rig.crank = gcrank;
+    this.sluiceRig = rig;
 
     // grating catwalk strip
     const grating = this.box(12.1, 0.02, 17.7, 9.6, 0.04, 1.0, m.get("darkMetal"), { collide: false, cast: false });
@@ -1136,7 +1281,11 @@ export class World {
     // west wall with gate opening (z 19.6..22.2, y -3.4..-0.4)
     this.wallZ(x0 - 0.15, zn - 0.15, 19.6, -3.7, 3.6, m.get("concreteWall"));
     this.wallZ(x0 - 0.15, 22.2, zs + 0.15, -3.7, 3.6, m.get("concreteWall"));
-    this.wallZ(x0 - 0.15, 19.6, 22.2, -0.4, 3.6, m.get("concreteWall"));
+    // QA 2026-09-08: was one solid wall — the raised gate leaf intersected it
+    // ("forced to overlap with a cube"). Now two sheets with a 0.18 slot the
+    // leaf rises into; the east sheet bulges 0.2 as a visible hood.
+    this.slab(23.7, 23.86, -0.4, 3.6, 19.6, 22.2, m.get("concreteWall"));
+    this.slab(24.04, 24.2, -0.4, 3.6, 19.6, 22.2, m.get("concreteWall"));
 
     // switchback ramps: 3 flights 45deg, landings
     // chimney lamps (visual QA: switchbacks read as a black void without them)
@@ -1368,6 +1517,22 @@ export class World {
       if (moving && (door.state === "open" || door.state === "closed")) {
         col.box.copy(door.colliderBox());
         if (door.kind !== "gate") col.active = true;
+      }
+    }
+    // sluice lifting rig (QA 2026-09-08): sprockets turn, counterweights slide
+    // down their rods and chains stay taut while the leaf rises
+    if (this.sluiceRig) {
+      const rise = this.sluice ? this.sluice.rise : 0;
+      const r = this.sluiceRig;
+      for (const sp of r.sprockets) sp.rotation.z = -rise * 5;
+      if (r.crank) r.crank.rotation.x = rise * 4;
+      for (let i = 0; i < r.weights.length; i++) {
+        const w = r.weights[i];
+        w.position.y = Math.max(0.55, w.userData.y0 - rise * 0.8);
+        const c = r.chains[i];
+        const top = w.position.y + 0.25;
+        c.position.set(16.9, top, c.userData.z);
+        c.scale.y = Math.max(0.05, 2.82 - top);
       }
     }
     // light intensity lerp

@@ -12,8 +12,8 @@ import sys
 from PIL import Image
 
 
-def pad4(b):
-    return b + b"\x00" * ((4 - len(b) % 4) % 4)
+def pad4(b, pad=b"\x00"):
+    return b + pad * ((4 - len(b) % 4) % 4)
 
 
 def main():
@@ -68,16 +68,26 @@ def main():
         print("nothing to do")
         return
 
-    # rebuild buffer: replace views in place (append new data, repoint views)
-    for bv, nb in replaced.items():
-        view = j["bufferViews"][bv]
-        view["byteOffset"] = len(buf)
+    # rebuild buffer compactly: lay every view out fresh (replaced image
+    # views get the new bytes, others keep their slice). Appending instead
+    # (old behaviour) left dead texture bytes in the BIN — 5x bloat.
+    newbuf = bytearray()
+    for vi, view in enumerate(j["bufferViews"]):
+        if vi in replaced:
+            nb = replaced[vi]
+            view.pop("byteStride", None)
+        else:
+            # keep byteStride etc. untouched for interleaved vertex views
+            nb = bytes(buf[view["byteOffset"]:view["byteOffset"] + view["byteLength"]])
+        view["byteOffset"] = len(newbuf)
         view["byteLength"] = len(nb)
-        view.pop("byteStride", None)
-        buf += pad4(nb)
+        newbuf += pad4(nb)
+    buf = newbuf
     j["buffers"][0]["byteLength"] = len(buf)
 
-    jbytes = pad4(json.dumps(j, separators=(",", ":")).encode())
+    # glTF spec: JSON chunk padded with spaces (0x20), BIN with zeros.
+    # Zero-padded JSON broke GLTFLoader ("non-whitespace after JSON").
+    jbytes = pad4(json.dumps(j, separators=(",", ":")).encode(), b" ")
     bbytes = pad4(bytes(buf))
     out_total = 12 + 8 + len(jbytes) + 8 + len(bbytes)
     with open(dst, "wb") as f:
