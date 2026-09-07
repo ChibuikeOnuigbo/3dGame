@@ -1,0 +1,29 @@
+{
+ "source": "itch.io",
+ "url": "https://godgoldfear.itch.io/psx-industrial-environment-asset-pack",
+ "name": "PSX Industrial Environment Asset Pack",
+ "author": "godgoldfear",
+ "license": "CC-BY-4.0 (itch asset license field: Creative Commons Attribution v4.0 International)",
+ "contents": "20 level-geometry pcs, 10 bridges/supports, 16 buildings/containers, 11 pipes, 19 props",
+ "files": [
+  {
+   "name": "Industrial_exterior_v2.zip (FBX)",
+   "size": "3.1 MB",
+   "price": "free (name-your-price)"
+  },
+  {
+   "name": "Industrial_exterior_v2.glb",
+   "size": "1.6 MB",
+   "price": "free (name-your-price)"
+  },
+  {
+   "name": "PSXIndustrialExteriorPack_v3.unitypackage",
+   "size": "6.7 MB",
+   "price": "USD 2.99 (paid only)"
+  }
+ ],
+ "rating": "5.0/5 (32 ratings)",
+ "no_generative_ai": true,
+ "binary_status": "not downloaded - itch purchase/download flow requires session; sandbox egress TLS-blocked",
+ "credit_line": "PSX Industrial Environment Asset Pack by godgoldfear, CC-BY 4.0, via itch.io"
+}

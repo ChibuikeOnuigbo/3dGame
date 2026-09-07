@@ -1,0 +1,21 @@
+{
+ "source": "itch.io",
+ "url": "https://zertto.itch.io/hospital-horror",
+ "name": "3d (horror) assets",
+ "author": "Zertto",
+ "license": "CC-BY-4.0",
+ "contents": "13 models (<900 tris each, 80% PBR), one with 3 variants; needs rescaling",
+ "files": [
+  {
+   "name": "pack.zip",
+   "size": "7.1 MB",
+   "price": "free (name-your-price)"
+  },
+  {
+   "name": "pack_2.zip",
+   "size": "8.9 MB",
+   "price": "free (name-your-price)"
+  }
+ ],
+ "binary_status": "not downloaded - same diagnostics as psx-industrial"
+}

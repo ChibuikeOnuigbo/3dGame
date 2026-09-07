@@ -1,0 +1,51 @@
+{
+  "video_id": "to032deYr-Q",
+  "title": "Making Counter Strike in JavaScript because why not",
+  "channel": "iercan (@iercan1234)",
+  "upload_date": "2025-07-05",
+  "duration": "26:31",
+  "views": 312749,
+  "likes": 13225,
+  "category": "Science & Technology",
+  "visibility": "public",
+  "source_url": "https://www.youtube.com/watch?v=to032deYr-Q",
+  "demo": "https://www.notstrike.online/",
+  "source_code": "https://iercan.gumroad.com/l/wcwye (paid)",
+  "repository": "https://github.com/iErcann/enari-engine",
+  "chapters": {
+    "0:00": "Intro", "0:19": "Enari Engine", "0:32": "The tooling", "0:54": "Project start",
+    "1:39": "Basic scene & pointer lock", "2:34": "Camera movement", "3:00": "Physics for player movement",
+    "4:35": "Testing low framerate", "4:59": "Trimesh collider: map with collision", "6:30": "Minecraft",
+    "6:50": "Jump implementation", "7:26": "Adding a weapon", "7:58": "Weapon movement",
+    "8:35": "Light scene polish", "8:59": "Arms", "10:00": "Blender rigging weapon", "11:02": "Idle animation",
+    "11:32": "Shoot animation (with memory fix)", "12:11": "Switch animation", "13:06": "Muzzle flash",
+    "14:35": "Smoke particle", "15:08": "Bullet particle", "15:45": "Sound design", "17:18": "Optimizing particles",
+    "18:44": "Bullet holes", "20:23": "Reload animation", "20:37": "Source Engine movement", "21:20": "AK47",
+    "22:08": "Knife", "22:41": "Water particles", "23:25": "Slow Motion Effect", "24:27": "Post Processing",
+    "24:56": "Dynamic RigidBodies fun", "25:41": "De_Dust2"
+  },
+  "credits_in_description": {
+    "weapon_models": "Quaternius (per video: high-quality 3D weapon asset)",
+    "environment_models": "Kenney (BANNED in this project per license policy)",
+    "fps_arms": "Cartoon FPS Arms by DJMaesen (CC BY 4.0)",
+    "audio": ["eardeer (CC-BY)", "JakLocke (CC-BY)", "keybal (CC-BY)", "KNO SFX (CC-BY 3.0)", "ninebilly (CC0)"],
+    "music": ["Ross Bugden (no-copyright selected tracks)"]
+  },
+  "acquisition": {
+    "method_A_yt_dlp": {
+      "version": "2026.08.19",
+      "result": "FAILED",
+      "diagnostic": "DNS ok, TCP443 ok, TLS ClientHello sent, then SSL_ERROR_SYSCALL / 'TLS/SSL connection has been closed (EOF)' — sandbox egress firewall kills TLS to youtube.com SNI",
+      "stderr": "ERROR: [youtube] to032deYr-Q: Unable to download API page: TLS/SSL connection has been closed (EOF) (_ssl.c:992)"
+    },
+    "method_B_gateway": {
+      "gateway": "https://arena-asset-gateway.onuigbochibuike15.workers.dev/",
+      "result": "FAILED",
+      "diagnostic": "DNS ok (172.67.164.1), TCP443 ok, TLS ClientHello -> SSL_ERROR_SYSCALL; workers.dev SNI also killed by egress"
+    },
+    "method_C_metadata_and_transcript": {
+      "result": "SUCCESS (server-side page fetch, not sandbox egress)",
+      "note": "watch page + full transcript + chapters obtained via Arena fetch tool; used for design analysis instead of frame extraction"
+    }
+  }
+}

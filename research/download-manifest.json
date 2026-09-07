@@ -1,0 +1,110 @@
+[
+ {
+  "type": "texture",
+  "source": "PolyHaven",
+  "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_floor_02/concrete_floor_02_diff_1k.jpg",
+  "retrieved_at": "2026-09-07T14:18:03",
+  "asset": "concrete_floor_02",
+  "author": "Rob Tuytel",
+  "map": "Color",
+  "status": "failed",
+  "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+ },
+ {
+  "type": "texture",
+  "source": "PolyHaven",
+  "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_floor_02/concrete_floor_02_nor_gl_1k.jpg",
+  "retrieved_at": "2026-09-07T14:18:03",
+  "asset": "concrete_floor_02",
+  "author": "Rob Tuytel",
+  "map": "NormalGL",
+  "status": "failed",
+  "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+ },
+ {
+  "type": "texture",
+  "source": "PolyHaven",
+  "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_floor_02/concrete_floor_02_rough_1k.jpg",
+  "retrieved_at": "2026-09-07T14:18:04",
+  "asset": "concrete_floor_02",
+  "author": "Rob Tuytel",
+  "map": "Roughness",
+  "status": "failed",
+  "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+ },
+ {
+  "type": "audio",
+  "source": "OpenGameArt",
+  "source_url": "https://opengameart.org/sites/default/files/Jump%201.wav",
+  "retrieved_at": "2026-09-07T14:18:04",
+  "title": "Jump Landing",
+  "author": "Dan Knoflicek",
+  "status": "failed",
+  "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+ },
+ {
+  "type": "audio",
+  "source": "OpenGameArt",
+  "source_url": "https://opengameart.org/sites/default/files/Jump%202.wav",
+  "retrieved_at": "2026-09-07T14:18:04",
+  "title": "Jump Landing",
+  "author": "Dan Knoflicek",
+  "status": "failed",
+  "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+ },
+ {
+  "type": "audio",
+  "source": "OpenGameArt",
+  "source_url": "https://opengameart.org/sites/default/files/Jump%203.wav",
+  "retrieved_at": "2026-09-07T14:18:04",
+  "title": "Jump Landing",
+  "author": "Dan Knoflicek",
+  "status": "failed",
+  "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+ },
+ {
+  "type": "3d-model",
+  "source": "Sketchfab",
+  "source_url": "https://api.sketchfab.com/v3/models/804fbe0cd1fa44fa9ca86ae42c82d63d/download",
+  "retrieved_at": "2026-09-07T14:18:04",
+  "model_id": "804fbe0cd1fa44fa9ca86ae42c82d63d",
+  "model_name": "simple-factory-scene",
+  "status": "failed",
+  "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+ },
+ {
+  "type": "3d-model",
+  "source": "Sketchfab",
+  "source_url": "https://api.sketchfab.com/v3/models/4b3cc287c76c4ede92c433f9d19c1006/download",
+  "retrieved_at": "2026-09-07T14:18:04",
+  "model_id": "4b3cc287c76c4ede92c433f9d19c1006",
+  "model_name": "small-industrial-scene",
+  "status": "failed",
+  "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+ },
+ {
+  "type": "3d-model",
+  "source": "itch.io",
+  "source_url": "https://godgoldfear.itch.io/psx-industrial-environment-asset-pack/purchase",
+  "retrieved_at": "2026-09-07T14:18:04",
+  "author": "godgoldfear",
+  "status": "failed",
+  "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+ },
+ {
+  "type": "audio",
+  "source": "GitHub-clone-local",
+  "source_url": "https://github.com/ChibuikeOnuigbo/fps-asset-kit",
+  "retrieved_at": "2026-09-07T14:35:26",
+  "status": "success",
+  "method": "local clone copy",
+  "local_path": "game/public/sfx/footsteps/ (12 ogg)",
+  "size_bytes": 151552,
+  "license_or_permission": "CC0 (Fantozzi's Footsteps via fps-asset-kit README)",
+  "extra": {
+   "title": "Fantozzi's Footsteps",
+   "author": "Fantozzi",
+   "note": "copied from research/github/repos/fps-asset-kit; wired into game/src/audio/audio.js"
+  }
+ }
+]

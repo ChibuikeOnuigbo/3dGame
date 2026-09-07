@@ -1,0 +1,245 @@
+[
+ {
+  "source": "PolyHaven",
+  "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_floor_02/concrete_floor_02_diff_1k.jpg",
+  "direct": {
+   "host": "dl.polyhaven.org",
+   "dns": "172.67.71.126",
+   "tcp443": "ok 28ms",
+   "tls": "FAIL SSLZeroReturnError: TLS/SSL connection has been closed (EOF) (_ssl.c:992)"
+  },
+  "attempts": [
+   {
+    "method": "direct",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   },
+   {
+    "method": "gateway",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   }
+  ],
+  "next_recommended": "ask user to restore egress / provide proxy"
+ },
+ {
+  "source": "PolyHaven",
+  "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_floor_02/concrete_floor_02_nor_gl_1k.jpg",
+  "direct": {
+   "host": "dl.polyhaven.org",
+   "dns": "172.67.71.126",
+   "tcp443": "ok 2ms",
+   "tls": "FAIL SSLZeroReturnError: TLS/SSL connection has been closed (EOF) (_ssl.c:992)"
+  },
+  "attempts": [
+   {
+    "method": "direct",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   },
+   {
+    "method": "gateway",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   }
+  ],
+  "next_recommended": "ask user to restore egress / provide proxy"
+ },
+ {
+  "source": "PolyHaven",
+  "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_floor_02/concrete_floor_02_rough_1k.jpg",
+  "direct": {
+   "host": "dl.polyhaven.org",
+   "dns": "104.26.1.167",
+   "tcp443": "ok 2ms",
+   "tls": "FAIL SSLZeroReturnError: TLS/SSL connection has been closed (EOF) (_ssl.c:992)"
+  },
+  "attempts": [
+   {
+    "method": "direct",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   },
+   {
+    "method": "gateway",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   }
+  ],
+  "next_recommended": "ask user to restore egress / provide proxy"
+ },
+ {
+  "source": "OpenGameArt",
+  "url": "https://opengameart.org/sites/default/files/Jump%201.wav",
+  "direct": {
+   "host": "opengameart.org",
+   "dns": "199.180.155.30",
+   "tcp443": "ok 2ms",
+   "tls": "FAIL SSLZeroReturnError: TLS/SSL connection has been closed (EOF) (_ssl.c:992)"
+  },
+  "attempts": [
+   {
+    "method": "direct",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   },
+   {
+    "method": "gateway",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   }
+  ],
+  "next_recommended": "ask user to restore egress / provide proxy"
+ },
+ {
+  "source": "OpenGameArt",
+  "url": "https://opengameart.org/sites/default/files/Jump%202.wav",
+  "direct": {
+   "host": "opengameart.org",
+   "dns": "199.180.155.30",
+   "tcp443": "ok 2ms",
+   "tls": "FAIL SSLZeroReturnError: TLS/SSL connection has been closed (EOF) (_ssl.c:992)"
+  },
+  "attempts": [
+   {
+    "method": "direct",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   },
+   {
+    "method": "gateway",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   }
+  ],
+  "next_recommended": "ask user to restore egress / provide proxy"
+ },
+ {
+  "source": "OpenGameArt",
+  "url": "https://opengameart.org/sites/default/files/Jump%203.wav",
+  "direct": {
+   "host": "opengameart.org",
+   "dns": "199.180.155.30",
+   "tcp443": "ok 1ms",
+   "tls": "FAIL SSLZeroReturnError: TLS/SSL connection has been closed (EOF) (_ssl.c:992)"
+  },
+  "attempts": [
+   {
+    "method": "direct",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   },
+   {
+    "method": "gateway",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   }
+  ],
+  "next_recommended": "ask user to restore egress / provide proxy"
+ },
+ {
+  "source": "Sketchfab",
+  "url": "https://api.sketchfab.com/v3/models/804fbe0cd1fa44fa9ca86ae42c82d63d/download",
+  "direct": {
+   "host": "api.sketchfab.com",
+   "dns": "18.238.217.64",
+   "tcp443": "ok 2ms",
+   "tls": "FAIL SSLZeroReturnError: TLS/SSL connection has been closed (EOF) (_ssl.c:992)"
+  },
+  "attempts": [
+   {
+    "method": "direct",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   },
+   {
+    "method": "gateway",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   }
+  ],
+  "next_recommended": "ask user to restore egress / provide proxy"
+ },
+ {
+  "source": "Sketchfab",
+  "url": "https://api.sketchfab.com/v3/models/4b3cc287c76c4ede92c433f9d19c1006/download",
+  "direct": {
+   "host": "api.sketchfab.com",
+   "dns": "18.238.217.28",
+   "tcp443": "ok 14ms",
+   "tls": "FAIL SSLZeroReturnError: TLS/SSL connection has been closed (EOF) (_ssl.c:992)"
+  },
+  "attempts": [
+   {
+    "method": "direct",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   },
+   {
+    "method": "gateway",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   }
+  ],
+  "next_recommended": "ask user to restore egress / provide proxy"
+ },
+ {
+  "source": "itch.io",
+  "url": "https://godgoldfear.itch.io/psx-industrial-environment-asset-pack/purchase",
+  "direct": {
+   "host": "godgoldfear.itch.io",
+   "dns": "104.26.9.198",
+   "tcp443": "ok 31ms",
+   "tls": "FAIL SSLZeroReturnError: TLS/SSL connection has been closed (EOF) (_ssl.c:992)"
+  },
+  "attempts": [
+   {
+    "method": "direct",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   },
+   {
+    "method": "gateway",
+    "status": null,
+    "content_type": null,
+    "bytes": 0,
+    "error": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+   }
+  ],
+  "next_recommended": "ask user to restore egress / provide proxy"
+ }
+]

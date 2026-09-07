@@ -1,0 +1,15 @@
+{
+ "source": "OpenGameArt",
+ "url": "https://opengameart.org/content/jump-landing",
+ "name": "Jump Landing",
+ "author": "Dan Knoflicek (submitted by Macro)",
+ "license": "CC0",
+ "files": [
+  "Jump 1.wav (103.4 KB)",
+  "Jump 2.wav (98.7 KB)",
+  "Jump 3.wav (119.9 KB)"
+ ],
+ "attribution_optional": "author kindly requests credit 'sfx by Dan Knoflicek'",
+ "binary_status": "failed direct+gateway (TLS killed) - see research/download-errors.json",
+ "note": "game already has synthesized jump/land SFX; these CC0 wav are drop-in replacements when egress is restored"
+}

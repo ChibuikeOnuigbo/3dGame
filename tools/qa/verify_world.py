@@ -146,12 +146,16 @@ try:
     check("all_doorways_clear_when_open", len(clear) == 0, json.dumps(clear[:8]))
 
     # ---- map sealing: walk probes at every edge ----
+    # Player forward = (-sin yaw, -cos yaw) — KeyW walks AGAINST (sin, cos).
+    # QA 2026-09-07: yaws here had the wrong sign (the probes walked the
+    # opposite way and passed trivially); corrected so each probe really
+    # walks INTO its edge.
     probes = [
-        ("street_west", -9.0, 3.2, -15.5, -1.5708),   # face west, walk
-        ("street_east", 9.0, 3.2, -15.5, 1.5708),
-        ("street_north", 0, 3.2, -19.4, 3.1416),
-        ("atrium_west", -3.8, 0, -4.0, -1.5708),
-        ("sump_east", 27.5, -3.4, 20.0, 1.5708),
+        ("street_west", -9.0, 3.2, -15.5, 1.5708),    # walk west into fence
+        ("street_east", 9.0, 3.2, -15.5, -1.5708),    # walk east into fence
+        ("street_north", 0, 3.2, -19.4, 0.0),         # walk north (-z)
+        ("atrium_west", -3.8, 0, -4.0, 1.5708),
+        ("sump_east", 27.5, -3.4, 20.0, -1.5708),
         ("sump_south", 20.0, -3.4, 22.8, 3.1416),
     ]
     for name, x, y, z, yaw in probes:

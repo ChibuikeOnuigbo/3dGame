@@ -97,3 +97,52 @@ First complete, playable build. All gates §215–216 green.
 - `analyze_shots.py` — programmatic visual QA (luminance/variance/thirds/
   color diversity) → `qa/shots/analysis.json`. **Final: 13/15** (2 flagged
   shots are intentional dark beats).
+
+## Revision 5 — "black wall" extermination pass (2026-09-07)
+
+User QA reported a black wall: visible but faint, no collision, touching the
+first door, and black masses outside/around the game. A new instrumented
+scanner (`tools/qa/scan_ghosts.py`) walks a dummy collision capsule over a
+grid of the whole map with every door open and cross-references every mesh
+against colliders, doors and rooms. Findings and fixes:
+
+- **THE black wall**: fence mesh infill planes were rotated +90° off — three
+  huge 0.42-opacity dark planes stood perpendicular to the fence, one cutting
+  the street parcel at x=0 from z=-30 through the kiosk door, the other two
+  jutting past the west/east bounds. Re-aligned to the fence line, then
+  replaced entirely with an alpha-tested chain-link lattice (see-through, no
+  more black sheet at eye level).
+- **Bars at the first interior door**: the sump tomb-gate bars had never been
+  positioned — six 2.6 m bars stood at the world origin inside the atrium
+  door_d1 threshold. The whole tomb gate was also buried inside the west
+  wall; rebuilt proud of the wall (plug, frame, bars, chains, red lamp).
+- **Skyline intruders**: two "distant" buildings sat inside the playable
+  bounds (east) as giant dark walk-through masses — pushed fully outside.
+- **Walk-through ghosts given collision**: verge bushes (soft), gallery
+  beater pump, gantry railing lines.
+- **Head-height ghost pipe** in the sump re-hung near the ceiling.
+- **Kiosk shell holes**: north/south facades had open black slits under the
+  roof (walls stopped at 5.32/5.3) — closed flush.
+- **Dead "always" circuit**: `_applyInitialCircuits` never enabled the
+  `always` circuit, so every always-on light (street sodium lamp included!)
+  ran at intensity 0 since v1.0. Enabled — the street, porch, kiosk and
+  fence corners are now actually lit; first-door approach luminance went
+  9→107 (OpenCV-measured).
+- **Exterior void**: no ground existed past the fence; added a dim city
+  ground disc to the horizon so the skyline sits on ground, not void.
+- **Physics teleport class fixed**: `_tryAxis` snapped the capsule to the far
+  face of any collider it already overlapped (QA poses near the new bush
+  colliders launched the player 20 m through the fence). Boxes already
+  intersected are now skipped (exit-only).
+- **Jump + run feedback** (user request): bindable Space hop with synthesized
+  jump whoosh, landing thump scaled by impact, landing camera shake, sprint
+  breath SFX. (OpenGameArt is network-blocked here; SFX are procedural,
+  walking footsteps remain CC0 Fantozzi FLAC.)
+- New QA: `shoot_surroundings.py` (panorama evidence ring) +
+  `opencv_analyze.py` (luma/dark-region/palette extraction, black-wall
+  detector) + `tools/keep_improving.py` (3 h autonomous verify loop).
+- verify_world probe yaws corrected to the real forward convention; sealing
+  probes now genuinely walk into each edge.
+
+Final gates: verify_world 16/16, critical_path 40/40, ghost scan 0 open
+cells / 0 invisible walls, OpenCV black-wall flags NONE.

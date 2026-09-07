@@ -8,7 +8,7 @@
 // - Rooms are 3D rects for room detection / audio zones / QA.
 
 import * as THREE from "three";
-import { makeSignTexture, makePaperTexture } from "./materials.js";
+import { makeSignTexture, makePaperTexture, makeChainLinkTexture } from "./materials.js";
 import { Door } from "./doors.js";
 import * as kit from "./kit.js";
 
@@ -231,11 +231,17 @@ export class World {
     // map — the horizon needs real depth). Dark blocks 25m+ out, FAR beyond
     // the parcel fence: unreachable by the player, no colliders needed.
     // Sparse warm windows give the night a lived-in horizon.
-    const skyMat = new THREE.MeshStandardMaterial({ color: 0x272e39, roughness: 0.95 });
+    // QA 2026-09-07: 0x272e39 sat below the night fog colour and the skyline
+    // read as a black void sheet. Lifted so silhouettes separate from sky.
+    const skyMat = new THREE.MeshStandardMaterial({ color: 0x3a4350, roughness: 0.95 });
     const winMat = new THREE.MeshBasicMaterial({ color: 0xffd9a0 });
+    // QA 2026-09-07: blocks must sit fully OUTSIDE the playable bounds
+    // (x -9.5..28.5, z -20.5..23.5) — the old (30,11,-8) and (26,16,6)
+    // blocks intruded into the east parcel edge as giant dark walk-through
+    // masses. Pushed to x>=31.5.
     const blocks = [
       [-26, 10, -34], [-12, 16, -40], [4, 13, -36], [18, 9, -32], [28, 14, -26],
-      [-24, 8, -18], [-27, 12, -4], [30, 11, -8], [26, 16, 6], [-21, 9, 8],
+      [-24, 8, -18], [-27, 12, -4], [37, 11, -6], [36, 16, 10], [-21, 9, 8],
     ];
     for (const [bx, bh, bz] of blocks) {
       const bw = 7 + ((Math.abs(bx) * 7 + Math.abs(bz) * 3) % 5);
@@ -254,6 +260,22 @@ export class World {
         this.scene.add(win);
       }
     }
+
+    // QA 2026-09-07: outside the parcel fence there was NO ground at all —
+    // views along the fence line fell off into the void and read as black
+    // walls around the game. A dim city-ground disc out to the horizon gives
+    // the skyline and fog something to sit on.
+    const extGeo = new THREE.CircleGeometry(60, 48);
+    {
+      const uv = extGeo.attributes.uv;
+      for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * 40, uv.getY(i) * 40);
+      uv.needsUpdate = true;
+    }
+    const ext = new THREE.Mesh(extGeo, this.mats.get("asphalt"));
+    ext.rotation.x = -Math.PI / 2;
+    ext.position.set(9, 3.14, 2);
+    ext.receiveShadow = false;
+    this.scene.add(ext);
 
     // star field on the dome (subtle, additive, static)
     const starGeo = new THREE.BufferGeometry();
@@ -340,6 +362,14 @@ export class World {
     this.slab(-7.75, -7.55, 3.2, 3.34, -20, -10.9, this.mats.get("concreteDark"), { cast: false });
     this.slab(7.55, 7.75, 3.2, 3.34, -20, -10.9, this.mats.get("concreteDark"), { cast: false });
 
+    // QA 2026-09-07: parcel edges were uniform-black past the single sodium
+    // lamp's pool — corner lamps keep the fence line legible as environment.
+    for (const [lx, lz] of [[-9.6, -19.6], [9.6, -19.6]]) {
+      this.light(lx, 5.4, lz, { color: 0xffb45e, intensity: 10, distance: 14, circuit: "always" });
+      const bulb = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.05, 0.14), this.mats.get("glowWarm").clone());
+      bulb.position.set(lx, 5.35, lz);
+      this.scene.add(bulb);
+    }
     // bushes on the verges (dark foliage clumps, solid)
     const leaf = new THREE.MeshStandardMaterial({ color: 0x274d22, roughness: 0.95 });
     const bushSpots = [[-8.9, -19.2], [-8.4, -16.8], [-9.1, -13.9], [8.3, -19.0], [8.9, -16.2], [8.4, -12.6]];
@@ -353,6 +383,16 @@ export class World {
         bush.add(b);
       }
       this.place(bush, bx, 3.28, bz, 0, { collide: false });
+      // QA 2026-09-07: bushes were walk-through ghosts (probe swept straight
+      // through ~1m dark masses). Give each a soft collider so they read as
+      // solid planting, matching their silhouette.
+      this.colliders.push({
+        box: new THREE.Box3(
+          new THREE.Vector3(bx - 0.5, 3.28, bz - 0.5),
+          new THREE.Vector3(bx + 0.5, 4.1, bz + 0.5)
+        ),
+        active: true, soft: true, tag: "bush",
+      });
     }
 
     // ---- perimeter fence at the slab edge: the street parcel is sealed ----
@@ -384,12 +424,33 @@ export class World {
         this.scene.add(rail);
       }
       // mesh infill (visible chain-link substitute)
-      const mesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(len, fenceH - 0.2),
-        new THREE.MeshStandardMaterial({ color: 0x5a626b, roughness: 0.6, metalness: 0.7, transparent: true, opacity: 0.42, side: THREE.DoubleSide })
-      );
+      // QA 2026-09-07: rotation was off by +PI/2 — the infill planes stood
+      // PERPENDICULAR to the fence line, so three huge half-transparent dark
+      // planes cut across the whole street parcel (one through the kiosk
+      // door at x=0 out to z=-30) with no collision: THE "black wall".
+      // Second pass same day: even correctly aligned, the solid 0.42-opacity
+      // unlit metal sheet read as a black band at eye level in every view of
+      // the parcel edge. Now an alpha-tested diamond lattice: see-through,
+      // same alignment as the rails, collider unchanged along the line.
+      const link = this.mats.chainLink || (this.mats.chainLink = (() => {
+        const t = makeChainLinkTexture();
+        return new THREE.MeshStandardMaterial({
+          map: t, transparent: true, alphaTest: 0.35, color: 0x9aa3ad,
+          roughness: 0.55, metalness: 0.5, side: THREE.DoubleSide,
+        });
+      })());
+      const fgeo = new THREE.PlaneGeometry(len, fenceH - 0.2);
+      { // bake ~0.35m diamond pitch into UVs so the shared texture can stay
+        // at repeat 1 across all three fence lines
+        const uv = fgeo.attributes.uv;
+        for (let i = 0; i < uv.count; i++) {
+          uv.setXY(i, uv.getX(i) * (len / 0.35), uv.getY(i) * ((fenceH - 0.2) / 0.35));
+        }
+        uv.needsUpdate = true;
+      }
+      const mesh = new THREE.Mesh(fgeo, link);
       mesh.position.set((L.x0 + L.x1) / 2, 3.2 + fenceH / 2, (L.z0 + L.z1) / 2);
-      mesh.rotation.y = Math.atan2(L.z1 - L.z0, L.x1 - L.x0) * -1 + Math.PI / 2;
+      mesh.rotation.y = Math.atan2(L.z1 - L.z0, L.x1 - L.x0) * -1;
       this.scene.add(mesh);
       // solid collider along the whole line
       const ex = Math.abs(L.x1 - L.x0) / 2 + 0.08, ez = Math.abs(L.z1 - L.z0) / 2 + 0.08;
@@ -412,13 +473,16 @@ export class World {
     this.slab(-1.7, 1.7, 2.9, 3.2, -14.7, -11.3, m.get("concreteDark"));
     this.ground(-1.7, 1.7, -14.7, -11.3, 3.2, "concrete");
     // walls (door gap north, stair opening south)
-    this.wallX(-14.85, -1.85, -0.55, 3.2, 5.32, m.get("metalPainted"));
-    this.wallX(-14.85, 0.55, 1.85, 3.2, 5.32, m.get("metalPainted"));
+    // QA 2026-09-07: side walls stopped at 5.32/5.3 while the roof starts at
+    // 5.6 — a black open slit ran across the whole north and south facades.
+    // Sides now rise flush to the roof (the door headers stay above the gaps).
+    this.wallX(-14.85, -1.85, -0.55, 3.2, 5.6, m.get("metalPainted"));
+    this.wallX(-14.85, 0.55, 1.85, 3.2, 5.6, m.get("metalPainted"));
     this.wallX(-14.85, -0.55, 0.55, 5.32, 5.6, m.get("metalPainted"));
     this.wallZ(1.85, -14.85, -11.15, 3.2, 5.6, m.get("metalPainted"));
     this.wallZ(-1.85, -14.85, -11.15, 3.2, 5.6, m.get("metalPainted"));
-    this.wallX(-11.15, -1.85, -0.8, 3.2, 5.3, m.get("metalPainted"));
-    this.wallX(-11.15, 0.8, 1.85, 3.2, 5.3, m.get("metalPainted"));
+    this.wallX(-11.15, -1.85, -0.8, 3.2, 5.6, m.get("metalPainted"));
+    this.wallX(-11.15, 0.8, 1.85, 3.2, 5.6, m.get("metalPainted"));
     this.wallX(-11.15, -0.8, 0.8, 5.3, 5.6, m.get("metalPainted"));
     this.slab(-1.85, 1.85, 5.6, 5.9, -14.85, -11.15, m.get("metalPainted"));
 
@@ -434,9 +498,19 @@ export class World {
     sign.position.set(0, 4.85, -14.98);
     sign.rotation.y = Math.PI;
     this.scene.add(sign);
+    // QA 2026-09-07: OpenCV pass found the first-door approach 86% uniform
+    // black at night — the door must read as THE way in. Entry lamp over the
+    // sign + a dim porch light, both on the always-live circuit.
+    const porch = kit.wallLamp(m, { on: true });
+    this.place(porch, 0, 5.35, -15.02, Math.PI, { collide: false }); // faces street
+    this.light(0, 5.1, -15.6, { color: 0xffd9a0, intensity: 7, distance: 8, circuit: "always" });
     // small meter box
     const meter = kit.breakerBox(m, { levers: 2 });
     this.place(meter, 1.55, 4.3, -13.0, Math.PI / 2, { collide: false });
+    // kiosk interior lamp so the first room isn't a black box
+    const kl = kit.wallLamp(m, { on: true });
+    this.place(kl, -1.7, 4.6, -13.0, Math.PI / 2, { collide: false });
+    this.light(0, 5.0, -13.0, { color: 0xdfe8ff, intensity: 5, distance: 6, circuit: "always" });
     this.room({ id: "kiosk", name: "Street Kiosk", min: [-1.85, 3.2, -14.85], max: [1.85, 5.6, -11.15], zone: "street" });
   }
 
@@ -646,6 +720,11 @@ export class World {
     // gantry along east wall (viewing platform)
     const gantry = kit.gantryPlatform(m, 8);
     this.place(gantry, 4.4, 2.6, 17.85, Math.PI / 2, { collide: false });
+    // QA 2026-09-07: OpenCV flagged the gantry end as a 31% uniform-black
+    // mass (fixtures there are on the dead lighting circuit). Small always-on
+    // lamps so the platform and its rail read at night.
+    this.light(4.4, 3.4, 14.4, { color: 0xffd9a0, intensity: 5, distance: 7, circuit: "always" });
+    this.light(4.4, 3.4, 21.4, { color: 0xffd9a0, intensity: 5, distance: 7, circuit: "always" });
     // stair onto gantry: steps rise eastward along the north wall, landing meets the deck
     const gsteps = new THREE.Group();
     for (let i = 0; i < 8; i++) {
@@ -659,6 +738,17 @@ export class World {
     this.box(4.4, 2.48, 13.62, 1.3, 0.24, 0.55, m.get("darkMetal"));
     this.ground(0.15, 3.78, 12.4, 13.2, 0, "metal", { axis: "x", from: 3.55, to: 0.19, y0: 2.6, y1: 0 });
     this.ground(3.75, 5.05, 13.35, 21.85, 2.6, "grating"); // deck + landing
+    // QA 2026-09-07: the gantry railing posts were collision-less — the probe
+    // walked through them along both deck edges. Thin solid rails so the deck
+    // edge reads as protected (matches the visible post lines at x 3.8/5.0).
+    this.colliders.push({
+      box: new THREE.Box3(new THREE.Vector3(3.72, 2.6, 13.4), new THREE.Vector3(3.86, 3.7, 21.85)),
+      active: true, tag: "gantry-rail",
+    });
+    this.colliders.push({
+      box: new THREE.Box3(new THREE.Vector3(4.94, 2.6, 13.4), new THREE.Vector3(5.08, 3.7, 21.85)),
+      active: true, tag: "gantry-rail",
+    });
 
     // control panel with taped note (INTERACTIVE — O3)
     const cp = kit.controlPanel(m);
@@ -766,10 +856,16 @@ export class World {
     this.water.position.set(12.1, this.waterLevel, 17.7);
     this.scene.add(this.water);
 
-    // sump beater (small pump) corner — decorative, no collider
+    // sump beater (small pump) corner — decorative
     const beater = kit.pumpTrain(m, 3);
     this.place(beater, 8.0, 0, 19.8, Math.PI / 2, { collide: false });
     beater.scale.set(0.55, 0.55, 0.55);
+    // QA 2026-09-07: probe walked straight through it (unscaled kit collider
+    // would be oversized at 0.55 scale, so a fitted box instead).
+    this.colliders.push({
+      box: new THREE.Box3(new THREE.Vector3(7.62, 0, 19.0), new THREE.Vector3(8.38, 1.0, 20.8)),
+      active: true, tag: "beater",
+    });
 
     const f1 = kit.fluorescentFixture(m, { on: false });
     this.place(f1, 10, 3.12, 17.7, 0, { collide: false });
@@ -821,28 +917,33 @@ export class World {
     this.slab(24.0, 27.15, -0.3, 0, 22.35, 22.65, m.get("concreteDark"));
 
     // --- the old tunnel gate (west wall, story focal) ---
+    // QA 2026-09-07: the whole gate sat INSIDE the west wall (wall inner
+    // face at x=15.0; frame/plug/chains/lamp all at x<=14.95) so the story
+    // beat read as plain rock wall. Rebuilt proud of the wall: plug behind,
+    // dark frame around it, bars in front, chains draped, red lamp lit.
     const tombGate = new THREE.Group();
+    const plug = new THREE.Mesh(new THREE.BoxGeometry(0.3, 2.7, 2.5), m.variant("rock", 2, 2));
+    plug.position.set(15.12, -2.0, 17.7); // proud of the frame so rock shows
+    tombGate.add(plug);
     const frame = new THREE.Mesh(new THREE.BoxGeometry(0.2, 3.0, 2.8), m.get("darkMetal"));
-    frame.position.set(14.85, -1.9, 17.7);
+    frame.position.set(15.05, -1.9, 17.7);
     tombGate.add(frame);
     const bars = new THREE.Group();
     for (let i = 0; i < 6; i++) {
       const b = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 2.6, 8), m.get("metalRaw"));
-      b.position.set(0.1, 0, -1.1 + i * 0.44);
+      b.position.set(0.13, 0, -1.1 + i * 0.44);
       bars.add(b);
     }
+    bars.position.set(15.19, -1.9, 17.7); // bars in front of the plug face
     tombGate.add(bars);
-    const plug = new THREE.Mesh(new THREE.BoxGeometry(0.5, 2.7, 2.5), m.variant("rock", 2, 2));
-    plug.position.set(14.7, -2.0, 17.7);
-    tombGate.add(plug);
     // chains
     for (let i = 0; i < 3; i++) {
-      const ch = kit.pipeRun(m, [[14.9, -1.0 - i * 0.5, 16.5], [14.9, -0.7 - i * 0.5, 18.9]], 0.025);
+      const ch = kit.pipeRun(m, [[15.35, -1.0 - i * 0.5, 16.5], [15.35, -0.7 - i * 0.5, 18.9]], 0.025);
       tombGate.add(ch);
     }
     this.scene.add(tombGate);
     const tombLamp = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.1), m.get("glowRed").clone());
-    tombLamp.position.set(14.9, -0.6, 16.4);
+    tombLamp.position.set(15.42, -0.6, 16.4);
     this.scene.add(tombLamp);
     this.tombLamp = tombLamp;
 
@@ -875,7 +976,9 @@ export class World {
     // barrels NE + salvaged pipe
     this.place(kit.barrel(m), 26.3, -3.4, 14.4, 0);
     this.place(kit.barrel(m), 25.5, -3.4, 14.2, 0);
-    this.scene.add(kit.pipeRun(m, [[22.5, -2.2, 14.2], [24.5, -2.4, 14.6], [26.2, -2.2, 15.2]], 0.12));
+    // QA 2026-09-07: was at y -2.2/-2.4 — head height on the -3.4 sump floor
+    // (the probe capsule walked straight through it). Hung near the ceiling.
+    this.scene.add(kit.pipeRun(m, [[22.5, -0.8, 14.2], [24.5, -1.0, 14.6], [26.2, -0.8, 15.2]], 0.12));
 
     // master breaker (east wall, INTERACTIVE O6)
     const mb = kit.masterBreakerCabinet(m);
@@ -1037,6 +1140,10 @@ export class World {
   // ---------------- circuits / world state ----------------
 
   _applyInitialCircuits() {
+    // QA 2026-09-07: "always" was never enabled here, so every always-on
+    // light (street sodium lamp, porch/entry lamps, fence corner lamps)
+    // stayed at intensity 0 — a whole class of invisible-but-present element.
+    this.setCircuit("always", true);
     this.setCircuit("lighting", false);
     this.setCircuit("pumps", true);
     this.setCircuit("nest", true);

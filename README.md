@@ -31,6 +31,7 @@ npm run build && npm run preview
 | Move | W / S / A / D |
 | Interact / hold | E |
 | Sprint | Left Shift |
+| Jump | Space |
 | Flashlight | F |
 | Pause | Esc |
 
@@ -51,6 +52,10 @@ python3 verify_world.py             # torch/doors/map-sealing/overlap audit
 python3 smoke.py                    # boot + console + per-room shots/stats
 python3 critical_path.py            # full 7-objective playthrough: 40/40 checks
 python3 analyze_shots.py            # programmatic visual analysis of qa/shots/
+python3 scan_ghosts.py              # ghost-mesh + collision-probe walk audit
+python3 shoot_surroundings.py       # panorama evidence ring around the parcel
+python3 opencv_analyze.py           # OpenCV luma/palette/black-wall extraction
+python3 ../../tools/keep_improving.py 3   # 3 h autonomous verify loop
 ```
 
 Latest results and per-check status: `qa/FINAL_QA_REPORT.md`.

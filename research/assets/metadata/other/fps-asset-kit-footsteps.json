@@ -1,0 +1,12 @@
+{
+ "source": "GitHub (cloned locally)",
+ "url": "https://github.com/ChibuikeOnuigbo/fps-asset-kit",
+ "name": "Fantozzi's Footsteps (OGG subset)",
+ "author": "Fantozzi via fps-asset-kit",
+ "license": "CC0 (per fps-asset-kit README: OpenGameArt Fantozzi's Footsteps, CC0)",
+ "files": [
+  "Fantozzi-{Sand,Stone}{L,R}{1,2,3}.ogg x12, 148 KB total"
+ ],
+ "binary_status": "SUCCESS - copied from local clone into game/public/sfx/footsteps/ and wired into audio.js",
+ "credits_required": false
+}

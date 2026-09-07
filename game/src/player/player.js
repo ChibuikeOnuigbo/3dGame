@@ -202,6 +202,24 @@ export class Player {
       return;
     }
 
+    // QA 2026-09-07 (user request): jump — small hop, whoosh on launch,
+    // thump + camera shake on landing (see land branch / _applyCamera).
+    if (this._jumpCd > 0) this._jumpCd -= dt;
+    // 100ms recharge gate: pattern from iErcann/enari-engine (MIT) — prevents
+    // bunny-hop spam while a single press always answers.
+    if (this.enabled && !this.noclip && !this.airborne && this._jumpCd <= 0 && inp.wasPressed("JUMP")) {
+      this.vy = 4.4;
+      this.airborne = true;
+      this._jumpCd = 0.12;
+      this.audio.jump();
+    }
+
+    // sprint exertion breaths (user request: run SFX)
+    if (sprint && Math.hypot(this.vel.x, this.vel.z) > WALK * 0.9) {
+      this._breathT = (this._breathT || 0) + dt;
+      if (this._breathT > 1.9) { this._breathT = 0; this.audio.exert(); }
+    }
+
     // accelerate/decelerate (snappy but smoothed)
     const target = wish.multiplyScalar(speed);
     const accel = wish.lengthSq() > 0 ? 14 : 10;
@@ -225,6 +243,11 @@ export class Player {
       this.pos.y += this.vy * dt;
       if (this.pos.y <= g.y) {
         if (this.vy < -4) this._landDip = Math.min(0.22, -this.vy * 0.022); // landing thump
+        // QA 2026-09-07: landing SFX + camera shake scaled by impact
+        if (this.vy < -2.2) {
+          this.audio.land(Math.min(1, -this.vy / 9));
+          this._shake = Math.min(0.6, -this.vy * 0.05);
+        }
         this.pos.y = g.y;
         this.vy = 0;
         this.airborne = false;
@@ -269,6 +292,13 @@ export class Player {
       const b = c.box;
       if (b.max.y <= this._barrierMax(c)) continue; // steppable / walk-on-top
       if (b.min.y >= hi || b.max.y <= lo) continue; // above or below capsule
+      // QA 2026-09-07: if the capsule ALREADY intersects this box (e.g. a QA
+      // pose placed inside/near a collider), snapping to its face teleports
+      // the player to the FAR side — that was the 20m launch through the
+      // street fence. Skip boxes we are already inside; they can only be
+      // left, never re-entered while overlapping.
+      if (this.pos.x + RADIUS > b.min.x && this.pos.x - RADIUS < b.max.x &&
+          this.pos.z + RADIUS > b.min.z && this.pos.z - RADIUS < b.max.z) continue;
       if (test.x + RADIUS > b.min.x && test.x - RADIUS < b.max.x &&
           test.z + RADIUS > b.min.z && test.z - RADIUS < b.max.z) {
         test[axis] = dir > 0 ? b.min[axis] - RADIUS : b.max[axis] + RADIUS;
@@ -300,8 +330,13 @@ export class Player {
     const judder = this.bobAmp * this._slope * Math.sin(t * 34) * 0.022;
     const camY = this.pos.y + EYE + this._bobY + judder - this._landDip;
     this._landDip *= Math.exp(-dt * 5.5);
+    // landing camera shake (user request): decaying pitch/roll micro-jitter
+    const sh = this._shake || 0;
+    this._shake = sh * Math.exp(-dt * 6);
+    const shP = Math.sin(t * 39) * sh * 0.02 + Math.sin(t * 23.7) * sh * 0.012;
+    const shR = Math.cos(t * 31) * sh * 0.016;
     this.camera.position.set(this.pos.x + this._bobX * 0.4, camY, this.pos.z);
-    this.camera.rotation.set(this.pitch, this.yaw, 0, "YXZ");
+    this.camera.rotation.set(this.pitch + shP, this.yaw, shR, "YXZ");
 
     // viewmodel sway
     const idle = Math.max(0, 1 - this.bobAmp * 1.6); // sway fades while moving

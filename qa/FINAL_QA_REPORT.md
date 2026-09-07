@@ -189,3 +189,20 @@ Findings and fixes, each verified:
 - User report "torch points the wrong way": glass-end sign detection on the
   long axis + runtime camera-space verification (mouth forward of body).
 - shoot_doors.py: 18 Playwright shots. verify_world 16/16, critical 40/40.
+
+## Revision 5 addendum (2026-09-07) — black-wall extermination pass
+
+| Suite | Result |
+| --- | --- |
+| `verify_world.py` (incl. corrected sealing probes) | **16/16 PASS** |
+| `critical_path.py` | **40/40 PASS** |
+| `scan_ghosts.py` (probe walk + mesh/collider/door audit) | open cells **0**, invisible walls **0**, no walk-through wall-scale ghosts |
+| `opencv_analyze.py` (15-shot panorama ring) | black-wall flags **NONE**; first-door approach luma 9→107 |
+
+Key fixes: fence infill (the black wall) rebuilt as aligned chain-link
+lattice; tomb-gate bars relocated from door_d1 threshold to the sump gate;
+skyline intruders moved out of bounds; bushes/beater/gantry colliders added;
+kiosk facade slits closed; `always` light circuit enabled (street lamp was
+dead since 1.0); exterior ground disc; `_tryAxis` far-face teleport fixed;
+jump/land/sprint SFX + landing camera shake. See
+`research/SESSION_2026-09-07.md` and `qa/surroundings_INDEX.md`.

@@ -1,5 +1,5 @@
-// Audio engine: 100% procedural Web Audio synthesis + CC0 FLAC footstep samples
-// (Fantozzi's Footsteps, OpenGameArt, CC0). No external audio network deps.
+// Audio engine: procedural Web Audio synthesis + CC0 OGG footstep samples
+// (Fantozzi's Footsteps by Fantozzi, OpenGameArt, CC0). No external audio network deps.
 //
 // Design: three buses (ambience / sfx / ui). Zone room-tones are synthesized
 // loops whose gains crossfade by player position. One-shots are small synth
@@ -77,7 +77,7 @@ export class AudioEngine {
     for (const { names, into } of sets) {
       for (const n of names) {
         try {
-          const res = await fetch(`sfx/footsteps/Fantozzi-${n}.flac`);
+          const res = await fetch(`sfx/footsteps/Fantozzi-${n}.ogg`);
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const buf = await res.arrayBuffer();
           this.stepBuffers[into].push(await this.ctx.decodeAudioData(buf));
@@ -390,6 +390,26 @@ export class AudioEngine {
     }
     // fallback synth concrete
     this._noiseShot(this.busSfx, { freq: 420, q: 0.9, decay: 0.07, peak: 0.12, rate: 0.9 });
+  }
+
+  // QA 2026-09-07 (user request): jump / landing / running SFX. Synthesized
+  // here because OpenGameArt is network-blocked in this sandbox; the existing
+  // CC0 FLAC footsteps still cover walking surfaces.
+  jump() {
+    if (!this.ready) return;
+    this._noiseShot(this.busSfx, { freq: 520, q: 0.8, decay: 0.14, peak: 0.07, rate: 1.6 });
+    this._tone(this.busSfx, { freq: 170, slideTo: 320, decay: 0.12, peak: 0.05 });
+  }
+
+  land(intensity = 1) {
+    if (!this.ready) return;
+    this._tone(this.busSfx, { freq: 72, slideTo: 38, attack: 0.005, decay: 0.16, peak: 0.16 * intensity });
+    this._noiseShot(this.busSfx, { freq: 300, q: 0.8, decay: 0.09, peak: 0.1 * intensity, rate: 0.7 });
+  }
+
+  exert() { // quiet sprint breath
+    if (!this.ready) return;
+    this._noiseShot(this.busSfx, { freq: 900 + Math.random() * 300, q: 1.2, decay: 0.18, peak: 0.035, rate: 0.8 });
   }
 
   spoolDown() { // pumps dying after master breaker

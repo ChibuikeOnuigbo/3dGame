@@ -1,0 +1,1235 @@
+[
+ {
+  "shot": "00_spawn_kiosk_door.png",
+  "luma_mean": 133.6,
+  "dark_frac": 0.131,
+  "edge_density": 0.0156,
+  "palette": [
+   {
+    "bgr": [
+     124,
+     147,
+     169
+    ],
+    "hex": "#a9937c",
+    "coverage": 0.243,
+    "class": "light/sky-glow"
+   },
+   {
+    "bgr": [
+     151,
+     180,
+     201
+    ],
+    "hex": "#c9b497",
+    "coverage": 0.221,
+    "class": "light/sky-glow"
+   },
+   {
+    "bgr": [
+     104,
+     117,
+     133
+    ],
+    "hex": "#857568",
+    "coverage": 0.196,
+    "class": "sky"
+   },
+   {
+    "bgr": [
+     14,
+     9,
+     9
+    ],
+    "hex": "#09090e",
+    "coverage": 0.148,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     198,
+     221,
+     232
+    ],
+    "hex": "#e8ddc6",
+    "coverage": 0.121,
+    "class": "light/sky-glow"
+   },
+   {
+    "bgr": [
+     48,
+     59,
+     68
+    ],
+    "hex": "#443b30",
+    "coverage": 0.071,
+    "class": "mixed-prop"
+   }
+  ],
+  "dark_regions": [
+   {
+    "bbox": [
+     0,
+     0,
+     1280,
+     393
+    ],
+    "area_frac": 0.122,
+    "inner_std": 0.99,
+    "edge_in": 0.0038,
+    "bottom_frac": 0.0,
+    "wallish": true
+   }
+  ],
+  "black_wall_flag": false
+ },
+ {
+  "shot": "01_pano_north_fence.png",
+  "luma_mean": 34.6,
+  "dark_frac": 0.576,
+  "edge_density": 0.0472,
+  "palette": [
+   {
+    "bgr": [
+     6,
+     4,
+     4
+    ],
+    "hex": "#040406",
+    "coverage": 0.579,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     53,
+     73,
+     102
+    ],
+    "hex": "#664935",
+    "coverage": 0.136,
+    "class": "soil/rust"
+   },
+   {
+    "bgr": [
+     79,
+     76,
+     82
+    ],
+    "hex": "#524c4f",
+    "coverage": 0.118,
+    "class": "concrete/asphalt/metal"
+   },
+   {
+    "bgr": [
+     41,
+     40,
+     45
+    ],
+    "hex": "#2d2829",
+    "coverage": 0.112,
+    "class": "concrete/asphalt/metal"
+   },
+   {
+    "bgr": [
+     125,
+     111,
+     108
+    ],
+    "hex": "#6c6f7d",
+    "coverage": 0.048,
+    "class": "sky"
+   }
+  ],
+  "dark_regions": [
+   {
+    "bbox": [
+     0,
+     0,
+     1280,
+     523
+    ],
+    "area_frac": 0.565,
+    "inner_std": 4.09,
+    "edge_in": 0.0144,
+    "bottom_frac": 0.038,
+    "wallish": true
+   }
+  ],
+  "black_wall_flag": false
+ },
+ {
+  "shot": "02_pano_east.png",
+  "luma_mean": 81.6,
+  "dark_frac": 0.353,
+  "edge_density": 0.0284,
+  "palette": [
+   {
+    "bgr": [
+     10,
+     6,
+     6
+    ],
+    "hex": "#06060a",
+    "coverage": 0.36,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     57,
+     80,
+     109
+    ],
+    "hex": "#6d5039",
+    "coverage": 0.206,
+    "class": "soil/rust"
+   },
+   {
+    "bgr": [
+     38,
+     49,
+     59
+    ],
+    "hex": "#3b3126",
+    "coverage": 0.158,
+    "class": "soil/rust"
+   },
+   {
+    "bgr": [
+     185,
+     212,
+     226
+    ],
+    "hex": "#e2d4b9",
+    "coverage": 0.117,
+    "class": "light/sky-glow"
+   },
+   {
+    "bgr": [
+     156,
+     185,
+     205
+    ],
+    "hex": "#cdb99c",
+    "coverage": 0.102,
+    "class": "light/sky-glow"
+   },
+   {
+    "bgr": [
+     127,
+     154,
+     180
+    ],
+    "hex": "#b49a7f",
+    "coverage": 0.057,
+    "class": "light/sky-glow"
+   }
+  ],
+  "dark_regions": [
+   {
+    "bbox": [
+     0,
+     0,
+     856,
+     589
+    ],
+    "area_frac": 0.349,
+    "inner_std": 3.71,
+    "edge_in": 0.0131,
+    "bottom_frac": 0.026,
+    "wallish": true
+   }
+  ],
+  "black_wall_flag": false
+ },
+ {
+  "shot": "03_pano_south_kiosk.png",
+  "luma_mean": 156.2,
+  "dark_frac": 0.001,
+  "edge_density": 0.0169,
+  "palette": [
+   {
+    "bgr": [
+     177,
+     204,
+     220
+    ],
+    "hex": "#dcccb1",
+    "coverage": 0.368,
+    "class": "light/sky-glow"
+   },
+   {
+    "bgr": [
+     211,
+     234,
+     243
+    ],
+    "hex": "#f3ead3",
+    "coverage": 0.174,
+    "class": "light/sky-glow"
+   },
+   {
+    "bgr": [
+     34,
+     50,
+     57
+    ],
+    "hex": "#393222",
+    "coverage": 0.165,
+    "class": "soil/rust"
+   },
+   {
+    "bgr": [
+     52,
+     76,
+     88
+    ],
+    "hex": "#584c34",
+    "coverage": 0.15,
+    "class": "soil/rust"
+   },
+   {
+    "bgr": [
+     78,
+     111,
+     128
+    ],
+    "hex": "#806f4e",
+    "coverage": 0.075,
+    "class": "sky"
+   },
+   {
+    "bgr": [
+     123,
+     161,
+     181
+    ],
+    "hex": "#b5a17b",
+    "coverage": 0.067,
+    "class": "light/sky-glow"
+   }
+  ],
+  "dark_regions": [],
+  "black_wall_flag": false
+ },
+ {
+  "shot": "04_pano_west.png",
+  "luma_mean": 77.1,
+  "dark_frac": 0.364,
+  "edge_density": 0.025,
+  "palette": [
+   {
+    "bgr": [
+     7,
+     5,
+     6
+    ],
+    "hex": "#060507",
+    "coverage": 0.368,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     67,
+     71,
+     80
+    ],
+    "hex": "#504743",
+    "coverage": 0.165,
+    "class": "concrete/asphalt/metal"
+   },
+   {
+    "bgr": [
+     42,
+     48,
+     54
+    ],
+    "hex": "#36302a",
+    "coverage": 0.16,
+    "class": "mixed-prop"
+   },
+   {
+    "bgr": [
+     179,
+     206,
+     221
+    ],
+    "hex": "#ddceb3",
+    "coverage": 0.145,
+    "class": "light/sky-glow"
+   },
+   {
+    "bgr": [
+     143,
+     169,
+     189
+    ],
+    "hex": "#bda98f",
+    "coverage": 0.095,
+    "class": "light/sky-glow"
+   },
+   {
+    "bgr": [
+     113,
+     119,
+     129
+    ],
+    "hex": "#817771",
+    "coverage": 0.067,
+    "class": "sky"
+   }
+  ],
+  "dark_regions": [
+   {
+    "bbox": [
+     424,
+     0,
+     856,
+     571
+    ],
+    "area_frac": 0.355,
+    "inner_std": 3.57,
+    "edge_in": 0.011,
+    "bottom_frac": 0.016,
+    "wallish": true
+   }
+  ],
+  "black_wall_flag": false
+ },
+ {
+  "shot": "05_first_door_close.png",
+  "luma_mean": 106.6,
+  "dark_frac": 0.028,
+  "edge_density": 0.0172,
+  "palette": [
+   {
+    "bgr": [
+     131,
+     147,
+     161
+    ],
+    "hex": "#a19383",
+    "coverage": 0.26,
+    "class": "sky"
+   },
+   {
+    "bgr": [
+     92,
+     85,
+     84
+    ],
+    "hex": "#54555c",
+    "coverage": 0.241,
+    "class": "concrete/asphalt/metal"
+   },
+   {
+    "bgr": [
+     117,
+     113,
+     113
+    ],
+    "hex": "#717175",
+    "coverage": 0.226,
+    "class": "sky"
+   },
+   {
+    "bgr": [
+     69,
+     63,
+     61
+    ],
+    "hex": "#3d3f45",
+    "coverage": 0.196,
+    "class": "concrete/asphalt/metal"
+   },
+   {
+    "bgr": [
+     181,
+     182,
+     184
+    ],
+    "hex": "#b8b6b5",
+    "coverage": 0.046,
+    "class": "light/sky-glow"
+   },
+   {
+    "bgr": [
+     11,
+     8,
+     8
+    ],
+    "hex": "#08080b",
+    "coverage": 0.032,
+    "class": "near-black mass"
+   }
+  ],
+  "dark_regions": [
+   {
+    "bbox": [
+     694,
+     211,
+     76,
+     186
+    ],
+    "area_frac": 0.015,
+    "inner_std": 3.0,
+    "edge_in": 0.0138,
+    "bottom_frac": 0.0,
+    "wallish": false
+   }
+  ],
+  "black_wall_flag": false
+ },
+ {
+  "shot": "06_kiosk_inside_out.png",
+  "luma_mean": 127.7,
+  "dark_frac": 0.006,
+  "edge_density": 0.0207,
+  "palette": [
+   {
+    "bgr": [
+     150,
+     154,
+     163
+    ],
+    "hex": "#a39a96",
+    "coverage": 0.304,
+    "class": "light/sky-glow"
+   },
+   {
+    "bgr": [
+     115,
+     111,
+     114
+    ],
+    "hex": "#726f73",
+    "coverage": 0.192,
+    "class": "sky"
+   },
+   {
+    "bgr": [
+     89,
+     82,
+     80
+    ],
+    "hex": "#505259",
+    "coverage": 0.17,
+    "class": "concrete/asphalt/metal"
+   },
+   {
+    "bgr": [
+     127,
+     133,
+     143
+    ],
+    "hex": "#8f857f",
+    "coverage": 0.169,
+    "class": "sky"
+   },
+   {
+    "bgr": [
+     60,
+     53,
+     51
+    ],
+    "hex": "#33353c",
+    "coverage": 0.085,
+    "class": "concrete/asphalt/metal"
+   },
+   {
+    "bgr": [
+     213,
+     209,
+     207
+    ],
+    "hex": "#cfd1d5",
+    "coverage": 0.079,
+    "class": "light/sky-glow"
+   }
+  ],
+  "dark_regions": [],
+  "black_wall_flag": false
+ },
+ {
+  "shot": "07_atrium_door_d1.png",
+  "luma_mean": 47.5,
+  "dark_frac": 0.101,
+  "edge_density": 0.0144,
+  "palette": [
+   {
+    "bgr": [
+     43,
+     43,
+     41
+    ],
+    "hex": "#292b2b",
+    "coverage": 0.449,
+    "class": "concrete/asphalt/metal"
+   },
+   {
+    "bgr": [
+     54,
+     52,
+     50
+    ],
+    "hex": "#323436",
+    "coverage": 0.246,
+    "class": "concrete/asphalt/metal"
+   },
+   {
+    "bgr": [
+     83,
+     67,
+     57
+    ],
+    "hex": "#394353",
+    "coverage": 0.185,
+    "class": "mixed-prop"
+   },
+   {
+    "bgr": [
+     3,
+     2,
+     1
+    ],
+    "hex": "#010203",
+    "coverage": 0.066,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     22,
+     19,
+     15
+    ],
+    "hex": "#0f1316",
+    "coverage": 0.043,
+    "class": "near-black mass"
+   }
+  ],
+  "dark_regions": [
+   {
+    "bbox": [
+     395,
+     72,
+     490,
+     133
+    ],
+    "area_frac": 0.051,
+    "inner_std": 5.91,
+    "edge_in": 0.0045,
+    "bottom_frac": 0.0,
+    "wallish": false
+   },
+   {
+    "bbox": [
+     0,
+     0,
+     1280,
+     18
+    ],
+    "area_frac": 0.024,
+    "inner_std": 2.75,
+    "edge_in": 0.0163,
+    "bottom_frac": 0.0,
+    "wallish": false
+   },
+   {
+    "bbox": [
+     750,
+     523,
+     133,
+     197
+    ],
+    "area_frac": 0.014,
+    "inner_std": 2.21,
+    "edge_in": 0.0238,
+    "bottom_frac": 1.0,
+    "wallish": false
+   }
+  ],
+  "black_wall_flag": false
+ },
+ {
+  "shot": "08_fence_north_close.png",
+  "luma_mean": 26.0,
+  "dark_frac": 0.599,
+  "edge_density": 0.0243,
+  "palette": [
+   {
+    "bgr": [
+     7,
+     4,
+     5
+    ],
+    "hex": "#050407",
+    "coverage": 0.556,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     46,
+     40,
+     42
+    ],
+    "hex": "#2a282e",
+    "coverage": 0.197,
+    "class": "concrete/asphalt/metal"
+   },
+   {
+    "bgr": [
+     14,
+     24,
+     32
+    ],
+    "hex": "#20180e",
+    "coverage": 0.101,
+    "class": "soil/rust"
+   },
+   {
+    "bgr": [
+     82,
+     68,
+     62
+    ],
+    "hex": "#3e4452",
+    "coverage": 0.085,
+    "class": "mixed-prop"
+   },
+   {
+    "bgr": [
+     124,
+     105,
+     95
+    ],
+    "hex": "#5f697c",
+    "coverage": 0.059,
+    "class": "sky"
+   }
+  ],
+  "dark_regions": [
+   {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "area_frac": 0.58,
+    "inner_std": 5.24,
+    "edge_in": 0.0077,
+    "bottom_frac": 0.106,
+    "wallish": true
+   }
+  ],
+  "black_wall_flag": false
+ },
+ {
+  "shot": "09_fence_east_close.png",
+  "luma_mean": 19.4,
+  "dark_frac": 0.605,
+  "edge_density": 0.013,
+  "palette": [
+   {
+    "bgr": [
+     13,
+     7,
+     6
+    ],
+    "hex": "#06070d",
+    "coverage": 0.374,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     40,
+     32,
+     30
+    ],
+    "hex": "#1e2028",
+    "coverage": 0.266,
+    "class": "mixed-prop"
+   },
+   {
+    "bgr": [
+     1,
+     1,
+     1
+    ],
+    "hex": "#010101",
+    "coverage": 0.159,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     22,
+     20,
+     22
+    ],
+    "hex": "#161416",
+    "coverage": 0.1,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     47,
+     46,
+     55
+    ],
+    "hex": "#372e2f",
+    "coverage": 0.098,
+    "class": "concrete/asphalt/metal"
+   }
+  ],
+  "dark_regions": [
+   {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "area_frac": 0.582,
+    "inner_std": 5.43,
+    "edge_in": 0.0071,
+    "bottom_frac": 0.118,
+    "wallish": true
+   }
+  ],
+  "black_wall_flag": false
+ },
+ {
+  "shot": "10_fence_west_close.png",
+  "luma_mean": 18.5,
+  "dark_frac": 0.67,
+  "edge_density": 0.0216,
+  "palette": [
+   {
+    "bgr": [
+     1,
+     1,
+     1
+    ],
+    "hex": "#010101",
+    "coverage": 0.416,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     12,
+     8,
+     9
+    ],
+    "hex": "#09080c",
+    "coverage": 0.254,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     42,
+     33,
+     30
+    ],
+    "hex": "#1e212a",
+    "coverage": 0.229,
+    "class": "mixed-prop"
+   },
+   {
+    "bgr": [
+     68,
+     59,
+     59
+    ],
+    "hex": "#3b3b44",
+    "coverage": 0.058,
+    "class": "concrete/asphalt/metal"
+   },
+   {
+    "bgr": [
+     111,
+     96,
+     93
+    ],
+    "hex": "#5d606f",
+    "coverage": 0.042,
+    "class": "sky"
+   }
+  ],
+  "dark_regions": [
+   {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "area_frac": 0.669,
+    "inner_std": 4.39,
+    "edge_in": 0.0162,
+    "bottom_frac": 0.132,
+    "wallish": true
+   }
+  ],
+  "black_wall_flag": false
+ },
+ {
+  "shot": "11_sump_tomb_gate.png",
+  "luma_mean": 42.1,
+  "dark_frac": 0.396,
+  "edge_density": 0.0536,
+  "palette": [
+   {
+    "bgr": [
+     3,
+     9,
+     16
+    ],
+    "hex": "#100903",
+    "coverage": 0.378,
+    "class": "soil/rust"
+   },
+   {
+    "bgr": [
+     21,
+     52,
+     80
+    ],
+    "hex": "#503415",
+    "coverage": 0.201,
+    "class": "soil/rust"
+   },
+   {
+    "bgr": [
+     8,
+     30,
+     47
+    ],
+    "hex": "#2f1e08",
+    "coverage": 0.174,
+    "class": "soil/rust"
+   },
+   {
+    "bgr": [
+     70,
+     77,
+     88
+    ],
+    "hex": "#584d46",
+    "coverage": 0.121,
+    "class": "mixed-prop"
+   },
+   {
+    "bgr": [
+     34,
+     76,
+     113
+    ],
+    "hex": "#714c22",
+    "coverage": 0.119,
+    "class": "soil/rust"
+   }
+  ],
+  "dark_regions": [
+   {
+    "bbox": [
+     364,
+     0,
+     916,
+     720
+    ],
+    "area_frac": 0.383,
+    "inner_std": 6.37,
+    "edge_in": 0.0223,
+    "bottom_frac": 0.289,
+    "wallish": true
+   }
+  ],
+  "black_wall_flag": false
+ },
+ {
+  "shot": "12_east_skyline.png",
+  "luma_mean": 11.5,
+  "dark_frac": 0.936,
+  "edge_density": 0.008,
+  "palette": [
+   {
+    "bgr": [
+     10,
+     10,
+     14
+    ],
+    "hex": "#0e0a0a",
+    "coverage": 0.353,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     14,
+     7,
+     6
+    ],
+    "hex": "#06070e",
+    "coverage": 0.331,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     2,
+     1,
+     2
+    ],
+    "hex": "#020102",
+    "coverage": 0.166,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     23,
+     20,
+     22
+    ],
+    "hex": "#161417",
+    "coverage": 0.12,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     41,
+     45,
+     55
+    ],
+    "hex": "#372d29",
+    "coverage": 0.027,
+    "class": "mixed-prop"
+   }
+  ],
+  "dark_regions": [
+   {
+    "bbox": [
+     0,
+     0,
+     1280,
+     720
+    ],
+    "area_frac": 0.882,
+    "inner_std": 4.83,
+    "edge_in": 0.0033,
+    "bottom_frac": 0.35,
+    "wallish": true
+   },
+   {
+    "bbox": [
+     264,
+     351,
+     170,
+     172
+    ],
+    "area_frac": 0.017,
+    "inner_std": 2.98,
+    "edge_in": 0.0,
+    "bottom_frac": 0.2,
+    "wallish": false
+   },
+   {
+    "bbox": [
+     70,
+     351,
+     170,
+     171
+    ],
+    "area_frac": 0.016,
+    "inner_std": 4.48,
+    "edge_in": 0.0235,
+    "bottom_frac": 0.197,
+    "wallish": false
+   },
+   {
+    "bbox": [
+     0,
+     448,
+     142,
+     175
+    ],
+    "area_frac": 0.016,
+    "inner_std": 2.0,
+    "edge_in": 0.0,
+    "bottom_frac": 0.965,
+    "wallish": false
+   }
+  ],
+  "black_wall_flag": false
+ },
+ {
+  "shot": "13_gallery_overview.png",
+  "luma_mean": 19.3,
+  "dark_frac": 0.649,
+  "edge_density": 0.006,
+  "palette": [
+   {
+    "bgr": [
+     3,
+     3,
+     4
+    ],
+    "hex": "#040303",
+    "coverage": 0.426,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     26,
+     21,
+     15
+    ],
+    "hex": "#0f151a",
+    "coverage": 0.195,
+    "class": "near-black mass"
+   },
+   {
+    "bgr": [
+     45,
+     46,
+     45
+    ],
+    "hex": "#2d2e2d",
+    "coverage": 0.187,
+    "class": "concrete/asphalt/metal"
+   },
+   {
+    "bgr": [
+     34,
+     30,
+     24
+    ],
+    "hex": "#181e22",
+    "coverage": 0.131,
+    "class": "mixed-prop"
+   },
+   {
+    "bgr": [
+     5,
+     14,
+     25
+    ],
+    "hex": "#190e05",
+    "coverage": 0.058,
+    "class": "soil/rust"
+   }
+  ],
+  "dark_regions": [
+   {
+    "bbox": [
+     0,
+     0,
+     1249,
+     720
+    ],
+    "area_frac": 0.646,
+    "inner_std": 7.55,
+    "edge_in": 0.0043,
+    "bottom_frac": 0.338,
+    "wallish": true
+   }
+  ],
+  "black_wall_flag": false
+ },
+ {
+  "shot": "14_pumphall_gantry.png",
+  "luma_mean": 48.6,
+  "dark_frac": 0.223,
+  "edge_density": 0.0151,
+  "palette": [
+   {
+    "bgr": [
+     87,
+     71,
+     64
+    ],
+    "hex": "#404757",
+    "coverage": 0.251,
+    "class": "mixed-prop"
+   },
+   {
+    "bgr": [
+     46,
+     56,
+     63
+    ],
+    "hex": "#3f382e",
+    "coverage": 0.235,
+    "class": "mixed-prop"
+   },
+   {
+    "bgr": [
+     5,
+     10,
+     15
+    ],
+    "hex": "#0f0a05",
+    "coverage": 0.235,
+    "class": "soil/rust"
+   },
+   {
+    "bgr": [
+     27,
+     36,
+     43
+    ],
+    "hex": "#2b241b",
+    "coverage": 0.2,
+    "class": "soil/rust"
+   },
+   {
+    "bgr": [
+     78,
+     85,
+     93
+    ],
+    "hex": "#5d554e",
+    "coverage": 0.077,
+    "class": "concrete/asphalt/metal"
+   }
+  ],
+  "dark_regions": [
+   {
+    "bbox": [
+     0,
+     0,
+     943,
+     584
+    ],
+    "area_frac": 0.146,
+    "inner_std": 7.69,
+    "edge_in": 0.0265,
+    "bottom_frac": 0.171,
+    "wallish": true
+   },
+   {
+    "bbox": [
+     358,
+     0,
+     472,
+     154
+    ],
+    "area_frac": 0.05,
+    "inner_std": 5.0,
+    "edge_in": 0.0067,
+    "bottom_frac": 0.0,
+    "wallish": false
+   },
+   {
+    "bbox": [
+     756,
+     523,
+     137,
+     197
+    ],
+    "area_frac": 0.014,
+    "inner_std": 2.92,
+    "edge_in": 0.0217,
+    "bottom_frac": 1.0,
+    "wallish": false
+   }
+  ],
+  "black_wall_flag": false
+ }
+]
