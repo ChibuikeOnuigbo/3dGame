@@ -277,9 +277,11 @@ export class World {
     this.scene.add(bulb);
     this.light(2.95, 7.2, -16.5, { color: 0xffb45e, intensity: 26, distance: 22, circuit: "always" });
 
-    // building silhouettes (dark masses)
-    this.box(-7.5, 8.5, -19, 6, 11, 6, this.mats.get("trim"), { collide: false, receive: false });
-    this.box(8.5, 9.5, -18.5, 7, 13, 5, this.mats.get("trim"), { collide: false, receive: false });
+    // (building silhouettes REMOVED 2026-09-07, user QA: two near-black
+    // light-reactive masses with collide:false sat INSIDE the playable
+    // parcel — they swallowed the grass verges, buried the bushes, cut
+    // through the fence corners, and the player walked through them.
+    // Night fog alone reads better than fake skyline at this scale.)
 
     // ---- grass verges inside the street parcel (CC0 Ground037) ----
     const vergeMat = this.mats.get("grass");
