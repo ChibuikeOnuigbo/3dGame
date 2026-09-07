@@ -1,0 +1,40 @@
+{
+  "notes": [
+    {
+      "id": "note_dispatch",
+      "title": "WORK ORDER 44-1130",
+      "location": "kiosk",
+      "text": "MUNICIPAL UTILITY — GRID SERVICES\nWORK ORDER 44-1130 — NIGHT\n\nSITE: Stormwater Lift Station 6 (Decom. 9 yrs)\nCOMPLAINT: Continuous draw on feeder 6C since spring. Meter crews confirm 11 kW steady, nights included. Station should be COLD.\n\nTASK: Locate draw. Isolate feeder at station master. Do NOT enter confined spaces alone — if the master is in the sump, call it in and wait for the confined-space team.\n\nYou won't wait. Nobody ever does. Just be careful with the old machinery.\n\n— R., dispatch"
+    },
+    {
+      "id": "note_logbook",
+      "title": "STATION 6 LOGBOOK",
+      "location": "atrium",
+      "text": "STATION 6 — STORMWATER LIFT — MAINTENANCE LOG\n\n[9 yrs ago] DECOMMISSIONED per council order 91-C. Pumps 1-3 spooled down. Master left ON for salvage crew.\n\n[8 yrs ago] Salvage incomplete — access tunnel condemned. Plug poured at tunnel 40m. Station handed to dead inventory.\n\n[entries continue, one per month, unsigned, in pencil]\n...pump 2 bearing temps normal... replaced seal, used the spare crate... intake screen cleaned, again — sediment is worse every year... breaker 9 corroded, bypassed with bus bar... someone should see this but who...\n\n[last entry, 2 months ago]\n...hands are worse. Winter coming. If the pumps stop, the water comes up to the plug line by spring. Tell someone. No — don't. They'd drain it to the street and everything in the tunnel would come up with it.\n\nKeep them running. Keep it dry. That's all now."
+    },
+    {
+      "id": "note_clipboard",
+      "title": "BREAKER SCHEDULE",
+      "location": "breakernook",
+      "text": "PANEL LB-1 — LIGHTING (EMERGENCY CIRCUIT)\n\n1 corridor ........ dead\n2 atrium .......... dead\n3 pump hall ....... dead\n4 stairs .......... on\n5 nook ............ on\n6 exterior ........ on\n\nSomeone has pencilled below:\n\n\"Feed the lighting bus off the emergency cell before the cell cooks itself. Breakers are old — use both hands, left to right. And keep the door shut, the damp gets in.\""
+    },
+    {
+      "id": "note_pump",
+      "title": "TAPED NOTE — PUMP 2",
+      "location": "pumphall",
+      "text": "Taped to the control panel, plastic sleeve, block capitals:\n\nIF YOU ARE HERE ABOUT THE POWER DRAW — STOP.\n\nYes, it's me. Yes, I know what the meter says.\n\nPump 2 runs because the tunnel must stay under the plug line. The sump beaters do the rest. It is balanced. It has been balanced for nine years.\n\nIf you shut it down to make your number look right, by March the water will be in the reception corridor, and the tunnel — the part they filled in with my brother on the wrong side of it — will give up what it's been holding.\n\nThere is a way to do this properly. Downstairs. I left everything in order.\n\n— M."
+    },
+    {
+      "id": "note_calendar",
+      "title": "WALL CALENDAR",
+      "location": "sump",
+      "text": "A nine-year-old calendar, pinned to a crate. Every month is crossed off — every month, nine years of them — in the same grey pencil.\n\nThe current month is crossed off too. There are twelve days left.\n\nOn the back, a tally: small strokes in groups of five. You stop counting at four hundred."
+    },
+    {
+      "id": "note_last",
+      "title": "THE LAST NOTE",
+      "location": "sump",
+      "text": "Left on the crate desk, weighted with a spanner. The pencil is beside it, worn to a stub.\n\n\"If you're reading this, I finally couldn't come down the stairs.\n\nNine years ago the flood season took Tomas on the wrong side of the bulkhead. The council needed the line closed before the storm peak and they poured the plug early. I signed the order. That's the truth I have to write down: I signed it, and he was still knocking.\n\nEverything since has been one long apology. The pumps keep the tunnel below the plug line so his things — so HE — stays where I can visit. Childish. I know. But the water respected my apology even if nobody else did.\n\nNow it's yours. The master breaker is by the gate. Throw it and the draw ends tonight — the grid gets its answer. The pumps will stop, the tunnel will fill, and Station 6 will finally be what the paperwork always said it was: nothing.\n\nHe'd have liked you. You came all this way for a number on a meter.\n\nDo your job. Then go home while it's still dark.\n\n— M."
+    }
+  ]
+}

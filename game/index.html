@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>STILL WATER — Station 6</title>
+<link rel="stylesheet" href="/src/ui/styles.css" />
+</head>
+<body>
+<canvas id="game"></canvas>
+
+<div id="loading">
+  <div class="load-title">STILL WATER</div>
+  <div class="load-sub">stormwater lift station 6</div>
+  <div class="bar"><div class="bar-fill"></div></div>
+  <div class="load-label">loading textures</div>
+</div>
+
+<div id="boot-error"></div>
+
+<div id="menu">
+  <div class="menu-card menu-main">
+    <div class="menu-head">
+      <div class="menu-title">STILL WATER</div>
+      <div class="menu-sub">stormwater lift station 6 · a night-shift inspection</div>
+    </div>
+    <div class="menu-body">
+      <div class="menu-hintline">You are a grid technician. Station 6 was decommissioned nine years ago —<br/>tonight it is still drawing power. Find out why. Shut it down. Go home.</div>
+      <button class="mbtn primary" id="btn-start">Enter Station 6</button>
+      <button class="mbtn" id="btn-settings">Settings</button>
+      <button class="mbtn" id="btn-controls">Controls</button>
+    </div>
+    <div class="menu-foot" id="menu-controls-hint"></div>
+  </div>
+</div>
+
+<div id="menus" class="hidden-init"></div>
+
+<div id="hud">
+  <div id="objective"></div>
+  <div id="prompt"></div>
+  <div id="toast"></div>
+</div>
+
+<div id="note">
+  <div class="note-card">
+    <div id="note-title"></div>
+    <div id="note-body"></div>
+    <div class="note-close">close</div>
+  </div>
+</div>
+
+<div id="ending">
+  <div class="end-card">
+    <div class="end-title"></div>
+    <div class="end-lines"></div>
+  </div>
+</div>
+
+<div id="fade"></div>
+<div id="debug"></div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

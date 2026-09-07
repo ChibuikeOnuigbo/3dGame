@@ -1,0 +1,58 @@
+{
+  "objectives": [
+    {
+      "id": "find_logbook",
+      "text": "Find the station logbook",
+      "hint": "Reception desk — the light still works",
+      "flag": "logbook_read"
+    },
+    {
+      "id": "restore_lights",
+      "text": "Restore the lighting circuit",
+      "hint": "Breaker box — end of the west alcove",
+      "flag": "lights_on"
+    },
+    {
+      "id": "investigate_pumps",
+      "text": "Find out why the pumps are running",
+      "hint": "The control panel by the gantry",
+      "flag": "pumps_read"
+    },
+    {
+      "id": "drain_gallery",
+      "text": "Drain the valve gallery",
+      "hint": "Close the intake. Open the drain.",
+      "flag": "gallery_drained"
+    },
+    {
+      "id": "search_nest",
+      "text": "Search the lower level",
+      "hint": "Someone has been living down here",
+      "flag": "nest_read"
+    },
+    {
+      "id": "master_off",
+      "text": "Shut down the master breaker",
+      "hint": "Red cabinet on the wall",
+      "flag": "master_off"
+    },
+    {
+      "id": "escape",
+      "text": "Open the service gate and climb out",
+      "hint": "Crank the winch by the shaft",
+      "flag": "escaped"
+    }
+  ],
+  "flags_initial": {
+    "kiosk_locked": false,
+    "lights_on": false,
+    "pumps_running": true,
+    "gallery_drained": false,
+    "nest_read": false,
+    "master_off": false,
+    "gate_open": false,
+    "escaped": false,
+    "scare_played": false
+  },
+  "notes_total": 6
+}

@@ -1,0 +1,112 @@
+{
+ "room_id": "gallery",
+ "room_name": "Valve Gallery",
+ "purpose": "flooded valve room; drain puzzle; descent to sump",
+ "expected_focal_point": "valve wheels + water plane + drain wheel",
+ "expected_player_route": "east door to ramp descent",
+ "expected_important_objects": [
+  "valve wheels",
+  "water",
+  "drain",
+  "ramp"
+ ],
+ "expected_lighting": "wet reflections + sparse fixtures",
+ "environment_pack": "procedural + ambientCG",
+ "objective": "drain_gallery",
+ "visual_target_reference": "flooded sub-room, echoey",
+ "semantic_visual_review": "BLOCKED (no vision runtime) \u2014 human inspection required",
+ "player_pos_at_capture": {
+  "entry": [
+   8.6,
+   0,
+   17.5
+  ],
+  "focal": [
+   12,
+   0,
+   17.5
+  ],
+  "path": [
+   10.27,
+   0,
+   16.5
+  ],
+  "interaction": [
+   12,
+   0,
+   19.4
+  ],
+  "exit": [
+   16.2,
+   0,
+   17.8
+  ],
+  "secondary": [
+   14,
+   0,
+   15.6
+  ]
+ },
+ "views": {
+  "entry": {
+   "camera_feet": [
+    8.6,
+    0,
+    17.5
+   ],
+   "yaw": -1.5708,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "focal": {
+   "camera_feet": [
+    12.0,
+    0,
+    17.5
+   ],
+   "yaw": -1.5708,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "path": {
+   "camera_feet": [
+    10.0,
+    0,
+    16.5
+   ],
+   "yaw": -1.5708,
+   "pitch": 0.0,
+   "capture": "walk"
+  },
+  "interaction": {
+   "camera_feet": [
+    12.0,
+    0,
+    19.4
+   ],
+   "yaw": 3.1416,
+   "pitch": 0.1,
+   "capture": "pose"
+  },
+  "exit": {
+   "camera_feet": [
+    16.2,
+    -1.6,
+    17.8
+   ],
+   "yaw": -1.2,
+   "pitch": -0.1,
+   "capture": "pose"
+  },
+  "secondary": {
+   "camera_feet": [
+    14.0,
+    0,
+    15.6
+   ],
+   "yaw": 0.5,
+   "pitch": 0.0,
+   "capture": "pose"
+  }
+ }
+}

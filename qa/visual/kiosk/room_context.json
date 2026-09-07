@@ -1,0 +1,111 @@
+{
+ "room_id": "kiosk",
+ "room_name": "Street Kiosk",
+ "purpose": "entry booth; first interior; light vs night contrast",
+ "expected_focal_point": "counter + lit signage inside the booth",
+ "expected_player_route": "in through the door, around the counter",
+ "expected_important_objects": [
+  "counter",
+  "signage",
+  "shelf"
+ ],
+ "expected_lighting": "interior fluorescent spill",
+ "environment_pack": "procedural + ambientCG",
+ "objective": "find_logbook",
+ "visual_target_reference": "cramped ticket-booth feel",
+ "semantic_visual_review": "BLOCKED (no vision runtime) \u2014 human inspection required",
+ "player_pos_at_capture": {
+  "entry": [
+   0,
+   3.2,
+   -14.4
+  ],
+  "focal": [
+   0,
+   3.2,
+   -12.7
+  ],
+  "path": [
+   0,
+   3.2,
+   -13.98
+  ],
+  "interaction": [
+   0.7,
+   3.2,
+   -12.9
+  ],
+  "exit": [
+   0,
+   3.2,
+   -14.7
+  ],
+  "secondary": [
+   -1.2,
+   3.2,
+   -13.3
+  ]
+ },
+ "views": {
+  "entry": {
+   "camera_feet": [
+    0,
+    3.2,
+    -14.4
+   ],
+   "yaw": 0,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "focal": {
+   "camera_feet": [
+    0,
+    3.2,
+    -12.7
+   ],
+   "yaw": 3.1416,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "path": {
+   "camera_feet": [
+    0,
+    3.2,
+    -13.6
+   ],
+   "yaw": 0,
+   "pitch": 0.0,
+   "capture": "walk"
+  },
+  "interaction": {
+   "camera_feet": [
+    0.7,
+    3.2,
+    -12.9
+   ],
+   "yaw": -2.1,
+   "pitch": -0.1,
+   "capture": "pose"
+  },
+  "exit": {
+   "camera_feet": [
+    0,
+    3.2,
+    -14.7
+   ],
+   "yaw": 3.1416,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "secondary": {
+   "camera_feet": [
+    -1.2,
+    3.2,
+    -13.3
+   ],
+   "yaw": 1.1,
+   "pitch": 0.0,
+   "capture": "pose"
+  }
+ }
+}

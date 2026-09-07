@@ -1,0 +1,197 @@
+[
+ {
+  "file": "00_menu.png",
+  "mean_lum": 13.8,
+  "variance": 662.1,
+  "thirds": [
+   8.6,
+   23.0,
+   9.7
+  ],
+  "thirds_spread": 14.4,
+  "colors": 26,
+  "issues": []
+ },
+ {
+  "file": "01_atrium.png",
+  "mean_lum": 24.1,
+  "variance": 402.6,
+  "thirds": [
+   11.1,
+   24.3,
+   36.9
+  ],
+  "thirds_spread": 25.8,
+  "colors": 24,
+  "issues": []
+ },
+ {
+  "file": "01_corridor.png",
+  "mean_lum": 44.5,
+  "variance": 1509.2,
+  "thirds": [
+   23.0,
+   61.3,
+   49.2
+  ],
+  "thirds_spread": 38.3,
+  "colors": 57,
+  "issues": []
+ },
+ {
+  "file": "01_gallery.png",
+  "mean_lum": 18.9,
+  "variance": 134.8,
+  "thirds": [
+   17.2,
+   21.1,
+   18.5
+  ],
+  "thirds_spread": 3.8,
+  "colors": 17,
+  "issues": []
+ },
+ {
+  "file": "01_kiosk.png",
+  "mean_lum": 36.5,
+  "variance": 593.4,
+  "thirds": [
+   23.2,
+   41.3,
+   45.1
+  ],
+  "thirds_spread": 21.9,
+  "colors": 59,
+  "issues": []
+ },
+ {
+  "file": "01_pumphall.png",
+  "mean_lum": 17.0,
+  "variance": 366.7,
+  "thirds": [
+   19.7,
+   21.1,
+   10.1
+  ],
+  "thirds_spread": 10.9,
+  "colors": 49,
+  "issues": []
+ },
+ {
+  "file": "01_street.png",
+  "mean_lum": 42.8,
+  "variance": 678.1,
+  "thirds": [
+   39.4,
+   45.5,
+   43.4
+  ],
+  "thirds_spread": 6.1,
+  "colors": 54,
+  "issues": []
+ },
+ {
+  "file": "01_sump.png",
+  "mean_lum": 26.8,
+  "variance": 792.2,
+  "thirds": [
+   5.2,
+   44.6,
+   30.8
+  ],
+  "thirds_spread": 39.4,
+  "colors": 47,
+  "issues": []
+ },
+ {
+  "file": "02_corridor_lit.png",
+  "mean_lum": 91.1,
+  "variance": 2220.2,
+  "thirds": [
+   113.3,
+   82.6,
+   77.5
+  ],
+  "thirds_spread": 35.8,
+  "colors": 54,
+  "issues": []
+ },
+ {
+  "file": "02_gallery_drained.png",
+  "mean_lum": 42.9,
+  "variance": 236.6,
+  "thirds": [
+   54.4,
+   44.5,
+   29.8
+  ],
+  "thirds_spread": 24.7,
+  "colors": 38,
+  "issues": []
+ },
+ {
+  "file": "02_pumphall.png",
+  "mean_lum": 46.2,
+  "variance": 922.6,
+  "thirds": [
+   23.9,
+   45.8,
+   68.9
+  ],
+  "thirds_spread": 45.0,
+  "colors": 39,
+  "issues": []
+ },
+ {
+  "file": "02_sump_dark.png",
+  "mean_lum": 26.9,
+  "variance": 186.5,
+  "thirds": [
+   25.9,
+   20.3,
+   34.5
+  ],
+  "thirds_spread": 14.2,
+  "colors": 23,
+  "issues": []
+ },
+ {
+  "file": "02_sump_nest.png",
+  "mean_lum": 14.3,
+  "variance": 255.5,
+  "thirds": [
+   5.3,
+   13.2,
+   24.5
+  ],
+  "thirds_spread": 19.2,
+  "colors": 19,
+  "issues": []
+ },
+ {
+  "file": "03_gate_open.png",
+  "mean_lum": 28.6,
+  "variance": 174.0,
+  "thirds": [
+   31.8,
+   25.1,
+   28.8
+  ],
+  "thirds_spread": 6.7,
+  "colors": 21,
+  "issues": []
+ },
+ {
+  "file": "04_ending.png",
+  "mean_lum": 11.2,
+  "variance": 344.6,
+  "thirds": [
+   10.6,
+   14.9,
+   8.2
+  ],
+  "thirds_spread": 6.8,
+  "colors": 25,
+  "issues": []
+ }
+]

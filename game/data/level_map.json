@@ -1,0 +1,132 @@
+{
+  "meta": {
+    "title": "STILL WATER",
+    "version": 1,
+    "units": "meters",
+    "north": "-Z",
+    "floors": { "street": 3.2, "station": 0, "sump": -3.4 }
+  },
+  "rooms": [
+    {
+      "id": "kiosk",
+      "type": "room",
+      "name": "Street Kiosk",
+      "position": [0, 3.2, -13],
+      "dimensions": [3.4, 2.4, 3.4],
+      "connections": ["stairwell"],
+      "purpose": "Entry & framing: the street, the sign, the door that locks behind you",
+      "objective": null,
+      "landmarks": ["station sign", "street door"],
+      "floorY": 3.2,
+      "audioZone": "street"
+    },
+    {
+      "id": "stairwell",
+      "type": "circulation",
+      "name": "Access Stair",
+      "position": [0, 1.6, -8.7],
+      "dimensions": [2.0, 3.2, 5.1],
+      "connections": ["kiosk", "atrium"],
+      "purpose": "Descent beat: street sound dies, station sound begins",
+      "objective": null,
+      "landmarks": ["handrail", "LEVEL -1 stencil"],
+      "floorY": "ramp 3.2->0",
+      "audioZone": "stair"
+    },
+    {
+      "id": "atrium",
+      "type": "room",
+      "name": "Reception",
+      "position": [0, 0, -3],
+      "dimensions": [8, 3.4, 6.4],
+      "connections": ["stairwell", "corridor"],
+      "purpose": "Orientation: sign, desk, logbook (O1); route south made obvious",
+      "objective": "find_logbook",
+      "landmarks": ["backlit sign", "reception desk", "notice board"],
+      "floorY": 0,
+      "audioZone": "atrium"
+    },
+    {
+      "id": "corridor",
+      "type": "circulation",
+      "name": "Service Corridor",
+      "position": [0, 0, 6.2],
+      "dimensions": [2.6, 2.8, 12],
+      "connections": ["atrium", "pumphall", "breakernook"],
+      "purpose": "Spine with signage; contains the lighting breaker (O2)",
+      "objective": "restore_lights",
+      "landmarks": ["PUMP HALL arrow", "pipe runs", "fire extinguisher"],
+      "floorY": 0,
+      "audioZone": "corridor"
+    },
+    {
+      "id": "breakernook",
+      "type": "alcove",
+      "name": "Breaker Nook",
+      "position": [-2.3, 0, 9.4],
+      "dimensions": [2.0, 2.8, 2.0],
+      "connections": ["corridor"],
+      "purpose": "Dead-end with the lighting breaker + fuse crate + clipboard",
+      "objective": "restore_lights",
+      "landmarks": ["breaker box"],
+      "floorY": 0,
+      "audioZone": "corridor"
+    },
+    {
+      "id": "pumphall",
+      "type": "hall",
+      "name": "Pump Hall",
+      "position": [0, 0, 17.7],
+      "dimensions": [14, 7, 11],
+      "connections": ["corridor", "valvegallery"],
+      "purpose": "HERO room: the running pumps (O3), re-crossed, vertical space",
+      "objective": "investigate_pumps",
+      "landmarks": ["pump trains", "gantry", "control panel", "standby valve"],
+      "floorY": 0,
+      "audioZone": "pumphall"
+    },
+    {
+      "id": "valvegallery",
+      "type": "room",
+      "name": "Valve Gallery",
+      "position": [12, 0, 17.7],
+      "dimensions": [10, 3.2, 6],
+      "connections": ["pumphall", "sump"],
+      "purpose": "Wet puzzle: close intake A, open drain B (O4); water drains",
+      "objective": "drain_gallery",
+      "landmarks": ["valve wheel A", "valve wheel B", "catwalk grating", "water"],
+      "floorY": 0,
+      "waterY": 0.42,
+      "audioZone": "gallery"
+    },
+    {
+      "id": "sump",
+      "type": "room",
+      "name": "Lower Level",
+      "position": [21, -3.4, 18],
+      "dimensions": [12, 3.2, 9],
+      "connections": ["valvegallery", "exitshaft"],
+      "purpose": "The nest (O5), master breaker (O6), the truth",
+      "objective": "search_nest",
+      "landmarks": ["the nest", "sealed tunnel gate", "master breaker", "winch"],
+      "floorY": -3.4,
+      "audioZone": "sump"
+    },
+    {
+      "id": "exitshaft",
+      "type": "shaft",
+      "name": "Service Shaft",
+      "position": [25.3, -0.2, 20.9],
+      "dimensions": [2.6, 6.6, 2.6],
+      "connections": ["sump"],
+      "purpose": "Escape: crank gate (O7), climb to dawn",
+      "objective": "escape",
+      "landmarks": ["service gate", "winch", "ladder", "sky grate"],
+      "floorY": "ramp -3.4->3.2",
+      "audioZone": "shaft"
+    }
+  ],
+  "route": ["kiosk", "stairwell", "atrium", "corridor", "pumphall", "valvegallery", "sump", "exitshaft"],
+  "alternate_routes": ["breakernook dead-end (intentional)"],
+  "worldBounds": { "x": [-9, 29], "y": [-4, 7], "z": [-16, 27] }
+}

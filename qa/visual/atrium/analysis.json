@@ -1,0 +1,112 @@
+{
+ "audit": {
+  "floating": [],
+  "sunk": [],
+  "lone": [
+   {
+    "room": "atrium",
+    "id": "prop",
+    "nearest": 3.3
+   },
+   {
+    "room": "breakernook",
+    "id": "prop",
+    "nearest": 1000000000
+   },
+   {
+    "room": "pumphall",
+    "id": "prop",
+    "nearest": 3.6
+   },
+   {
+    "room": "pumphall",
+    "id": "prop",
+    "nearest": 9.3
+   }
+  ],
+  "repeats": [],
+  "rooms": {
+   "street": {
+    "props": 0,
+    "area": 182
+   },
+   "kiosk": {
+    "props": 0,
+    "area": 14
+   },
+   "stairwell": {
+    "props": 0,
+    "area": 12
+   },
+   "atrium": {
+    "props": 7,
+    "area": 56
+   },
+   "corridor": {
+    "props": 0,
+    "area": 35
+   },
+   "breakernook": {
+    "props": 1,
+    "area": 5
+   },
+   "pumphall": {
+    "props": 8,
+    "area": 157
+   },
+   "valvegallery": {
+    "props": 0,
+    "area": 63
+   },
+   "sump": {
+    "props": 7,
+    "area": 114
+   },
+   "exitshaft": {
+    "props": 0,
+    "area": 8
+   }
+  }
+ },
+ "exposure": {
+  "entry": {
+   "mean_lum": 6.2,
+   "variance": 165.3,
+   "flags": []
+  },
+  "focal": {
+   "mean_lum": 25.5,
+   "variance": 498.3,
+   "flags": []
+  },
+  "path": {
+   "mean_lum": 3.5,
+   "variance": 110.8,
+   "flags": []
+  },
+  "interaction": {
+   "mean_lum": 9.5,
+   "variance": 301.0,
+   "flags": []
+  },
+  "exit": {
+   "mean_lum": 19.3,
+   "variance": 782.2,
+   "flags": []
+  },
+  "secondary": {
+   "mean_lum": 28.7,
+   "variance": 138.4,
+   "flags": []
+  }
+ },
+ "density": {
+  "role": "medium",
+  "props": 7,
+  "area": 56,
+  "m2_per_prop": 8.0,
+  "flag": null
+ },
+ "page_errors": [],
+ "semantic_visual_review": "BLOCKED (no vision runtime) \u2014 human inspection required"
+}

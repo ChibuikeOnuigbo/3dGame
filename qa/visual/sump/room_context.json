@@ -1,0 +1,130 @@
+{
+ "room_id": "sump",
+ "room_name": "Lower Level",
+ "purpose": "nest + story beat; lowest point; gate to shaft",
+ "expected_focal_point": "the nest: bedroll + string lights + radio + crate desk",
+ "expected_player_route": "ramp bottom to nest to gate",
+ "expected_important_objects": [
+  "bedroll",
+  "string lights",
+  "radio",
+  "crate desk",
+  "shelf",
+  "crate stack",
+  "master breaker"
+ ],
+ "expected_lighting": "nest string lights + tomb lamp",
+ "environment_pack": "procedural + ambientCG",
+ "objective": "read_note",
+ "visual_target_reference": "someone lived here",
+ "semantic_visual_review": "BLOCKED (no vision runtime) \u2014 human inspection required",
+ "player_pos_at_capture": {
+  "entry": [
+   19.5,
+   -3.4,
+   15.2
+  ],
+  "focal": [
+   17.4,
+   -3.4,
+   19.9
+  ],
+  "path": [
+   16.66,
+   -3.4,
+   17.08
+  ],
+  "interaction": [
+   18.2,
+   -3.4,
+   20.6
+  ],
+  "exit": [
+   23.2,
+   -3.4,
+   20.9
+  ],
+  "secondary": [
+   19.4,
+   -3.4,
+   21.3
+  ],
+  "vertical": [
+   21.9,
+   -3.4,
+   20.9
+  ]
+ },
+ "views": {
+  "entry": {
+   "camera_feet": [
+    19.5,
+    -3.4,
+    15.2
+   ],
+   "yaw": 3.1416,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "focal": {
+   "camera_feet": [
+    17.4,
+    -3.4,
+    19.9
+   ],
+   "yaw": -2.5,
+   "pitch": 0.05,
+   "capture": "pose"
+  },
+  "path": {
+   "camera_feet": [
+    18.5,
+    -3.4,
+    16.8
+   ],
+   "yaw": 3.5,
+   "pitch": 0.0,
+   "capture": "walk"
+  },
+  "interaction": {
+   "camera_feet": [
+    18.2,
+    -3.4,
+    20.6
+   ],
+   "yaw": 0.4,
+   "pitch": -0.15,
+   "capture": "pose"
+  },
+  "exit": {
+   "camera_feet": [
+    23.2,
+    -3.4,
+    20.9
+   ],
+   "yaw": -1.5708,
+   "pitch": 0.0,
+   "capture": "pose"
+  },
+  "secondary": {
+   "camera_feet": [
+    19.4,
+    -3.4,
+    21.3
+   ],
+   "yaw": 3.1416,
+   "pitch": 0.05,
+   "capture": "pose"
+  },
+  "vertical": {
+   "camera_feet": [
+    21.9,
+    -3.4,
+    20.9
+   ],
+   "yaw": -1.5708,
+   "pitch": 0.75,
+   "capture": "pose"
+  }
+ }
+}

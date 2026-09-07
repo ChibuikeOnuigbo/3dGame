@@ -1,0 +1,220 @@
+{
+  "_meta": {
+    "collected": "2026-09-04",
+    "method": "Sandbox network to youtube.com is BLOCKED (curl 000; yt-dlp unusable). Evidence collected via Arena web-fetch tool from public watch pages: title, channel, duration, views, full description, auto-transcript text where served. No video bytes, frames or thumbnails could be downloaded from the sandbox; thumbnail URLs are recorded for reference. This is honest page-metadata evidence, not fabricated observation.",
+    "duplication_note": "jBDJ5VUi0gs appears once in the supplied list and was processed exactly once.",
+    "tooling": "tools/video_research/*.py (yt-dlp based) is provided for environments where youtube.com is reachable; in this sandbox they self-report BLOCKED."
+  },
+  "videos": [
+    {
+      "id": "GoVNCfBSxPA",
+      "url": "https://www.youtube.com/watch?v=GoVNCfBSxPA",
+      "title": "INFRA Act 1 100% (Full Game All Collectibles No Commentary)",
+      "channel": "Tom Purcell",
+      "duration": "4:30:49",
+      "metadata": "public page metadata collected 2026-09-04",
+      "transcript": "not served for this video (no-caption upload); description with full chapter timestamps captured in research/videos/GoVNCfBSxPA.md",
+      "thumbnail": "https://i.ytimg.com/vi/GoVNCfBSxPA/maxresdefault.jpg (unreachable from sandbox)",
+      "frames": [],
+      "important_segments": [
+        {"t": "1:48", "why": "Office intro: mundane job framing before descent", "category": "STORY"},
+        {"t": "23:00", "why": "Hammer Valley: exterior infrastructure scale", "category": "ENVIRONMENT"},
+        {"t": "43:11", "why": "Dam & national park: machinery in landscape", "category": "LEVEL_DESIGN"},
+        {"t": "1:23:10", "why": "Bergmann Tunnels: dark navigation, signage", "category": "NAVIGATION"},
+        {"t": "2:03:25", "why": "Pumping Station: valve/pump puzzle space", "category": "GAMEPLAY"},
+        {"t": "2:18:56", "why": "Hydroelectric plant: multi-level machine halls", "category": "ARCHITECTURE"},
+        {"t": "2:50:22", "why": "Steel factory: heavy industry art direction", "category": "MATERIALS"},
+        {"t": "3:33:57", "why": "Water treatment: process-chain level flow", "category": "LEVEL_DESIGN"},
+        {"t": "4:22:50", "why": "Sewers finale: escape sequence", "category": "PACING"}
+      ],
+      "status": "METADATA_COMPLETE",
+      "notes": "Primary genre anchor: gun-free first-person infrastructure inspection adventure. Player is a structural analyst; camera tool; decayed public works; environmental storytelling through neglect and documents."
+    },
+    {
+      "id": "hFf9FB8F0dc",
+      "url": "https://www.youtube.com/watch?v=hFf9FB8F0dc",
+      "title": "SOMA (FULL GAME)",
+      "channel": "jacksepticeye",
+      "duration": "6:55:14",
+      "metadata": "public page metadata collected 2026-09-04",
+      "transcript": "auto-transcript served on page; opening apartment sequence sampled (chunk 0 only); NOT archived wholesale",
+      "thumbnail": "https://i.ytimg.com/vi_webp/hFf9FB8F0dc/maxresdefault.webp (unreachable from sandbox)",
+      "frames": [],
+      "important_segments": [
+        {"t": "0:00", "why": "Apartment intro: domestic normality before horror; interactable props teach interaction language", "category": "STORY"},
+        {"t": "~0:10", "why": "Phone/answer machine exposition: optional, diegetic audio logs", "category": "STORY"}
+      ],
+      "status": "METADATA_COMPLETE",
+      "notes": "Story-horror reference: ordinary protagonist, slow reveal, diegetic terminals/notes, one strong philosophical idea carried to an ending payoff."
+    },
+    {
+      "id": "jBDJ5VUi0gs",
+      "url": "https://www.youtube.com/watch?v=jBDJ5VUi0gs",
+      "title": "AMNESIA THE BUNKER Gameplay Walkthrough FULL GAME (4K 60FPS) No Commentary",
+      "channel": "Shirrako",
+      "duration": "1:43:49",
+      "metadata": "public page metadata collected 2026-09-04",
+      "transcript": "none served (no commentary upload by design)",
+      "thumbnail": "https://i.ytimg.com/vi/jBDJ5VUi0gs/maxresdefault.jpg (unreachable from sandbox)",
+      "frames": [],
+      "important_segments": [
+        {"t": "start", "why": "Small semi-open bunker hub with landmark rooms around a central admin room", "category": "LEVEL_DESIGN"},
+        {"t": "mid", "why": "Resource-light emergent horror: threats + physics props + one stalking entity", "category": "HORROR"},
+        {"t": "end", "why": "Escape ending after restoring power/opening exit", "category": "PACING"}
+      ],
+      "status": "METADATA_COMPLETE",
+      "notes": "Compact hub-and-spoke horror level structure. Evidence that a SMALL map (few rooms, strong identity) outperforms a large one."
+    },
+    {
+      "id": "CGYuUc9pPtQ",
+      "url": "https://www.youtube.com/watch?v=CGYuUc9pPtQ",
+      "title": "SCP Containment Breach Safe Gameplay | No Commentary",
+      "channel": "Sesawer",
+      "duration": "1:18:00",
+      "metadata": "public page metadata collected 2026-09-04",
+      "transcript": "garbled auto-transcript served; only announcements sampled",
+      "thumbnail": "https://i.ytimg.com/vi/CGYuUc9pPtQ/hqdefault.jpg (unreachable from sandbox)",
+      "frames": [],
+      "important_segments": [
+        {"t": "intro", "why": "Containment breach alarm: facility turns hostile through PA announcements", "category": "AUDIO"},
+        {"t": "mid", "why": "Door-control quest: repair remote board to open gates", "category": "GAMEPLAY"},
+        {"t": "gate B", "why": "Multiple exit gates create route choice", "category": "NAVIGATION"}
+      ],
+      "status": "METADATA_COMPLETE",
+      "notes": "Facility-horror with door/access-control as core verb; PA voice as guidance + dread."
+    },
+    {
+      "id": "C3upVqVOgrM",
+      "url": "https://www.youtube.com/watch?v=C3upVqVOgrM",
+      "title": "BLACK MESA Full Game Walkthrough - No Commentary",
+      "channel": "RabidRetrospectGames",
+      "duration": "10:18:54",
+      "metadata": "public page metadata collected 2026-09-04",
+      "transcript": "page served JS junk for transcript; ignored",
+      "thumbnail": "https://i.ytimg.com/vi_webp/C3upVqVOgrM/maxresdefault.webp (unreachable from sandbox)",
+      "frames": [],
+      "important_segments": [
+        {"t": "0:00", "why": "Tram ride intro: establishes facility scale and daily normality", "category": "STORY"},
+        {"t": "Anomalous Materials", "why": "Office/lab contrast zones; signage as wayfinding", "category": "LEVEL_DESIGN"},
+        {"t": "Unforeseen Consequences", "why": "Same spaces re-traversed transformed after disaster", "category": "STORY"},
+        {"t": "late", "why": "Rail/industrial sections: machinery hazards, sparse lighting", "category": "ENVIRONMENT"}
+      ],
+      "status": "METADATA_COMPLETE",
+      "notes": "Gold standard for research-facility readability: consistent signage, zone materials, re-traversal with change."
+    },
+    {
+      "id": "mHu6vcsDVL0",
+      "url": "https://www.youtube.com/watch?v=mHu6vcsDVL0",
+      "title": "Portal 2 Full Game (No Commentary) With Extended/hidden Dialogue",
+      "channel": "BadShoesGames",
+      "duration": "3:29:55",
+      "metadata": "public page metadata collected 2026-09-04",
+      "transcript": "not needed; design knowledge drawn from game itself",
+      "thumbnail": "https://i.ytimg.com/vi/mHu6vcsDVL0/maxresdefault.jpg (unreachable from sandbox)",
+      "frames": [],
+      "important_segments": [
+        {"t": "chapters 1-3", "why": "Test-chamber readability: one idea per room, sight-lines to exit", "category": "LEVEL_DESIGN"},
+        {"t": "old Aperture", "why": "Strata of era-design in one facility: visual history without exposition", "category": "ENVIRONMENT"},
+        {"t": "finale", "why": "Escalation then relief: pacing curve", "category": "PACING"}
+      ],
+      "status": "METADATA_COMPLETE",
+      "notes": "Player-guidance masterclass: light, geometry and negative space point at the solution; never an arrow."
+    },
+    {
+      "id": "R8gzbOtyodM",
+      "url": "https://www.youtube.com/watch?v=R8gzbOtyodM",
+      "title": "OUTLAST 2 | Full Game Movie | NIGHTMARE Difficulty",
+      "channel": "HGH Horror Games House",
+      "duration": "4:06:20",
+      "metadata": "public page metadata collected 2026-09-04",
+      "transcript": "none (no commentary upload)",
+      "thumbnail": "https://i.ytimg.com/vi_webp/R8gzbOtyodM/maxresdefault.webp (unreachable from sandbox)",
+      "frames": [],
+      "important_segments": [
+        {"t": "opening", "why": "Camcorder/night-vision as core visibility mechanic", "category": "GAMEPLAY"},
+        {"t": "various", "why": "Battery/resource tension loop", "category": "PACING"}
+      ],
+      "status": "METADATA_COMPLETE",
+      "notes": "Cautionary + instructive: night-vision mechanic is strong; constant chase intensity is the cited weakness (frustration spikes). Restraint lesson."
+    },
+    {
+      "id": "jPU-mvM_OSQ",
+      "url": "https://www.youtube.com/watch?v=jPU-mvM_OSQ",
+      "title": "Outlast First five minutes of gameplay (No commentary)",
+      "channel": "Shadowy Mist",
+      "duration": "05:00",
+      "metadata": "public page metadata collected 2026-09-04",
+      "transcript": "described-audio transcript served and captured (opening beats)",
+      "thumbnail": "https://i.ytimg.com/vi/jPU-mvM_OSQ/maxresdefault.jpg (unreachable from sandbox)",
+      "frames": [],
+      "important_segments": [
+        {"t": "0:00-5:00", "why": "Five-minute horror intro anatomy: car radio normality -> gate -> sign reveal -> silhouette in window -> lights die -> forced entry -> first blood", "category": "HORROR"},
+        {"t": "0:30", "why": "Sign 'Mount Massive Asylum' establishes place before interior", "category": "STORY"}
+      ],
+      "status": "METADATA_COMPLETE",
+      "notes": "Best pacing reference: exact beat structure of an effective horror opening in 5 minutes."
+    },
+    {
+      "id": "goJaqtAnJFQ",
+      "url": "https://www.youtube.com/watch?v=goJaqtAnJFQ",
+      "title": "Alien Isolation Walkthrough Part 1 [1080p HD PC ULTRA] No Commentary",
+      "channel": "MKIceAndFire",
+      "duration": "55:25",
+      "metadata": "public page metadata collected 2026-09-04",
+      "transcript": "opening mission transcript served; sampled for story beats",
+      "thumbnail": "https://i.ytimg.com/vi/goJaqtAnJFQ/maxresdefault.jpg (unreachable from sandbox)",
+      "frames": [],
+      "important_segments": [
+        {"t": "0:00", "why": "Nostromo log recap: story so far in diegetic audio", "category": "STORY"},
+        {"t": "Torrens", "why": "Domestic ship interior before station: contrast zones", "category": "ENVIRONMENT"},
+        {"t": "Sevastopol approach", "why": "Damaged station seen from outside: scale + dread before entry", "category": "ARCHITECTURE"},
+        {"t": "spacewalk", "why": "Transition set-piece between chapters", "category": "PACING"},
+        {"t": "terminal logs", "why": "PA/announcements + personal logs as world texture", "category": "AUDIO"}
+      ],
+      "status": "METADATA_COMPLETE",
+      "notes": "Retro-tech station craft: analog switches, CRT terminals, sector signage - strong reference for interactable machinery UI language."
+    },
+    {
+      "id": "bz4MuYw8FBA",
+      "url": "https://www.youtube.com/watch?v=bz4MuYw8FBA",
+      "title": "Phasmophobia 4K/60fps Gameplay No Commentary",
+      "channel": "SHN Survival Horror Network",
+      "duration": "1:04:03",
+      "metadata": "public page metadata collected 2026-09-04",
+      "transcript": "none",
+      "thumbnail": "https://i.ytimg.com/vi/bz4MuYw8FBA/maxresdefault.jpg (unreachable from sandbox)",
+      "frames": [],
+      "important_segments": [
+        {"t": "van", "why": "Equipment staging area as safe zone/contrast", "category": "LEVEL_DESIGN"},
+        {"t": "investigation", "why": "Tool-driven evidence loop: each device answers one question", "category": "GAMEPLAY"},
+        {"t": "hunt", "why": "Danger phase triggered by player action, not timer", "category": "PACING"}
+      ],
+      "status": "METADATA_COMPLETE",
+      "notes": "Evidence-collection loop reference: objectives with distinct tool interactions and a journal. Single-building scope."
+    },
+    {
+      "id": "to032deYr-Q",
+      "url": "https://youtu.be/to032deYr-Q",
+      "title": "Making Counter Strike in JavaScript because why not",
+      "channel": "iercan (author of enari-engine)",
+      "duration": "26:31",
+      "metadata": "public page metadata collected 2026-09-04",
+      "transcript": "full devlog transcript served; key excerpts captured in research/videos/to032deYr-Q.md",
+      "thumbnail": "https://i.ytimg.com/vi/to032deYr-Q/maxresdefault.jpg (unreachable from sandbox)",
+      "frames": [],
+      "important_segments": [
+        {"t": "1:39", "why": "Pointer lock + scene bootstrap", "category": "GAMEPLAY"},
+        {"t": "2:34", "why": "Player class owns position; camera follows player (not vice versa)", "category": "ARCHITECTURE"},
+        {"t": "3:00", "why": "Physics: capsule collider prevents edge-snagging", "category": "COLLISION-equivalent/PERFORMANCE"},
+        {"t": "4:59", "why": "Trimesh collider from imported map: Blender as map editor", "category": "ARCHITECTURE"},
+        {"t": "6:30", "why": "rAF as the single game loop", "category": "PERFORMANCE"},
+        {"t": "7:58", "why": "Viewmodel bob/sway from velocity, smoothed with lerp", "category": "ANIMATION"},
+        {"t": "9:20", "why": "Texture downsizing 3MB->140KB (95% cut) for load times", "category": "PERFORMANCE"},
+        {"t": "11:32", "why": "Memory leak: dispose when switching models", "category": "PERFORMANCE"},
+        {"t": "24:27", "why": "Post-processing pass", "category": "MATERIALS"}
+      ],
+      "status": "METADATA_COMPLETE",
+      "notes": "THE technical anchor: written by the author of the top-trusted repo. Validates: physics-engine player controller, capsule collider, rAF loop, disposal discipline, viewmodel attached to camera."
+    }
+  ]
+}
