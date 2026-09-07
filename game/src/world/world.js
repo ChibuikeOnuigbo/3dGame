@@ -8,6 +8,8 @@
 // - Rooms are 3D rects for room detection / audio zones / QA.
 
 import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 import { makeSignTexture, makePaperTexture, makeChainLinkTexture } from "./materials.js";
 import { Door } from "./doors.js";
 import * as kit from "./kit.js";
@@ -243,21 +245,65 @@ export class World {
       [-26, 10, -34], [-12, 16, -40], [4, 13, -36], [18, 9, -32], [28, 14, -26],
       [-24, 8, -18], [-27, 12, -4], [37, 11, -6], [36, 16, 10], [-21, 9, 8],
     ];
-    for (const [bx, bh, bz] of blocks) {
-      const bw = 7 + ((Math.abs(bx) * 7 + Math.abs(bz) * 3) % 5);
-      const bd = 5 + ((Math.abs(bz) * 5 + Math.abs(bx)) % 4);
-      const bld = new THREE.Mesh(new THREE.BoxGeometry(bw, bh, bd), skyMat);
-      bld.position.set(bx, 3.2 + bh / 2, bz);
-      this.scene.add(bld);
-      const nWin = 2 + ((Math.abs(bx) + Math.abs(bz)) & 3);
-      for (let i = 0; i < nWin; i++) {
-        const win = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 0.7), winMat);
-        win.position.set(
-          bx - bw / 2 + 1.2 + ((i * 3.1 + bh) % Math.max(1, bw - 2.4)),
-          3.2 + 2 + ((i * 2.7 + Math.abs(bz)) % Math.max(1, bh - 3)),
-          bz + bd / 2 + 0.06
-        );
-        this.scene.add(win);
+    // Surroundings pass 2026-09-08 (reference direction: Mirror's Edge /
+    // Spider-Man / Cyberpunk city depth — foreground/midground/background
+    // layers, rooftop machinery, atmospheric perspective). All silhouettes
+    // are 25m+ outside the playable bounds: no colliders, no lights, cheap
+    // basic materials. Layered bands give the horizon real depth instead of
+    // one row of blocks.
+    const bands = [
+      { list: blocks, tint: 0x3a4350 }, // near band (existing)
+      { list: [ // far band: taller, hazier towers
+          [-44, 26, -58], [-16, 34, -66], [10, 30, -62], [34, 24, -52], [52, 38, -40],
+          [-48, 22, -10], [-42, 30, 16], [46, 28, 22], [40, 20, 40], [-30, 24, 42],
+        ], tint: 0x2e3745 },
+    ];
+    const winMatCool = new THREE.MeshBasicMaterial({ color: 0xbfd4ff });
+    for (const band of bands) {
+      const mat = band.tint === 0x3a4350 ? skyMat : new THREE.MeshStandardMaterial({ color: band.tint, roughness: 0.95 });
+      for (const [bx, bh, bz] of band.list) {
+        const bw = 7 + ((Math.abs(bx) * 7 + Math.abs(bz) * 3) % 5);
+        const bd = 5 + ((Math.abs(bz) * 5 + Math.abs(bx)) % 4);
+        const bld = new THREE.Mesh(new THREE.BoxGeometry(bw, bh, bd), mat);
+        bld.position.set(bx, 3.2 + bh / 2, bz);
+        this.scene.add(bld);
+        // rooftop machinery silhouettes (HVAC, tanks, masts) — the reference
+        // skylines are defined by cluttered rooflines, not clean boxes
+        const roofY = 3.2 + bh;
+        const rn = (Math.abs(bx) + Math.abs(bz)) % 4;
+        for (let r = 0; r < rn; r++) {
+          const rx = bx + ((r * 2.3 + bz) % Math.max(1, bw - 2)) - bw / 2 + 1;
+          const rz = bz + ((r * 1.7 + bx) % Math.max(1, bd - 2)) - bd / 2 + 1;
+          const kind = (r + Math.abs(bx)) % 3;
+          if (kind === 0) { // HVAC box
+            const hv = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.1, 1.3), mat);
+            hv.position.set(rx, roofY + 0.55, rz);
+            this.scene.add(hv);
+          } else if (kind === 1) { // water tank
+            const tk = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, 1.7, 8), mat);
+            tk.position.set(rx, roofY + 0.85, rz);
+            this.scene.add(tk);
+          } else { // antenna mast + beacon
+            const ms = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.08, 3.4, 5), mat);
+            ms.position.set(rx, roofY + 1.7, rz);
+            this.scene.add(ms);
+            const bc = new THREE.Mesh(new THREE.SphereGeometry(0.09, 6, 5),
+              new THREE.MeshBasicMaterial({ color: 0xff4444 }));
+            bc.position.set(rx, roofY + 3.4, rz);
+            this.scene.add(bc);
+          }
+        }
+        // sparse lit windows (warm + cool mix)
+        const nWin = 2 + ((Math.abs(bx) + Math.abs(bz)) & 3);
+        for (let i = 0; i < nWin; i++) {
+          const win = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 0.7), i % 3 === 2 ? winMatCool : winMat);
+          win.position.set(
+            bx - bw / 2 + 1.2 + ((i * 3.1 + bh) % Math.max(1, bw - 2.4)),
+            3.2 + 2 + ((i * 2.7 + Math.abs(bz)) % Math.max(1, bh - 3)),
+            bz + bd / 2 + 0.06
+          );
+          this.scene.add(win);
+        }
       }
     }
 
@@ -365,7 +411,7 @@ export class World {
     // QA 2026-09-07: parcel edges were uniform-black past the single sodium
     // lamp's pool — corner lamps keep the fence line legible as environment.
     for (const [lx, lz] of [[-9.6, -19.6], [9.6, -19.6]]) {
-      this.light(lx, 5.4, lz, { color: 0xffb45e, intensity: 10, distance: 14, circuit: "always" });
+      this.light(lx, 5.4, lz, { color: 0xffb45e, intensity: 10, distance: 14, circuit: "service" });
       const bulb = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.05, 0.14), this.mats.get("glowWarm").clone());
       bulb.position.set(lx, 5.35, lz);
       this.scene.add(bulb);
@@ -464,7 +510,96 @@ export class World {
       void ex; void ez;
     }
     // curb — visual only (collider swept players off the stair ramp; QA-found)
-    this.slab(-10, 10, 3.2, 3.3, -10.9, -10.4, this.mats.get("concreteDark"), { cast: false, collide: false });
+    // QA 2026-09-08: the curb used to span the FULL width x -10..10, roofing
+    // the stairwell opening (x -1.3..1.3) at head height with a no-collision
+    // slab — players descending the stair walked into a floating concrete
+    // strip. Split into two segments so the stair shaft stays clear.
+    this.slab(-10, -1.3, 3.2, 3.3, -10.9, -10.4, this.mats.get("concreteDark"), { cast: false, collide: false });
+    this.slab(1.3, 10, 3.2, 3.3, -10.9, -10.4, this.mats.get("concreteDark"), { cast: false, collide: false });
+
+    this._streetProps();
+  }
+
+  // Research session 3 (2026-09-07): real CC0/CC-BY glTF props from the
+  // Khronos glTF-Sample-Assets set (acquired via GitHub sparse clone — see
+  // research/download-manifest.json). Additive street dressing; every prop
+  // gets a matching AABB collider so nothing reads as a walk-through ghost.
+  _streetProps() {
+    // fridge against the east kerb, facing the roadway (CC-BY Eric Chadwick)
+    this._gltfProp("assets/models/CommercialRefrigerator.glb", 6.45, 3.2, -13.4, -Math.PI / 2, { dim: "height", size: 1.95, solid: true });
+    // traffic cones on the tarmac (CC-BY hinndia)
+    this._gltfProp("assets/models/TrafficCone/TrafficCone.gltf", 2.6, 3.2, -12.3, 0.5, { dim: "height", size: 0.62, solid: false });
+    this._gltfProp("assets/models/TrafficCone/TrafficCone.gltf", -3.4, 3.2, -17.3, -1.2, { dim: "height", size: 0.62, solid: false });
+    // abandoned toy car near the west kerb (CC0 Guido Odendahl)
+    this._gltfProp("assets/models/ToyCar.glb", -5.1, 3.2, -12.6, 0.4, { dim: "length", size: 0.46, solid: false });
+    // boombox on the kiosk floor beside the meter box (CC0 Microsoft)
+    this._gltfProp("assets/models/BoomBox.glb", 1.15, 3.2, -12.15, Math.PI * 0.75, { dim: "length", size: 0.5, solid: false });
+  }
+
+  // Loads one glTF prop, normalizes it to `size` along `dim` ("height" |
+  // "length"), grounds it at y, and registers a collider matching its
+  // footprint. Failures are warnings only — the world must never break
+  // because a dressing prop 404s.
+  _gltfProp(url, x, y, z, yaw, { dim = "height", size = 1, solid = false } = {}) {
+    this.propsPending = (this.propsPending || 0) + 1;
+    const loader = new GLTFLoader();
+    loader.setMeshoptDecoder(MeshoptDecoder);
+    loader.load(url, (gltf) => {
+      this.propsPending--;
+      const root = gltf.scene;
+      // bbox from MESHES only — some GLBs carry far-away helper nodes
+      // (cameras/lights/empties) that would inflate the collider absurdly.
+      const meshBoxes = (obj) => {
+        const list = [];
+        obj.updateWorldMatrix(true, true);
+        obj.traverse((o) => {
+          if (!o.isMesh) return;
+          o.castShadow = false;
+          o.receiveShadow = true;
+          const g = o.geometry;
+          if (!g.boundingBox) g.computeBoundingBox();
+          list.push(g.boundingBox.clone().applyMatrix4(o.matrixWorld));
+        });
+        return list;
+      };
+      const unionBox = (boxes, maxSize) => {
+        const b = new THREE.Box3();
+        for (const bx of boxes) {
+          const ext = bx.getSize(new THREE.Vector3());
+          // Sketchfab-style exports often include a giant ground "Plane"
+          // mesh — never let a dressing prop's collider/size derive from it.
+          if (Math.max(ext.x, ext.y, ext.z) > maxSize) continue;
+          b.union(bx);
+        }
+        return b;
+      };
+      const cap = Math.max(size * 6, 3);
+      const bb = unionBox(meshBoxes(root), cap);
+      const cur = dim === "height" ? bb.max.y - bb.min.y : Math.max(bb.max.x - bb.min.x, bb.max.z - bb.min.z);
+      const s = cur > 0 ? size / cur : 1;
+      root.scale.setScalar(s);
+      const bb2 = unionBox(meshBoxes(root), cap);
+      const cx = (bb2.min.x + bb2.max.x) / 2, cz = (bb2.min.z + bb2.max.z) / 2;
+      // re-center inside a wrapper so yaw rotates around the prop's own center
+      root.position.set(-cx, -bb2.min.y, -cz);
+      const wrap = new THREE.Group();
+      wrap.add(root);
+      wrap.position.set(x, y, z);
+      wrap.rotation.y = yaw;
+      this.scene.add(wrap);
+      const bb3 = unionBox(meshBoxes(wrap), cap);
+      const pad = solid ? 0.02 : 0.0;
+      this.colliders.push({
+        box: new THREE.Box3(
+          new THREE.Vector3(bb3.min.x - pad, bb3.min.y, bb3.min.z - pad),
+          new THREE.Vector3(bb3.max.x + pad, bb3.max.y, bb3.max.z + pad)
+        ),
+        active: true, soft: !solid, tag: "prop",
+      });
+    }, undefined, (err) => {
+      this.propsPending--;
+      console.warn(`[world] optional prop failed to load: ${url} (${err?.message || err})`);
+    });
   }
 
   _kiosk() {
@@ -510,7 +645,7 @@ export class World {
     // kiosk interior lamp so the first room isn't a black box
     const kl = kit.wallLamp(m, { on: true });
     this.place(kl, -1.7, 4.6, -13.0, Math.PI / 2, { collide: false });
-    this.light(0, 5.0, -13.0, { color: 0xdfe8ff, intensity: 5, distance: 6, circuit: "always" });
+    this.light(0, 5.0, -13.0, { color: 0xdfe8ff, intensity: 5, distance: 6, circuit: "lighting" });
     this.room({ id: "kiosk", name: "Street Kiosk", min: [-1.85, 3.2, -14.85], max: [1.85, 5.6, -11.15], zone: "street" });
   }
 
@@ -544,7 +679,7 @@ export class World {
     const lamp = kit.wallLamp(m, { on: true });
     this.place(lamp, -1.0, 3.6, -8.5, Math.PI / 2, { collide: false });
     const fx = this.makeToggleable(lamp);
-    this.light(-0.7, 3.5, -8.5, { color: 0xffd9a0, intensity: 4, distance: 7, circuit: "emergency" });
+    this.light(-0.7, 3.5, -8.5, { color: 0xffd9a0, intensity: 4, distance: 7, circuit: "lighting" });
     // stencil
     const sten = kit.signPlane(m, makeSignTexture(["LEVEL -1"], { w: 256, h: 96, color: "#cfd6cf", bg: "#20241f", size: 34 }), 0.9, 0.34);
     sten.position.set(1.0, 2.8, -9.5);
@@ -667,7 +802,7 @@ export class World {
     const f = kit.fluorescentFixture(m, { on: true });
     this.place(f, -2.4, 2.72, 9.4, 0, { collide: false });
     this.fixtures.push({ ...this.makeToggleable(f), room: "nook" });
-    this.light(-2.4, 2.4, 9.4, { color: 0xdfe8ff, intensity: 5, distance: 7, circuit: "emergency" });
+    this.light(-2.4, 2.4, 9.4, { color: 0xdfe8ff, intensity: 5, distance: 7, circuit: "lighting" });
 
     // fuse crate + clipboard
     this.place(kit.crate(m, 0.55), -2.9, 0, 8.9, 0.2);
@@ -723,13 +858,16 @@ export class World {
     // QA 2026-09-07: OpenCV flagged the gantry end as a 31% uniform-black
     // mass (fixtures there are on the dead lighting circuit). Small always-on
     // lamps so the platform and its rail read at night.
-    this.light(4.4, 3.4, 14.4, { color: 0xffd9a0, intensity: 5, distance: 7, circuit: "always" });
-    this.light(4.4, 3.4, 21.4, { color: 0xffd9a0, intensity: 5, distance: 7, circuit: "always" });
-    // stair onto gantry: steps rise eastward along the north wall, landing meets the deck
+    this.light(4.4, 3.4, 14.4, { color: 0xffd9a0, intensity: 5, distance: 7, circuit: "lighting" });
+    this.light(4.4, 3.4, 21.4, { color: 0xffd9a0, intensity: 5, distance: 7, circuit: "lighting" });
+    // stair onto gantry: steps rise EASTWARD toward the landing/deck
+    // (QA 2026-09-08: the step line was mirrored — low steps sat at the
+    // landing end, so the stairs visually climbed AWAY from the deck while
+    // the ground ramp climbed toward it.)
     const gsteps = new THREE.Group();
     for (let i = 0; i < 8; i++) {
       const st = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.33, 1.1), m.variant("metalRaw", 1, 1));
-      st.position.set(3.55 - i * 0.42, 0.16 + i * 0.325, 12.9);
+      st.position.set(0.61 + i * 0.42, 0.16 + i * 0.325, 12.9);
       st.receiveShadow = true;
       gsteps.add(st);
     }
@@ -971,7 +1109,7 @@ export class World {
     str.position.set(18.6, -0.9, 18.5);
     this.scene.add(str);
     this.stringLights = str;
-    this.light(17.6, -1.2, 19.5, { color: 0xffc98a, intensity: 11, distance: 11, circuit: "nest" });
+    this.light(17.6, -1.2, 19.5, { color: 0xffc98a, intensity: 11, distance: 11, circuit: "service" });
 
     // barrels NE + salvaged pipe
     this.place(kit.barrel(m), 26.3, -3.4, 14.4, 0);
@@ -1003,7 +1141,7 @@ export class World {
     // switchback ramps: 3 flights 45deg, landings
     // chimney lamps (visual QA: switchbacks read as a black void without them)
     this.place(kit.wallLamp(m, { on: true }), 26.45, -2.4, 19.78, Math.PI, { collide: false });
-    this.light(26.3, -2.2, 20.3, { color: 0xffd9a0, intensity: 8, distance: 7, circuit: "emergency" });
+    this.light(26.3, -2.2, 20.3, { color: 0xffd9a0, intensity: 8, distance: 7, circuit: "service" });
     this.place(kit.wallLamp(m, { on: true }), 26.45, 0.4, 19.78, Math.PI, { collide: false });
     this.light(26.3, 0.6, 20.3, { color: 0xffd9a0, intensity: 8, distance: 7, circuit: "emergency" });
     this.place(kit.wallLamp(m, { on: true }), 26.45, 3.3, 19.78, Math.PI, { collide: false });
@@ -1011,9 +1149,9 @@ export class World {
     // mid-chimney fill + gate-approach lamp (visual QA recapture: west-facing
     // landings and the winch read at mean-luma 0.4-2.4 with east-wall lamps
     // alone — the climb must be readable from every leg, not just from east)
-    this.light(26.0, 0.2, 21.2, { color: 0xffd9a0, intensity: 6, distance: 6, circuit: "emergency" });
+    this.light(26.0, 0.2, 21.2, { color: 0xffd9a0, intensity: 6, distance: 6, circuit: "service" });
     this.place(kit.wallLamp(m, { on: true }), 24.3, -1.7, 19.72, Math.PI, { collide: false });
-    this.light(24.4, -1.6, 20.4, { color: 0xffd9a0, intensity: 5, distance: 5, circuit: "emergency" });
+    this.light(24.4, -1.6, 20.4, { color: 0xffd9a0, intensity: 5, distance: 5, circuit: "service" });
     // step-edge markers: high-visibility strips along each ramp's outer edge
     // every 0.55m of climb (visual QA: the 45deg flights were invisible)
     const marks = (xa, xb, z, y0, y1) => {

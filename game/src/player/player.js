@@ -46,6 +46,10 @@ export class Player {
     this.camera.add(this.lamp);
     this.camera.add(this.lampTarget);
     this.lamp.position.set(0.15, -0.2, 0.1); // beam origin at the torch (right hand, matches the viewmodel)
+    // QA 2026-09-08: target was left at the camera origin, so the beam aimed
+    // up-and-back toward the player's own face instead of forward — the light
+    // pool visibly detached from the torch. Aim it down-range from the hand.
+    this.lampTarget.position.set(0.1, -0.75, -8);
     this.lamp.target = this.lampTarget;
 
     // viewmodel lamp body

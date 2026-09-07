@@ -127,8 +127,16 @@ export class Door {
       if (this.onLockedSound) this.onLockedSound();
       return { locked: true, message: this.lockedMessage };
     }
-    if (this.state === "opening" || this.state === "closing") return { busy: true };
-    if (this.state === "closed" || this.state === "closing") this.open();
+    if (this.state === "opening") {
+      // mid-swing reversal (QA 2026-09-08): pressing E while the leaf is
+      // still opening must flip it to closing, not be ignored as "busy".
+      if (playerPos && this.playerInThreshold(playerPos)) return { ok: true };
+      this.state = "closing";
+      if (this.onCloseSound) this.onCloseSound();
+      return { ok: true };
+    }
+    if (this.state === "closing") { this.state = "opening"; return { ok: true }; }
+    if (this.state === "closed") this.open();
     else this.close(playerPos);
     return { ok: true };
   }

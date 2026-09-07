@@ -106,5 +106,72 @@
    "author": "Fantozzi",
    "note": "copied from research/github/repos/fps-asset-kit; wired into game/src/audio/audio.js"
   }
+ },
+ {
+  "asset": "TrafficCone (glTF+bin+2 png)",
+  "source": "KhronosGroup/glTF-Sample-Assets",
+  "route": "git_sparse_clone",
+  "status": "success",
+  "http_status": 200,
+  "content_type": "model/gltf+json",
+  "bytes": 876559,
+  "sha256": {
+   "ConeBaseMat_baseColor.png": "60b5e141e8647ee7ad129a324e3fa7da6f64aa731ccb04fe2e7f53ff7aba0997",
+   "ConeBaseMat_metallicRoughness.png": "47858fedcda585cab244e3e7c131f2d7b05a7d0e3ff7e7f80ffbc4f0d9bee4fd",
+   "TrafficCone.bin": "57b3ab27d1215a5a5d6ca09fbb7edb54eaeeb3e39161f92e5d61c5b379fbb29a",
+   "TrafficCone.gltf": "eac1a6f82226fd482c18560ec8d0a3fc58b2fb2c23385c6ce1286d92312ce0b0"
+  },
+  "local_path": "game/public/assets/models/TrafficCone/",
+  "license": "CC-BY-4.0",
+  "author": "hinndia",
+  "timestamp": "2026-09-07T14:56:06"
+ },
+ {
+  "asset": "WaterBottle.glb (research copy)",
+  "source": "KhronosGroup/glTF-Sample-Assets",
+  "route": "git_sparse_clone",
+  "status": "success",
+  "http_status": 200,
+  "content_type": "application/octet-stream",
+  "bytes": 8966700,
+  "sha256": "b337e526fd6a162013c2984aeec163f5fbb4f717252724dfc3f3458bd51df94b",
+  "local_path": "research/assets/models/WaterBottle.glb",
+  "license": "CC0-1.0",
+  "author": "Microsoft (via Khronos glTF samples)",
+  "timestamp": "2026-09-07T14:56:06"
+ },
+ {
+  "asset": "Lantern.glb (research copy)",
+  "source": "KhronosGroup/glTF-Sample-Assets",
+  "route": "git_sparse_clone",
+  "status": "success",
+  "http_status": 200,
+  "content_type": "application/octet-stream",
+  "bytes": 9564264,
+  "sha256": "a79458c4b02d695187a952f23a63b8bf278e7bc3d316a3c2a314f2d6974181f1",
+  "local_path": "research/assets/models/Lantern.glb",
+  "license": "CC0-1.0",
+  "author": "Microsoft / Frank Galligan (via Khronos glTF samples)",
+  "timestamp": "2026-09-07T14:56:06"
+ },
+ {
+  "asset": "uisfx mechanical UI set (5 ogg)",
+  "source": "npm registry: uisfx@0.4.0",
+  "route": "npm_tarball",
+  "status": "success",
+  "http_status": 200,
+  "content_type": "audio/ogg",
+  "bytes": 16378,
+  "sha256": {
+   "mech-complete.ogg": "a23161be8b9feb590163bd60c24d1d4d62a374f2769cc6380db6664a933836e5",
+   "mech-error.ogg": "31bf051442f9201e0f3d63c9a40d55a6e9fbc247d63122585c1b49af5a3fc631",
+   "mech-open.ogg": "d3f87915c268f92580a598d544599d47c7b588033e1662435196fc81d874431c",
+   "mech-toggle-on.ogg": "f92386a070f4dfac7ac26cae75f2c08b2366d92c6003ba52812f8fdf6f2efc8b",
+   "mech-unlock.ogg": "67e67f6f9fc921f6a1abf9b71b6b607f1f5f8a728e9a7c00fefa15172cef901b"
+  },
+  "local_path": "game/public/sfx/ui/",
+  "license": "CC0-1.0 (audio)",
+  "author": "Yuki Capital / romainsimon (uisfx)",
+  "timestamp": "2026-09-07T14:56:06"
  }
 ]

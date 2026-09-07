@@ -64,6 +64,17 @@ export class InteractSystem {
     const prev = this.target;
     this.target = this.player.enabled || this.player.noclip ? this.bestTarget() : null;
     if (this.target !== prev && this.ui) this.ui.promptChanged(this.target, prev);
+    // dynamic verbs (e.g. "Open door" → "Close door"): re-render when the
+    // resolved text changes even though the target object is the same.
+    if (this.target && this.ui && typeof this.target.verb === "function") {
+      const txt = this.target.verb();
+      if (txt !== this._lastVerbText) {
+        this._lastVerbText = txt;
+        if (this.target === prev) this.ui.promptChanged(this.target);
+      }
+    } else {
+      this._lastVerbText = this.target ? this.target.verb : null;
+    }
 
     const item = this.target;
     if (!item) {

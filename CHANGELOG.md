@@ -146,3 +146,12 @@ against colliders, doors and rooms. Findings and fixes:
 
 Final gates: verify_world 16/16, critical_path 40/40, ghost scan 0 open
 cells / 0 invisible walls, OpenCV black-wall flags NONE.
+
+## 2026-09-08 (turn 6) — user bug list closed + HDR/surroundings pass
+- Street curb split (±1.3 m gap) so the down-stair shaft is no longer roofed by a non-colliding slab.
+- Gantry stair steps un-mirrored (0.61 + i*0.42).
+- Torch beam aligned forward/down (lampTarget (0.1, -0.75, -8)).
+- Doors: function verbs ("Close door" when open/opening), prompt re-renders on verb change, mid-swing E reversal.
+- Lighting circuits: 10 lamps on "lighting" breaker (default OFF), 5 on "service" (OFF); sump torch-only.
+- Surroundings/HDR pass: far skyline band + rooftop HVAC/tank/mast silhouettes + warm/cool window mix (reference list: research/environment-reference.md).
+- QA: verify_world 16/16, critical_path 40/40, ghost scan open=0/invisible=0. VISUAL_APPROVAL remains FALSE (human/vision sign-off pending).

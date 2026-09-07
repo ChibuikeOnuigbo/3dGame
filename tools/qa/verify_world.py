@@ -28,6 +28,12 @@ try:
     page.wait_for_function("() => window.swQA && window.swQA.ready().loaded", timeout=60000)
     page.evaluate("() => window.swQA.start()")
     page.wait_for_function("() => window.swQA.ready().started", timeout=30000)
+    # async GLTF street props: wait for the loader queue to drain (props are
+    # optional — a stall here must not kill the run, so cap at 30s).
+    try:
+        page.wait_for_function("() => (window.game.world.propsPending || 0) === 0", timeout=30000)
+    except Exception:
+        stderr("warn: propsPending did not drain in 30s; continuing")
     page.wait_for_timeout(1500)
 
     # ---- torch model ----
@@ -99,7 +105,7 @@ try:
     page.wait_for_function(
         "() => window.game.world.doors.get('door_d1').door.state === 'open'", timeout=30000)
     page.keyboard.down("KeyW")
-    page.wait_for_timeout(5200)  # SwiftShader runs ~3 fps — budget real frames
+    page.wait_for_timeout(16000)  # SwiftShader fps varies 0.5-3; budget real frames
     page.keyboard.up("KeyW")
     pos = page.evaluate("() => window.game.player.pos.toArray().map(v => +v.toFixed(2))")
     check("walk_through_open_door", pos[2] < -0.2, f"pos={pos}")
