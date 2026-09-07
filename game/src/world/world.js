@@ -188,20 +188,35 @@ export class World {
   }
 
   _bounds() {
+    // Enclosure colliders ONLY (user QA 2026-09-07: the previous visible
+    // bounds — four 14m near-black "trim" walls around the whole map — were
+    // THE "black wall": light-reactive, spanning every view past the fence,
+    // and unreachable behind the fence so they felt non-collidable. Collision
+    // is kept (the player can never leave the map — box colliders, no
+    // meshes); the horizon now opens to the sky dome + distant skyline.)
     const b = { x: [-9.5, 28.5], y: [-4.5, 8], z: [-20.5, 23.5] };
-    const mk = (cx, cy, cz, sx, sy, sz) => this.box(cx, cy, cz, sx, sy, sz, this.mats.get("trim"), { collide: true, cast: false, receive: false });
-    mk((b.x[0] - 1), 2, 2, 2, 14, 50);
-    mk((b.x[1] + 1), 2, 2, 2, 14, 50);
-    mk(9, 2, (b.z[0] - 1), 40, 14, 2);
-    mk(9, 2, (b.z[1] + 1), 40, 14, 2);
+    const wall = (cx, cz, sx, sz) => {
+      const sy = 14, cy = 2;
+      this.colliders.push({
+        box: new THREE.Box3(
+          new THREE.Vector3(cx - sx / 2, cy - sy / 2, cz - sz / 2),
+          new THREE.Vector3(cx + sx / 2, cy + sy / 2, cz + sz / 2)
+        ),
+        active: true,
+      });
+    };
+    wall(b.x[0] - 1, 2, 2, 50);
+    wall(b.x[1] + 1, 2, 2, 50);
+    wall(9, b.z[0] - 1, 40, 2);
+    wall(9, b.z[1] + 1, 40, 2);
     // street side sky dome
     const sky = new THREE.Mesh(
       new THREE.SphereGeometry(55, 24, 16),
       new THREE.ShaderMaterial({
         side: THREE.BackSide,
         uniforms: {
-          top: { value: new THREE.Color(0x0a1224) },
-          bottom: { value: new THREE.Color(0x2c2320) },
+          top: { value: new THREE.Color(0x14203a) },
+          bottom: { value: new THREE.Color(0x5c4a38) }, // sodium city haze — horizon must read as environment, not a black sheet (user QA)
         },
         vertexShader: "varying vec3 vP; void main(){ vP = position; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }",
         fragmentShader: "varying vec3 vP; uniform vec3 top; uniform vec3 bottom; void main(){ float h = clamp(normalize(vP).y*0.5+0.5,0.,1.); gl_FragColor = vec4(mix(bottom, top, pow(h,0.7)),1.0); }",
@@ -210,6 +225,35 @@ export class World {
     sky.position.set(0, 3, -13);
     this.scene.add(sky);
     this.sky = sky;
+
+    // distant skyline (user QA: after removing the in-parcel silhouette
+    // masses, the fog boundary still read as a flat black "wall" around the
+    // map — the horizon needs real depth). Dark blocks 25m+ out, FAR beyond
+    // the parcel fence: unreachable by the player, no colliders needed.
+    // Sparse warm windows give the night a lived-in horizon.
+    const skyMat = new THREE.MeshStandardMaterial({ color: 0x272e39, roughness: 0.95 });
+    const winMat = new THREE.MeshBasicMaterial({ color: 0xffd9a0 });
+    const blocks = [
+      [-26, 10, -34], [-12, 16, -40], [4, 13, -36], [18, 9, -32], [28, 14, -26],
+      [-24, 8, -18], [-27, 12, -4], [30, 11, -8], [26, 16, 6], [-21, 9, 8],
+    ];
+    for (const [bx, bh, bz] of blocks) {
+      const bw = 7 + ((Math.abs(bx) * 7 + Math.abs(bz) * 3) % 5);
+      const bd = 5 + ((Math.abs(bz) * 5 + Math.abs(bx)) % 4);
+      const bld = new THREE.Mesh(new THREE.BoxGeometry(bw, bh, bd), skyMat);
+      bld.position.set(bx, 3.2 + bh / 2, bz);
+      this.scene.add(bld);
+      const nWin = 2 + ((Math.abs(bx) + Math.abs(bz)) & 3);
+      for (let i = 0; i < nWin; i++) {
+        const win = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 0.7), winMat);
+        win.position.set(
+          bx - bw / 2 + 1.2 + ((i * 3.1 + bh) % Math.max(1, bw - 2.4)),
+          3.2 + 2 + ((i * 2.7 + Math.abs(bz)) % Math.max(1, bh - 3)),
+          bz + bd / 2 + 0.06
+        );
+        this.scene.add(win);
+      }
+    }
 
     // star field on the dome (subtle, additive, static)
     const starGeo = new THREE.BufferGeometry();
@@ -246,7 +290,7 @@ export class World {
     halo.position.copy(moonPos).addScaledVector(moonDir, -0.5);
     halo.lookAt(0, 4, -13);
     this.scene.add(halo);
-    this.moonLight = new THREE.DirectionalLight(0xbdd0f0, 0.7);
+    this.moonLight = new THREE.DirectionalLight(0xbdd0f0, 1.05); // QA: 0.7 crushed to black post-tonemap
     this.moonLight.position.copy(moonDir.clone().multiplyScalar(30));
     this.scene.add(this.moonLight);
   }

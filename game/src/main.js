@@ -562,7 +562,11 @@ class Game {
 
   _checkTriggers() {
     const p = this.player.pos;
-    if (!this.state.flags.kiosk_locked && p.z > -14.4 && p.z < -11.5 && p.y > 3) {
+    // lock-in requires actually being INSIDE the kiosk (x within the interior
+    // walls). QA-found: the trigger only checked z+y, so walking PAST the
+    // kiosk on the street slammed the door "locked behind you" before the
+    // player ever entered.
+    if (!this.state.flags.kiosk_locked && p.x > -1.7 && p.x < 1.7 && p.z > -14.2 && p.z < -11.5 && p.y > 3) {
       this.state.setFlag("kiosk_locked");
     }
     const z = this.world.endingZone;
