@@ -1284,8 +1284,8 @@ export class World {
     // QA 2026-09-08: was one solid wall — the raised gate leaf intersected it
     // ("forced to overlap with a cube"). Now two sheets with a 0.18 slot the
     // leaf rises into; the east sheet bulges 0.2 as a visible hood.
-    this.slab(23.7, 23.86, -0.4, 3.6, 19.6, 22.2, m.get("concreteWall"));
-    this.slab(24.04, 24.2, -0.4, 3.6, 19.6, 22.2, m.get("concreteWall"));
+    this.slab(23.65, 23.81, -0.4, 3.6, 19.6, 22.2, m.get("concreteWall"));
+    this.slab(23.93, 24.0, -0.4, 3.6, 19.6, 22.2, m.get("concreteWall"));
 
     // switchback ramps: 3 flights 45deg, landings
     // chimney lamps (visual QA: switchbacks read as a black void without them)
@@ -1342,7 +1342,7 @@ export class World {
 
     // service gate (vertical, INTERACTIVE winch)
     const gate = new Door({
-      id: "gate_service", materials: m, position: [23.95, -3.4, 20.9], yaw: Math.PI / 2,
+      id: "gate_service", materials: m, position: [23.87, -3.4, 20.9], yaw: Math.PI / 2,
       width: 2.6, height: 3.0, kind: "gate", locked: true, lockedMessage: "Crank the winch to raise the gate",
     });
     gate.group.rotation.y = Math.PI / 2; // panel across z axis

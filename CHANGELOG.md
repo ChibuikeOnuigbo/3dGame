@@ -155,3 +155,14 @@ cells / 0 invisible walls, OpenCV black-wall flags NONE.
 - Lighting circuits: 10 lamps on "lighting" breaker (default OFF), 5 on "service" (OFF); sump torch-only.
 - Surroundings/HDR pass: far skyline band + rooftop HVAC/tank/mast silhouettes + warm/cool window mix (reference list: research/environment-reference.md).
 - QA: verify_world 16/16, critical_path 40/40, ghost scan open=0/invisible=0. VISUAL_APPROVAL remains FALSE (human/vision sign-off pending).
+
+## 2026-09-08 (turn 7) — real-asset pass + acquisition loop
+- Sluice leaf rotated 90° (was perpendicular to its opening); both vertical
+  gates now rise into real slots/hoods; sprocket+chain+counterweight rig.
+- fps-asset-kit (CC0): gun rack (pistol/rifle GLB) in kiosk; distant gunshot
+  ambience; ambientCG 1K PBR sets already drive all surface materials.
+- warehouse-3d (MIT) industrial props in Pump Hall; Quaternius (CC0) street
+  furniture + skyline buildings replace procedural blobs/boxes.
+- FMOD-style exertion audio: wind/breath/pulse layers follow sprint parameter.
+- New QA: props_grounded + stricter overlap audit; _gltfProp bbox pipeline fix.
+- tools/acquire_loop.py: 2h autonomous acquisition timer (GitHub/npm routes).

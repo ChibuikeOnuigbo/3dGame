@@ -103,12 +103,15 @@ export class Door {
       this.panel = panel;
     } else {
       // vertical gate (service gate): rises up
-      const panel = new THREE.Mesh(new THREE.BoxGeometry(width, height, 0.14), materials.get("metalRaw"));
+      // leaf kept slim (0.10) so the wall slot that receives it stays inside
+      // the old wall envelope — a thicker leaf forced the hood to protrude
+      // into the switchback climb lane (QA 2026-09-08, walk_climb_shaft).
+      const panel = new THREE.Mesh(new THREE.BoxGeometry(width, height, 0.1), materials.get("metalRaw"));
       panel.position.set(0, height / 2, 0);
       panel.castShadow = true;
       this.group.add(panel);
       for (let i = 1; i < 4; i++) {
-        const bar = new THREE.Mesh(new THREE.BoxGeometry(width + 0.04, 0.07, 0.17), materials.get("darkMetal"));
+        const bar = new THREE.Mesh(new THREE.BoxGeometry(width + 0.04, 0.07, 0.1), materials.get("darkMetal"));
         bar.position.set(0, (height / 4) * i, 0);
         this.group.add(bar);
       }
