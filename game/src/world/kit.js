@@ -363,18 +363,31 @@ export function fluorescentFixture(materials, { on = true, warm = false } = {}) 
   return g;
 }
 
+// QA 2026-09-11 (user screenshots): the old shade was an OPEN-ended cone —
+// from below it read as a hollow white arch floating against the sky, and the
+// mount plate hovered off the wall face. Rebuilt as a closed bulkhead light:
+// flush back plate (spans local z -0.03..0.03 so placements embed it in the
+// wall), short arm, closed metal dome, emissive down-lens. Solid from every
+// angle; nothing see-through, nothing floating.
 export function wallLamp(materials, { on = true } = {}) {
   const g = new THREE.Group();
-  g.add(box(0.16, 0.24, 0.12, materials.get("trim"), 0, 0, 0.02));
-  const shade = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.16, 0.22, 0.18, 14, 1, true),
-    materials.get(on ? "glowWarm" : "lampOff")
+  g.add(box(0.16, 0.22, 0.06, materials.get("trim"), 0, 0, 0));
+  g.add(box(0.06, 0.06, 0.12, materials.get("darkMetal"), 0, 0.02, 0.08));
+  const dome = new THREE.Mesh(
+    new THREE.SphereGeometry(0.17, 14, 10, 0, Math.PI * 2, 0, Math.PI / 2),
+    materials.get("darkMetal")
   );
-  shade.material = shade.material.clone();
-  shade.position.set(0, -0.02, 0.16);
-  shade.rotation.x = Math.PI;
-  g.add(shade);
-  g.userData.bulb = shade;
+  dome.position.set(0, 0.0, 0.16);
+  dome.castShadow = true;
+  g.add(dome);
+  const lens = new THREE.Mesh(
+    new THREE.CircleGeometry(0.15, 14),
+    materials.get(on ? "glowWarm" : "lampOff").clone()
+  );
+  lens.rotation.x = Math.PI / 2; // faces down
+  lens.position.set(0, -0.005, 0.16);
+  g.add(lens);
+  g.userData.bulb = lens;
   return g;
 }
 

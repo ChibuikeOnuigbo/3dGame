@@ -12,3 +12,5 @@ game/dist/
 __pycache__/
 *.timestamp-*.mjs
 *_annotated.png
+research/downloads/staging/
+*.pyc

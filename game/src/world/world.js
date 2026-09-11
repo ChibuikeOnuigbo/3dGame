@@ -703,7 +703,11 @@ export class World {
     // black at night — the door must read as THE way in. Entry lamp over the
     // sign + a dim porch light, both on the always-live circuit.
     const porch = kit.wallLamp(m, { on: true });
-    this.place(porch, 0, 5.35, -15.02, Math.PI, { collide: false }); // faces street
+    // QA 2026-09-11 (user screenshots): was at (0,5.35,-15.02) — the mount
+    // plate floated 0.06 off the outer face and the open shade silhouetted
+    // above the 5.6 parapet as a sky-arch. Mount now embeds in the wall
+    // (outer face -15.0) and the closed dome tops out at 5.47.
+    this.place(porch, 0, 5.3, -14.95, Math.PI, { collide: false }); // faces street
     this.light(0, 5.1, -15.6, { color: 0xffd9a0, intensity: 7, distance: 8, circuit: "always" });
     // small meter box
     const meter = kit.breakerBox(m, { levers: 2 });
@@ -1289,17 +1293,20 @@ export class World {
 
     // switchback ramps: 3 flights 45deg, landings
     // chimney lamps (visual QA: switchbacks read as a black void without them)
-    this.place(kit.wallLamp(m, { on: true }), 26.45, -2.4, 19.78, Math.PI, { collide: false });
+    // QA 2026-09-11: these were yaw PI at z 19.78 — backs to open space,
+    // mounts floating 0.15+ off the north wall (inner face z=19.6). Now
+    // mounted ON the north wall facing into the chimney (yaw 0, embedded).
+    this.place(kit.wallLamp(m, { on: true }), 26.45, -2.4, 19.62, 0, { collide: false });
     this.light(26.3, -2.2, 20.3, { color: 0xffd9a0, intensity: 8, distance: 7, circuit: "service" });
-    this.place(kit.wallLamp(m, { on: true }), 26.45, 0.4, 19.78, Math.PI, { collide: false });
+    this.place(kit.wallLamp(m, { on: true }), 26.45, 0.4, 19.62, 0, { collide: false });
     this.light(26.3, 0.6, 20.3, { color: 0xffd9a0, intensity: 8, distance: 7, circuit: "emergency" });
-    this.place(kit.wallLamp(m, { on: true }), 26.45, 3.3, 19.78, Math.PI, { collide: false });
+    this.place(kit.wallLamp(m, { on: true }), 26.45, 3.3, 19.62, 0, { collide: false });
     this.light(26.3, 3.4, 20.3, { color: 0xffd9a0, intensity: 11, distance: 6, circuit: "emergency" });  // above the top platform (y3.2): a lamp below it is occluded by the grate
     // mid-chimney fill + gate-approach lamp (visual QA recapture: west-facing
     // landings and the winch read at mean-luma 0.4-2.4 with east-wall lamps
     // alone — the climb must be readable from every leg, not just from east)
     this.light(26.0, 0.2, 21.2, { color: 0xffd9a0, intensity: 6, distance: 6, circuit: "service" });
-    this.place(kit.wallLamp(m, { on: true }), 24.3, -1.7, 19.72, Math.PI, { collide: false });
+    this.place(kit.wallLamp(m, { on: true }), 24.3, -1.7, 19.62, 0, { collide: false });
     this.light(24.4, -1.6, 20.4, { color: 0xffd9a0, intensity: 5, distance: 5, circuit: "service" });
     // step-edge markers: high-visibility strips along each ramp's outer edge
     // every 0.55m of climb (visual QA: the 45deg flights were invisible)

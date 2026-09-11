@@ -166,3 +166,21 @@ cells / 0 invisible walls, OpenCV black-wall flags NONE.
 - FMOD-style exertion audio: wind/breath/pulse layers follow sprint parameter.
 - New QA: props_grounded + stricter overlap audit; _gltfProp bbox pipeline fix.
 - tools/acquire_loop.py: 2h autonomous acquisition timer (GitHub/npm routes).
+
+## 2026-09-11 — entry/shaft wall-lamp rebuild (user screenshots)
+
+- User screenshots showed the entrance light as a hollow white arch floating
+  against the night sky with its mount box hovering off the facade. Root
+  cause: kit.wallLamp used an OPEN-ended cone shade (see-through shell) and
+  every placement left the mount plate off the wall face (porch mount floated
+  0.06 outside the outer face; shaft lamps floated 0.15+ off the north wall,
+  facing it backwards).
+- kit.wallLamp rebuilt as a closed bulkhead light: flush back plate (embeds
+  into the wall at placement), short arm, closed metal dome, emissive
+  down-lens. Solid from every angle; nothing see-through.
+- Placements fixed: porch lamp (0, 5.3, -14.95) — mount embedded in the outer
+  face, dome tops out at 5.47 below the 5.6 parapet so it can never silhouette
+  into the sky; four exit-shaft lamps re-mounted ON the chimney north wall
+  (yaw 0, z 19.62, embedded).
+- Verified visually (headless shots at both user angles + shaft + kiosk) and
+  by QA: verify_world 17/17, critical_path 40/40.
