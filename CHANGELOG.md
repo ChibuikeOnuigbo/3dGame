@@ -2,6 +2,40 @@
 
 All notable changes to Still Water. Dates are YYYY-MM-DD (build session).
 
+## 2026-09-12 (turn 9) — THE stair-shaft "false floor/ceiling" killed
+
+### Root cause (user screenshots + in-scene raycast + asset audit)
+The TrafficCone Sketchfab model shipped stage junk: a **19.7 m × 19.7 m
+"Plane" shadow-catcher node** (+ Camera + Point Light). The two street cones
+each rendered one of these giant untextured planes at y 3.2 — they sliced
+across the whole street parcel and **straight down the stairwell shaft**,
+reading as a smooth false floor/ceiling that "cut the staircase", with NO
+collision (visible-but-walk-through — the exact deception the user called
+out). The real steps were always underneath it, hidden. Found by raycasting
+the user's exact view in the live scene: two hits at exactly the cone
+positions, 32 m boxes at y 3.2.
+
+### Fixes
+- **Asset cleaned**: `TrafficCone.gltf` scene now keeps only the "Cones"
+  node tree; Plane/Camera/PointLight nodes + their meshes/materials/images
+  stripped (3.5 KB file).
+- **Loader guard** (`_gltfProp`): any prop mesh whose longest side exceeds
+  the size cap is now **hidden**, not just excluded from the collider bbox —
+  a dressing prop can never again render world-scale geometry. (Whole-model
+  outlier case still falls back to the non-flat-mesh path, un-hiding.)
+- **Shaft south face closed**: wall panel above the d5 archway header
+  (y 3.4..5.6) — up-shaft views no longer show stars through the gap.
+  (First attempt used wallZ — rendered as a 0.3 m column; corrected to a
+  full-width wallX panel.)
+
+### Verified
+- Re-shot the user's exact three angles (top-down, mid-shaft, bottom-up):
+  real textured steps + handrail + LEVEL -1 stencil now visible; no plane,
+  no sky leak. `qa/visual/2026-09-12/stair_{top,mid,bot}_repro.png`.
+- Stair-shaft scan: 0 oversized ghost meshes (was 2 × 32 m).
+- verify_world 17/17 · floor audit PASS · ghost scan 0/0 · critical_path
+  40/40.
+
 ## 2026-09-12 (turn 8) — first-door poster → hologram + floor audit + street filling
 
 ### User-requested changes

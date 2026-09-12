@@ -598,6 +598,13 @@ export class World {
   // "length"), grounds it at y, and registers a collider matching its
   // footprint. Failures are warnings only — the world must never break
   // because a dressing prop 404s.
+  // USER 2026-09-12 (stair-shaft scan): the TrafficCone Sketchfab model
+  // shipped a 19.7m "shadow-catcher" Plane node — two cones put two giant
+  // collision-less planes through the street AND the stairwell shaft, reading
+  // as a smooth false floor/ceiling cutting the staircase. Two defenses:
+  //   1. the asset itself was cleaned (Plane/Camera/PointLight nodes removed)
+  //   2. this guard drops any mesh whose longest side exceeds maxSide —
+  //      a dressing prop can never smuggle in world-scale geometry again.
   _gltfProp(url, x, y, z, yaw, { dim = "height", size = 1, solid = false } = {}) {
     this.propsPending = (this.propsPending || 0) + 1;
     const loader = new GLTFLoader();
@@ -616,7 +623,7 @@ export class World {
           o.receiveShadow = true;
           const g = o.geometry;
           if (!g.boundingBox) g.computeBoundingBox();
-          list.push(g.boundingBox.clone().applyMatrix4(o.matrixWorld));
+          list.push({ box: g.boundingBox.clone().applyMatrix4(o.matrixWorld), obj: o });
         });
         return list;
       };
@@ -636,22 +643,36 @@ export class World {
       // decided in PRE-SCALE space and the surviving boxes are carried
       // through scaling. Re-filtering after scale let giant helper meshes
       // sneak back under the cap and blow up the collider.
-      let incl = meshBoxes(root).filter((b) => {
+      // USER 2026-09-12 (stair-shaft scan): oversized rogue meshes are now
+      // also HIDDEN, not just excluded from the bbox — the TrafficCone's
+      // 19.7m shadow-plane rendered as a collision-less false floor through
+      // the street and the stairwell shaft while the collider math ignored
+      // it. Visible-but-not-collidable is exactly the deception class this
+      // loader must never ship.
+      const entries = meshBoxes(root);
+      let incl = entries.filter(({ box: b }) => {
         const e = b.getSize(new THREE.Vector3());
         return Math.max(e.x, e.y, e.z) <= cap;
-      });
+      }).map(({ box }) => box);
+      for (const { box: b, obj } of entries) {
+        const e = b.getSize(new THREE.Vector3());
+        if (Math.max(e.x, e.y, e.z) > cap) {
+          obj.visible = false;
+          console.warn(`[world] prop ${url}: hid oversized rogue mesh (${Math.max(e.x, e.y, e.z).toFixed(1)}m > cap ${cap.toFixed(1)}m)`);
+        }
+      }
       if (incl.length === 0) {
         // cm-scale models (whole mesh over the cap): fall back to every
         // non-flat mesh so the prop still sizes and collides (ToyCar,
         // wide_books_shelf incidents).
-        incl = meshBoxes(root).filter((b) => {
+        for (const { obj } of entries) obj.visible = true; // un-hide: whole model is the outlier
+        incl = entries.map(({ box }) => box).filter((b) => {
           const e = b.getSize(new THREE.Vector3());
           return Math.min(e.x, e.y, e.z) > 1e-3;
         });
       }
       const bb = new THREE.Box3();
-      incl.forEach((b) => bb.union(b));
-      const cur = dim === "height" ? bb.max.y - bb.min.y : Math.max(bb.max.x - bb.min.x, bb.max.z - bb.min.z);
+      incl.forEach((b) => bb.union(b));      const cur = dim === "height" ? bb.max.y - bb.min.y : Math.max(bb.max.x - bb.min.x, bb.max.z - bb.min.z);
       const s = cur > 0 ? size / cur : 1;
       root.scale.setScalar(s);
       const cx = ((bb.min.x + bb.max.x) / 2) * s, cz = ((bb.min.z + bb.max.z) / 2) * s;
@@ -787,6 +808,12 @@ export class World {
     const m = this.mats;
     this.wallZ(-1.15, -11.3, -6.2, -0.3, 5.6, m.get("concreteWall"));
     this.wallZ(1.15, -11.3, -6.2, -0.3, 5.6, m.get("concreteWall"));
+    // USER 2026-09-12 (stair-shaft scan): the shaft's south face above the
+    // d5 archway header (y 3.4..5.6, x -1..1) was open to the night sky —
+    // up-rays from the stairs showed stars over the atrium wall. Flush panel
+    // across the full gap width closes the shaft to its roof line (door d5
+    // swings into the atrium and tops out at y 2.12 — no conflict).
+    this.wallX(-6.35, -1, 1, 3.4, 5.6, m.get("concreteWall"));
     this.slab(-1.0, 1.0, 5.3, 5.6, -11.3, -6.2, m.get("concreteDark")); // shaft roof
     // ramp: visual steps + handrail
     const steps = new THREE.Group();
