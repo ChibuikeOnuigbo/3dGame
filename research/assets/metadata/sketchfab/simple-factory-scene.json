@@ -1,0 +1,18 @@
+{
+ "source": "Sketchfab",
+ "model_id": "804fbe0cd1fa44fa9ca86ae42c82d63d",
+ "url": "https://sketchfab.com/3d-models/simple-factory-scene-804fbe0cd1fa44fa9ca86ae42c82d63d",
+ "name": "Simple Factory Scene",
+ "author": "Pickeri (uglythree)",
+ "license": "CC-BY-4.0",
+ "license_url": "http://creativecommons.org/licenses/by/4.0/",
+ "triangles": 269600,
+ "vertices": 141300,
+ "downloads": 3282,
+ "downloadable": true,
+ "published": "2024-05-23",
+ "retrieved": "2026-09-07",
+ "retrieval": "fetch_page (server-side)",
+ "binary_status": "not downloaded - Sketchfab API requires auth (401 anonymous); sandbox egress TLS-blocked",
+ "credit_line": "Simple Factory Scene by Pickeri, CC-BY 4.0, via Sketchfab"
+}

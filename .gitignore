@@ -8,3 +8,9 @@ research/video_frames/*.jpg
 
 game/dist/
 .sudo_as_admin_successful
+.venv/
+__pycache__/
+*.timestamp-*.mjs
+*_annotated.png
+research/downloads/staging/
+*.pyc

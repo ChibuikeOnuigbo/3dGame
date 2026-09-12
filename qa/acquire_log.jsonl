@@ -1,0 +1,81 @@
+{"route": "loop", "status": "start", "asset": "2.0h acquisition loop", "ts": "2026-09-07T18:30:35"}
+{"route": "npm", "status": "candidate", "asset": "@remotion/sfx", "detail": "Sound effect library", "ts": "2026-09-07T18:30:36"}
+{"route": "npm", "status": "candidate", "asset": "uisfx", "detail": "Open-source semantic UI sound effects for web, mobile, SaaS, and games.", "ts": "2026-09-07T18:30:36"}
+{"route": "npm", "status": "candidate", "asset": "@jsonjoy.com/json-pack", "detail": "High-performance JSON serialization library", "ts": "2026-09-07T18:30:36"}
+{"route": "npm", "status": "candidate", "asset": "tar-stream", "detail": "tar-stream is a streaming tar parser and generator and nothing else. It operates", "ts": "2026-09-07T18:30:36"}
+{"route": "npm", "status": "candidate", "asset": "@publint/pack", "detail": "Utilities for packing and unpacking npm packages", "ts": "2026-09-07T18:30:36"}
+{"route": "npm", "status": "candidate", "asset": "@foleyjs/core", "detail": "Sound effects for the interface, performed live. 28 interaction cues synthesized", "ts": "2026-09-07T18:30:57"}
+{"route": "npm", "status": "candidate", "asset": "@types/mssql", "detail": "TypeScript definitions for mssql", "ts": "2026-09-07T18:30:57"}
+{"route": "npm", "status": "candidate", "asset": "react-sounds", "detail": "A library of ready-to-play sound effects for React applications.", "ts": "2026-09-07T18:30:57"}
+{"route": "npm", "status": "candidate", "asset": "@foleyjs/vue", "detail": "Vue 3 bindings for Foley \u2014 sound effects for the interface, performed live.", "ts": "2026-09-07T18:30:57"}
+{"route": "npm", "status": "candidate", "asset": "getpass", "detail": "getpass for node.js", "ts": "2026-09-07T18:30:57"}
+{"route": "npm", "status": "candidate", "asset": "@senchabrew/elevenlabs-sfx-mcp", "detail": "MCP server for ElevenLabs Sound Effects - generate SFX/ambience audio (128kbps M", "ts": "2026-09-07T18:31:19"}
+{"route": "npm", "status": "candidate", "asset": "audio-decode", "detail": "Decode audio to AudioBuffer; unscoped alias of @audio/decode", "ts": "2026-09-07T18:31:19"}
+{"route": "npm", "status": "candidate", "asset": "spotify-audio-element", "detail": "A custom element for the Spotify player with an API that aims to match the `<aud", "ts": "2026-09-07T18:31:19"}
+{"route": "npm", "status": "candidate", "asset": "howler", "detail": "Javascript audio library for the modern web.", "ts": "2026-09-07T18:31:19"}
+{"route": "npm", "status": "candidate", "asset": "standardized-audio-context", "detail": "A cross-browser wrapper for the Web Audio API which aims to closely follow the s", "ts": "2026-09-07T18:31:19"}
+{"route": "npm", "status": "candidate", "asset": "highlightjs-vue", "detail": "Highlight Single-File Components of Vue.js Framework", "ts": "2026-09-07T18:31:40"}
+{"route": "npm", "status": "candidate", "asset": "@renovatebot/osv-offline-db", "detail": "[![Package version](https://img.shields.io/npm/v/@renovatebot/osv-offline-db?sty", "ts": "2026-09-07T18:31:40"}
+{"route": "npm", "status": "candidate", "asset": "@renovatebot/osv-offline", "detail": "[![Package version](https://img.shields.io/npm/v/@renovatebot/osv-offline?style=", "ts": "2026-09-07T18:31:40"}
+{"route": "npm", "status": "candidate", "asset": "fastestsmallesttextencoderdecoder", "detail": "The fastest smallest Javascript polyfill for the encode of TextEncoder and decod", "ts": "2026-09-07T18:31:40"}
+{"route": "npm", "status": "candidate", "asset": "8bit-sfx", "detail": "8888 chip sound effects across 44 categories, synthesized on demand in the brows", "ts": "2026-09-07T18:32:01"}
+{"route": "npm", "status": "candidate", "asset": "miaoda-game-sfx-generator", "detail": "Browser-first procedural game sound effects with distinct seeded palettes and op", "ts": "2026-09-07T18:32:01"}
+{"route": "npm", "status": "candidate", "asset": "make-sfx-core", "detail": "Procedural game SFX engine \u2014 70+ params, WAV export, browser playback", "ts": "2026-09-07T18:32:01"}
+{"route": "npm", "status": "candidate", "asset": "phaser", "detail": "A fast, free and fun HTML5 Game Framework for Desktop and Mobile web browsers fr", "ts": "2026-09-07T18:32:01"}
+{"route": "github", "status": "success", "asset": "dcc-mcp/dcc-asset-ambientcg", "license": "MIT", "detail": "0 verified assets", "ts": "2026-09-07T18:33:05"}
+{"route": "loop", "status": "start", "asset": "2.0h acquisition loop", "ts": "2026-09-07T20:37:09"}
+{"route": "npm", "status": "candidate", "asset": "@remotion/sfx", "detail": "Sound effect library", "ts": "2026-09-07T20:37:11"}
+{"route": "npm", "status": "candidate", "asset": "uisfx", "detail": "Open-source semantic UI sound effects for web, mobile, SaaS, and games.", "ts": "2026-09-07T20:37:11"}
+{"route": "npm", "status": "candidate", "asset": "@jsonjoy.com/json-pack", "detail": "High-performance JSON serialization library", "ts": "2026-09-07T20:37:11"}
+{"route": "npm", "status": "candidate", "asset": "tar-stream", "detail": "tar-stream is a streaming tar parser and generator and nothing else. It operates", "ts": "2026-09-07T20:37:11"}
+{"route": "npm", "status": "candidate", "asset": "@publint/pack", "detail": "Utilities for packing and unpacking npm packages", "ts": "2026-09-07T20:37:11"}
+{"route": "npm", "status": "candidate", "asset": "@foleyjs/core", "detail": "Sound effects for the interface, performed live. 28 interaction cues synthesized", "ts": "2026-09-07T20:37:32"}
+{"route": "npm", "status": "candidate", "asset": "@types/mssql", "detail": "TypeScript definitions for mssql", "ts": "2026-09-07T20:37:32"}
+{"route": "npm", "status": "candidate", "asset": "react-sounds", "detail": "A library of ready-to-play sound effects for React applications.", "ts": "2026-09-07T20:37:32"}
+{"route": "npm", "status": "candidate", "asset": "@foleyjs/vue", "detail": "Vue 3 bindings for Foley \u2014 sound effects for the interface, performed live.", "ts": "2026-09-07T20:37:32"}
+{"route": "npm", "status": "candidate", "asset": "getpass", "detail": "getpass for node.js", "ts": "2026-09-07T20:37:32"}
+{"route": "npm", "status": "candidate", "asset": "@senchabrew/elevenlabs-sfx-mcp", "detail": "MCP server for ElevenLabs Sound Effects - generate SFX/ambience audio (128kbps M", "ts": "2026-09-07T20:37:53"}
+{"route": "npm", "status": "candidate", "asset": "audio-decode", "detail": "Decode audio to AudioBuffer; unscoped alias of @audio/decode", "ts": "2026-09-07T20:37:53"}
+{"route": "npm", "status": "candidate", "asset": "spotify-audio-element", "detail": "A custom element for the Spotify player with an API that aims to match the `<aud", "ts": "2026-09-07T20:37:53"}
+{"route": "npm", "status": "candidate", "asset": "howler", "detail": "Javascript audio library for the modern web.", "ts": "2026-09-07T20:37:53"}
+{"route": "npm", "status": "candidate", "asset": "standardized-audio-context", "detail": "A cross-browser wrapper for the Web Audio API which aims to closely follow the s", "ts": "2026-09-07T20:37:53"}
+{"route": "npm", "status": "candidate", "asset": "highlightjs-vue", "detail": "Highlight Single-File Components of Vue.js Framework", "ts": "2026-09-07T20:38:14"}
+{"route": "npm", "status": "candidate", "asset": "@renovatebot/osv-offline-db", "detail": "[![Package version](https://img.shields.io/npm/v/@renovatebot/osv-offline-db?sty", "ts": "2026-09-07T20:38:14"}
+{"route": "npm", "status": "candidate", "asset": "@renovatebot/osv-offline", "detail": "[![Package version](https://img.shields.io/npm/v/@renovatebot/osv-offline?style=", "ts": "2026-09-07T20:38:14"}
+{"route": "npm", "status": "candidate", "asset": "fastestsmallesttextencoderdecoder", "detail": "The fastest smallest Javascript polyfill for the encode of TextEncoder and decod", "ts": "2026-09-07T20:38:14"}
+{"route": "npm", "status": "candidate", "asset": "8bit-sfx", "detail": "8888 chip sound effects across 44 categories, synthesized on demand in the brows", "ts": "2026-09-07T20:38:35"}
+{"route": "npm", "status": "candidate", "asset": "miaoda-game-sfx-generator", "detail": "Browser-first procedural game sound effects with distinct seeded palettes and op", "ts": "2026-09-07T20:38:35"}
+{"route": "npm", "status": "candidate", "asset": "make-sfx-core", "detail": "Procedural game SFX engine \u2014 70+ params, WAV export, browser playback", "ts": "2026-09-07T20:38:35"}
+{"route": "npm", "status": "candidate", "asset": "phaser", "detail": "A fast, free and fun HTML5 Game Framework for Desktop and Mobile web browsers fr", "ts": "2026-09-07T20:38:35"}
+{"route": "github", "status": "skip", "asset": "dcc-mcp/dcc-asset-ambientcg", "license": "MIT", "detail": "already staged", "ts": "2026-09-07T20:39:38"}
+{"route": "loop", "status": "start", "asset": "2.0h acquisition loop", "ts": "2026-09-07T22:17:08"}
+{"route": "npm", "status": "candidate", "asset": "@remotion/sfx", "detail": "Sound effect library", "ts": "2026-09-07T22:17:10"}
+{"route": "npm", "status": "candidate", "asset": "uisfx", "detail": "Open-source semantic UI sound effects for web, mobile, SaaS, and games.", "ts": "2026-09-07T22:17:10"}
+{"route": "npm", "status": "candidate", "asset": "@jsonjoy.com/json-pack", "detail": "High-performance JSON serialization library", "ts": "2026-09-07T22:17:10"}
+{"route": "npm", "status": "candidate", "asset": "tar-stream", "detail": "tar-stream is a streaming tar parser and generator and nothing else. It operates", "ts": "2026-09-07T22:17:10"}
+{"route": "npm", "status": "candidate", "asset": "@publint/pack", "detail": "Utilities for packing and unpacking npm packages", "ts": "2026-09-07T22:17:10"}
+{"route": "loop", "status": "start", "asset": "2.0h acquisition loop", "ts": "2026-09-11T21:27:10"}
+{"route": "npm", "status": "candidate", "asset": "@remotion/sfx", "detail": "Sound effect library", "ts": "2026-09-11T21:27:12"}
+{"route": "npm", "status": "candidate", "asset": "uisfx", "detail": "Open-source semantic UI sound effects for web, mobile, SaaS, and games.", "ts": "2026-09-11T21:27:12"}
+{"route": "npm", "status": "candidate", "asset": "@jsonjoy.com/json-pack", "detail": "High-performance JSON serialization library", "ts": "2026-09-11T21:27:12"}
+{"route": "npm", "status": "candidate", "asset": "tar-stream", "detail": "tar-stream is a streaming tar parser and generator and nothing else. It operates", "ts": "2026-09-11T21:27:12"}
+{"route": "npm", "status": "candidate", "asset": "@publint/pack", "detail": "Utilities for packing and unpacking npm packages", "ts": "2026-09-11T21:27:12"}
+{"route": "npm", "status": "candidate", "asset": "@foleyjs/core", "detail": "Sound effects for the interface, performed live. 28 interaction cues synthesized", "ts": "2026-09-11T21:27:33"}
+{"route": "npm", "status": "candidate", "asset": "@types/mssql", "detail": "TypeScript definitions for mssql", "ts": "2026-09-11T21:27:33"}
+{"route": "npm", "status": "candidate", "asset": "react-sounds", "detail": "A library of ready-to-play sound effects for React applications.", "ts": "2026-09-11T21:27:33"}
+{"route": "npm", "status": "candidate", "asset": "@foleyjs/vue", "detail": "Vue 3 bindings for Foley \u2014 sound effects for the interface, performed live.", "ts": "2026-09-11T21:27:33"}
+{"route": "npm", "status": "candidate", "asset": "getpass", "detail": "getpass for node.js", "ts": "2026-09-11T21:27:33"}
+{"route": "npm", "status": "candidate", "asset": "@senchabrew/elevenlabs-sfx-mcp", "detail": "MCP server for ElevenLabs Sound Effects - generate SFX/ambience audio (128kbps M", "ts": "2026-09-11T21:29:58"}
+{"route": "npm", "status": "candidate", "asset": "audio-decode", "detail": "Decode audio to AudioBuffer; unscoped alias of @audio/decode", "ts": "2026-09-11T21:29:58"}
+{"route": "npm", "status": "candidate", "asset": "spotify-audio-element", "detail": "A custom element for the Spotify player with an API that aims to match the `<aud", "ts": "2026-09-11T21:29:58"}
+{"route": "npm", "status": "candidate", "asset": "howler", "detail": "Javascript audio library for the modern web.", "ts": "2026-09-11T21:29:58"}
+{"route": "npm", "status": "candidate", "asset": "@wasm-audio-decoders/opus-ml", "detail": "Web Assembly streaming Opus decoder with Machine Learning enhancements", "ts": "2026-09-11T21:29:58"}
+{"route": "npm", "status": "candidate", "asset": "highlightjs-vue", "detail": "Highlight Single-File Components of Vue.js Framework", "ts": "2026-09-11T21:30:19"}
+{"route": "npm", "status": "candidate", "asset": "@renovatebot/osv-offline-db", "detail": "[![Package version](https://img.shields.io/npm/v/@renovatebot/osv-offline-db?sty", "ts": "2026-09-11T21:30:19"}
+{"route": "npm", "status": "candidate", "asset": "@renovatebot/osv-offline", "detail": "[![Package version](https://img.shields.io/npm/v/@renovatebot/osv-offline?style=", "ts": "2026-09-11T21:30:19"}
+{"route": "npm", "status": "candidate", "asset": "fastestsmallesttextencoderdecoder", "detail": "The fastest smallest Javascript polyfill for the encode of TextEncoder and decod", "ts": "2026-09-11T21:30:19"}
+{"route": "npm", "status": "candidate", "asset": "8bit-sfx", "detail": "8888 chip sound effects across 44 categories, synthesized on demand in the brows", "ts": "2026-09-11T21:30:40"}
+{"route": "npm", "status": "candidate", "asset": "make-sfx-core", "detail": "Procedural game SFX engine \u2014 70+ params, WAV export, browser playback", "ts": "2026-09-11T21:30:40"}
+{"route": "npm", "status": "candidate", "asset": "miaoda-game-sfx-generator", "detail": "Browser-first procedural game sound effects with distinct seeded palettes and op", "ts": "2026-09-11T21:30:40"}
+{"route": "npm", "status": "candidate", "asset": "@forgeax-extension/bgm", "detail": "ForgeaX extension: generate voice/BGM/SFX, shape a selected take, and bind it to", "ts": "2026-09-11T21:30:40"}
+{"route": "github", "status": "success", "asset": "dcc-mcp/dcc-asset-ambientcg", "license": "MIT", "detail": "0 verified assets", "ts": "2026-09-11T21:31:44"}

@@ -1,0 +1,15 @@
+{
+ "source": "Poly Haven",
+ "url": "https://polyhaven.com/a/concrete_floor_02",
+ "name": "Concrete Floor 02",
+ "author": "Rob Tuytel",
+ "license": "CC0",
+ "resolution": "1K chosen (2m wide, 41 px/cm at 8K)",
+ "files_tried": [
+  "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_floor_02/concrete_floor_02_diff_1k.jpg",
+  "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_floor_02/concrete_floor_02_nor_gl_1k.jpg",
+  "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/concrete_floor_02/concrete_floor_02_rough_1k.jpg"
+ ],
+ "binary_status": "failed direct+gateway (TLS killed) - see research/download-errors.json",
+ "credits_required": false
+}

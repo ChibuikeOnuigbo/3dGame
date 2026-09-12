@@ -8,7 +8,9 @@
 // - Rooms are 3D rects for room detection / audio zones / QA.
 
 import * as THREE from "three";
-import { makeSignTexture, makePaperTexture } from "./materials.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
+import { makeSignTexture, makePaperTexture, makeChainLinkTexture } from "./materials.js";
 import { Door } from "./doors.js";
 import * as kit from "./kit.js";
 
@@ -231,29 +233,120 @@ export class World {
     // map — the horizon needs real depth). Dark blocks 25m+ out, FAR beyond
     // the parcel fence: unreachable by the player, no colliders needed.
     // Sparse warm windows give the night a lived-in horizon.
-    const skyMat = new THREE.MeshStandardMaterial({ color: 0x272e39, roughness: 0.95 });
+    // QA 2026-09-07: 0x272e39 sat below the night fog colour and the skyline
+    // read as a black void sheet. Lifted so silhouettes separate from sky.
+    const skyMat = new THREE.MeshStandardMaterial({ color: 0x3a4350, roughness: 0.95 });
     const winMat = new THREE.MeshBasicMaterial({ color: 0xffd9a0 });
+    // QA 2026-09-07: blocks must sit fully OUTSIDE the playable bounds
+    // (x -9.5..28.5, z -20.5..23.5) — the old (30,11,-8) and (26,16,6)
+    // blocks intruded into the east parcel edge as giant dark walk-through
+    // masses. Pushed to x>=31.5.
     const blocks = [
       [-26, 10, -34], [-12, 16, -40], [4, 13, -36], [18, 9, -32], [28, 14, -26],
-      [-24, 8, -18], [-27, 12, -4], [30, 11, -8], [26, 16, 6], [-21, 9, 8],
+      [-24, 8, -18], [-27, 12, -4], [37, 11, -6], [36, 16, 10], [-21, 9, 8],
     ];
-    for (const [bx, bh, bz] of blocks) {
-      const bw = 7 + ((Math.abs(bx) * 7 + Math.abs(bz) * 3) % 5);
-      const bd = 5 + ((Math.abs(bz) * 5 + Math.abs(bx)) % 4);
-      const bld = new THREE.Mesh(new THREE.BoxGeometry(bw, bh, bd), skyMat);
-      bld.position.set(bx, 3.2 + bh / 2, bz);
-      this.scene.add(bld);
-      const nWin = 2 + ((Math.abs(bx) + Math.abs(bz)) & 3);
-      for (let i = 0; i < nWin; i++) {
-        const win = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 0.7), winMat);
-        win.position.set(
-          bx - bw / 2 + 1.2 + ((i * 3.1 + bh) % Math.max(1, bw - 2.4)),
-          3.2 + 2 + ((i * 2.7 + Math.abs(bz)) % Math.max(1, bh - 3)),
-          bz + bd / 2 + 0.06
-        );
-        this.scene.add(win);
+    // Surroundings pass 2026-09-08 (reference direction: Mirror's Edge /
+    // Spider-Man / Cyberpunk city depth — foreground/midground/background
+    // layers, rooftop machinery, atmospheric perspective). All silhouettes
+    // are 25m+ outside the playable bounds: no colliders, no lights, cheap
+    // basic materials. Layered bands give the horizon real depth instead of
+    // one row of blocks.
+    // QA 2026-09-08: near band swaps my box towers for real low-poly CC0
+    // buildings (Quaternius, via trebeljahr/quaternius-showcase) — textured
+    // facades/rooflines mid-ground; far band stays cheap silhouette boxes.
+    const decoPick = (bh) =>
+      bh >= 14 ? ["6Story_Stack_Mat.glb", 20] :
+      bh >= 11 ? ["4Story_Mat.glb", 14] :
+      bh >= 9 ? ["3Story_Balcony_Mat.glb", 11] : ["2Story_Wide_Mat.glb", 8];
+    const bands = [
+      { list: blocks, deco: true }, // near band: real buildings
+      { list: [ // far band: taller, hazier towers
+          [-44, 26, -58], [-16, 34, -66], [10, 30, -62], [34, 24, -52], [52, 38, -40],
+          [-48, 22, -10], [-42, 30, 16], [46, 28, 22], [40, 20, 40], [-30, 24, 42],
+        ], tint: 0x2e3745 },
+    ];
+    const winMatCool = new THREE.MeshBasicMaterial({ color: 0xbfd4ff });
+    for (const band of bands) {
+      const mat = new THREE.MeshStandardMaterial({ color: band.tint || 0x3a4350, roughness: 0.95 });
+      for (const [bx, bh, bz] of band.list) {
+        if (band.deco) {
+          const [file, est] = decoPick(bh);
+          const yaw = ((Math.abs(bx) + Math.abs(bz)) % 4) * Math.PI / 2;
+          const sc = bh / est;
+          this._decoProp("assets/models/quaternius/" + file, bx, 3.15, bz, yaw, sc, { glow: true });
+          // sparse lit windows on the viewer-facing (+z) facade
+          const nWin = 2 + ((Math.abs(bx) + Math.abs(bz)) & 3);
+          for (let i = 0; i < nWin; i++) {
+            const win = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 0.7), i % 3 === 2 ? winMatCool : winMat);
+            win.position.set(
+              bx - 3 + ((i * 2.7 + Math.abs(bz)) % 6),
+              3.2 + 3 + ((i * 3.3 + Math.abs(bx)) % Math.max(2, bh - 4)),
+              bz + 3.2 * sc + 0.25
+            );
+            this.scene.add(win);
+          }
+          continue;
+        }
+        const bw = 7 + ((Math.abs(bx) * 7 + Math.abs(bz) * 3) % 5);
+        const bd = 5 + ((Math.abs(bz) * 5 + Math.abs(bx)) % 4);
+        const bld = new THREE.Mesh(new THREE.BoxGeometry(bw, bh, bd), mat);
+        bld.position.set(bx, 3.2 + bh / 2, bz);
+        this.scene.add(bld);
+        // rooftop machinery silhouettes (HVAC, tanks, masts) — the reference
+        // skylines are defined by cluttered rooflines, not clean boxes
+        const roofY = 3.2 + bh;
+        const rn = (Math.abs(bx) + Math.abs(bz)) % 4;
+        for (let r = 0; r < rn; r++) {
+          const rx = bx + ((r * 2.3 + bz) % Math.max(1, bw - 2)) - bw / 2 + 1;
+          const rz = bz + ((r * 1.7 + bx) % Math.max(1, bd - 2)) - bd / 2 + 1;
+          const kind = (r + Math.abs(bx)) % 3;
+          if (kind === 0) { // HVAC box
+            const hv = new THREE.Mesh(new THREE.BoxGeometry(1.6, 1.1, 1.3), mat);
+            hv.position.set(rx, roofY + 0.55, rz);
+            this.scene.add(hv);
+          } else if (kind === 1) { // water tank
+            const tk = new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.7, 1.7, 8), mat);
+            tk.position.set(rx, roofY + 0.85, rz);
+            this.scene.add(tk);
+          } else { // antenna mast + beacon
+            const ms = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.08, 3.4, 5), mat);
+            ms.position.set(rx, roofY + 1.7, rz);
+            this.scene.add(ms);
+            const bc = new THREE.Mesh(new THREE.SphereGeometry(0.09, 6, 5),
+              new THREE.MeshBasicMaterial({ color: 0xff4444 }));
+            bc.position.set(rx, roofY + 3.4, rz);
+            this.scene.add(bc);
+          }
+        }
+        // sparse lit windows (warm + cool mix)
+        const nWin = 2 + ((Math.abs(bx) + Math.abs(bz)) & 3);
+        for (let i = 0; i < nWin; i++) {
+          const win = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 0.7), i % 3 === 2 ? winMatCool : winMat);
+          win.position.set(
+            bx - bw / 2 + 1.2 + ((i * 3.1 + bh) % Math.max(1, bw - 2.4)),
+            3.2 + 2 + ((i * 2.7 + Math.abs(bz)) % Math.max(1, bh - 3)),
+            bz + bd / 2 + 0.06
+          );
+          this.scene.add(win);
+        }
       }
     }
+
+    // QA 2026-09-07: outside the parcel fence there was NO ground at all —
+    // views along the fence line fell off into the void and read as black
+    // walls around the game. A dim city-ground disc out to the horizon gives
+    // the skyline and fog something to sit on.
+    const extGeo = new THREE.CircleGeometry(60, 48);
+    {
+      const uv = extGeo.attributes.uv;
+      for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * 40, uv.getY(i) * 40);
+      uv.needsUpdate = true;
+    }
+    const ext = new THREE.Mesh(extGeo, this.mats.get("asphalt"));
+    ext.rotation.x = -Math.PI / 2;
+    ext.position.set(9, 3.14, 2);
+    ext.receiveShadow = false;
+    this.scene.add(ext);
 
     // star field on the dome (subtle, additive, static)
     const starGeo = new THREE.BufferGeometry();
@@ -340,20 +433,22 @@ export class World {
     this.slab(-7.75, -7.55, 3.2, 3.34, -20, -10.9, this.mats.get("concreteDark"), { cast: false });
     this.slab(7.55, 7.75, 3.2, 3.34, -20, -10.9, this.mats.get("concreteDark"), { cast: false });
 
-    // bushes on the verges (dark foliage clumps, solid)
-    const leaf = new THREE.MeshStandardMaterial({ color: 0x274d22, roughness: 0.95 });
-    const bushSpots = [[-8.9, -19.2], [-8.4, -16.8], [-9.1, -13.9], [8.3, -19.0], [8.9, -16.2], [8.4, -12.6]];
-    for (const [bx, bz] of bushSpots) {
-      const bush = new THREE.Group();
-      for (let i = 0; i < 4; i++) {
-        const s = 0.28 + Math.random() * 0.3;
-        const b = new THREE.Mesh(new THREE.IcosahedronGeometry(s, 1), leaf);
-        b.position.set((Math.random() - 0.5) * 0.5, s * 0.8, (Math.random() - 0.5) * 0.5);
-        b.scale.y = 0.75;
-        bush.add(b);
-      }
-      this.place(bush, bx, 3.28, bz, 0, { collide: false });
+    // QA 2026-09-07: parcel edges were uniform-black past the single sodium
+    // lamp's pool — corner lamps keep the fence line legible as environment.
+    for (const [lx, lz] of [[-9.6, -19.6], [9.6, -19.6]]) {
+      this.light(lx, 5.4, lz, { color: 0xffb45e, intensity: 10, distance: 14, circuit: "service" });
+      const bulb = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.05, 0.14), this.mats.get("glowWarm").clone());
+      bulb.position.set(lx, 5.35, lz);
+      this.scene.add(bulb);
     }
+    // QA 2026-09-08 (user: "delete some of the nonsense"): the icosahedron
+    // bush blobs are gone — replaced by CC0 Quaternius street furniture
+    // (real low-poly models, solid colliders added on load).
+    this._decoProp("assets/models/quaternius/Streetlight_Double.glb", -8.8, 3.28, -19.2, 0, 1, { solid: true });
+    this._decoProp("assets/models/quaternius/Streetlight_Single.glb", 8.7, 3.28, -16.2, Math.PI, 1, { solid: true });
+    this._decoProp("assets/models/quaternius/TrafficLight.glb", 8.6, 3.28, -19.0, -Math.PI / 2, 1, { solid: true });
+    this._decoProp("assets/models/quaternius/Sign_Stop.glb", -8.6, 3.28, -12.6, Math.PI / 2, 1, { solid: true });
+    this._decoProp("assets/models/quaternius/Sign_NoParking.glb", 8.6, 3.28, -11.6, -Math.PI / 2, 1, { solid: true });
 
     // ---- perimeter fence at the slab edge: the street parcel is sealed ----
     const post = this.mats.get("darkMetal");
@@ -384,12 +479,33 @@ export class World {
         this.scene.add(rail);
       }
       // mesh infill (visible chain-link substitute)
-      const mesh = new THREE.Mesh(
-        new THREE.PlaneGeometry(len, fenceH - 0.2),
-        new THREE.MeshStandardMaterial({ color: 0x5a626b, roughness: 0.6, metalness: 0.7, transparent: true, opacity: 0.42, side: THREE.DoubleSide })
-      );
+      // QA 2026-09-07: rotation was off by +PI/2 — the infill planes stood
+      // PERPENDICULAR to the fence line, so three huge half-transparent dark
+      // planes cut across the whole street parcel (one through the kiosk
+      // door at x=0 out to z=-30) with no collision: THE "black wall".
+      // Second pass same day: even correctly aligned, the solid 0.42-opacity
+      // unlit metal sheet read as a black band at eye level in every view of
+      // the parcel edge. Now an alpha-tested diamond lattice: see-through,
+      // same alignment as the rails, collider unchanged along the line.
+      const link = this.mats.chainLink || (this.mats.chainLink = (() => {
+        const t = makeChainLinkTexture();
+        return new THREE.MeshStandardMaterial({
+          map: t, transparent: true, alphaTest: 0.35, color: 0x9aa3ad,
+          roughness: 0.55, metalness: 0.5, side: THREE.DoubleSide,
+        });
+      })());
+      const fgeo = new THREE.PlaneGeometry(len, fenceH - 0.2);
+      { // bake ~0.35m diamond pitch into UVs so the shared texture can stay
+        // at repeat 1 across all three fence lines
+        const uv = fgeo.attributes.uv;
+        for (let i = 0; i < uv.count; i++) {
+          uv.setXY(i, uv.getX(i) * (len / 0.35), uv.getY(i) * ((fenceH - 0.2) / 0.35));
+        }
+        uv.needsUpdate = true;
+      }
+      const mesh = new THREE.Mesh(fgeo, link);
       mesh.position.set((L.x0 + L.x1) / 2, 3.2 + fenceH / 2, (L.z0 + L.z1) / 2);
-      mesh.rotation.y = Math.atan2(L.z1 - L.z0, L.x1 - L.x0) * -1 + Math.PI / 2;
+      mesh.rotation.y = Math.atan2(L.z1 - L.z0, L.x1 - L.x0) * -1;
       this.scene.add(mesh);
       // solid collider along the whole line
       const ex = Math.abs(L.x1 - L.x0) / 2 + 0.08, ez = Math.abs(L.z1 - L.z0) / 2 + 0.08;
@@ -403,7 +519,153 @@ export class World {
       void ex; void ez;
     }
     // curb — visual only (collider swept players off the stair ramp; QA-found)
-    this.slab(-10, 10, 3.2, 3.3, -10.9, -10.4, this.mats.get("concreteDark"), { cast: false, collide: false });
+    // QA 2026-09-08: the curb used to span the FULL width x -10..10, roofing
+    // the stairwell opening (x -1.3..1.3) at head height with a no-collision
+    // slab — players descending the stair walked into a floating concrete
+    // strip. Split into two segments so the stair shaft stays clear.
+    this.slab(-10, -1.3, 3.2, 3.3, -10.9, -10.4, this.mats.get("concreteDark"), { cast: false, collide: false });
+    this.slab(1.3, 10, 3.2, 3.3, -10.9, -10.4, this.mats.get("concreteDark"), { cast: false, collide: false });
+
+    this._streetProps();
+  }
+
+  // Research session 3 (2026-09-07): real CC0/CC-BY glTF props from the
+  // Khronos glTF-Sample-Assets set (acquired via GitHub sparse clone — see
+  // research/download-manifest.json). Additive street dressing; every prop
+  // gets a matching AABB collider so nothing reads as a walk-through ghost.
+  _streetProps() {
+    // fridge against the east kerb, facing the roadway (CC-BY Eric Chadwick)
+    this._gltfProp("assets/models/CommercialRefrigerator.glb", 8.4, 3.2, -15.0, -Math.PI / 2, { dim: "height", size: 1.95, solid: true });
+    // traffic cones on the tarmac (CC-BY hinndia)
+    this._gltfProp("assets/models/TrafficCone/TrafficCone.gltf", 2.6, 3.2, -12.3, 0.5, { dim: "height", size: 0.62, solid: false });
+    this._gltfProp("assets/models/TrafficCone/TrafficCone.gltf", -3.4, 3.2, -17.3, -1.2, { dim: "height", size: 0.62, solid: false });
+    // abandoned toy car near the west kerb (CC0 Guido Odendahl)
+    this._gltfProp("assets/models/ToyCar.glb", -5.1, 3.2, -12.6, 0.4, { dim: "length", size: 0.46, solid: false });
+    // boombox on the kiosk floor beside the meter box (CC0 Microsoft)
+    this._gltfProp("assets/models/BoomBox.glb", 1.15, 3.2, -12.15, Math.PI * 0.75, { dim: "length", size: 0.5, solid: false });
+  }
+
+  // Loads one glTF prop, normalizes it to `size` along `dim` ("height" |
+  // "length"), grounds it at y, and registers a collider matching its
+  // footprint. Failures are warnings only — the world must never break
+  // because a dressing prop 404s.
+  _gltfProp(url, x, y, z, yaw, { dim = "height", size = 1, solid = false } = {}) {
+    this.propsPending = (this.propsPending || 0) + 1;
+    const loader = new GLTFLoader();
+    loader.setMeshoptDecoder(MeshoptDecoder);
+    loader.load(url, (gltf) => {
+      this.propsPending--;
+      const root = gltf.scene;
+      // bbox from MESHES only — some GLBs carry far-away helper nodes
+      // (cameras/lights/empties) that would inflate the collider absurdly.
+      const meshBoxes = (obj) => {
+        const list = [];
+        obj.updateWorldMatrix(true, true);
+        obj.traverse((o) => {
+          if (!o.isMesh) return;
+          o.castShadow = false;
+          o.receiveShadow = true;
+          const g = o.geometry;
+          if (!g.boundingBox) g.computeBoundingBox();
+          list.push(g.boundingBox.clone().applyMatrix4(o.matrixWorld));
+        });
+        return list;
+      };
+      const unionBox = (boxes, maxSize) => {
+        const b = new THREE.Box3();
+        for (const bx of boxes) {
+          const ext = bx.getSize(new THREE.Vector3());
+          // Sketchfab-style exports often include a giant ground "Plane"
+          // mesh — never let a dressing prop's collider/size derive from it.
+          if (Math.max(ext.x, ext.y, ext.z) > maxSize) continue;
+          b.union(bx);
+        }
+        return b;
+      };
+      const cap = Math.max(size * 6, 3);
+      // QA 2026-09-08 (robot-arm incident): the helper-mesh exclusion is
+      // decided in PRE-SCALE space and the surviving boxes are carried
+      // through scaling. Re-filtering after scale let giant helper meshes
+      // sneak back under the cap and blow up the collider.
+      let incl = meshBoxes(root).filter((b) => {
+        const e = b.getSize(new THREE.Vector3());
+        return Math.max(e.x, e.y, e.z) <= cap;
+      });
+      if (incl.length === 0) {
+        // cm-scale models (whole mesh over the cap): fall back to every
+        // non-flat mesh so the prop still sizes and collides (ToyCar,
+        // wide_books_shelf incidents).
+        incl = meshBoxes(root).filter((b) => {
+          const e = b.getSize(new THREE.Vector3());
+          return Math.min(e.x, e.y, e.z) > 1e-3;
+        });
+      }
+      const bb = new THREE.Box3();
+      incl.forEach((b) => bb.union(b));
+      const cur = dim === "height" ? bb.max.y - bb.min.y : Math.max(bb.max.x - bb.min.x, bb.max.z - bb.min.z);
+      const s = cur > 0 ? size / cur : 1;
+      root.scale.setScalar(s);
+      const cx = ((bb.min.x + bb.max.x) / 2) * s, cz = ((bb.min.z + bb.max.z) / 2) * s;
+      // re-center inside a wrapper so yaw rotates around the prop's own center
+      root.position.set(-cx, -bb.min.y * s, -cz);
+      const wrap = new THREE.Group();
+      wrap.add(root);
+      wrap.position.set(x, y, z);
+      wrap.rotation.y = yaw;
+      this.scene.add(wrap);
+      root.updateWorldMatrix(true, false);
+      const bb3 = new THREE.Box3();
+      incl.forEach((b) => bb3.union(b.clone().applyMatrix4(root.matrixWorld)));
+      // degenerate (empty-union => NaN) boxes never become colliders
+      if (!isFinite(bb3.min.x + bb3.min.y + bb3.min.z + bb3.max.x + bb3.max.y + bb3.max.z)) {
+        console.warn(`[world] prop bbox degenerate, no collider: ${url}`);
+        return;
+      }
+      const pad = solid ? 0.02 : 0.0;
+      this.colliders.push({
+        box: new THREE.Box3(
+          new THREE.Vector3(bb3.min.x - pad, bb3.min.y, bb3.min.z - pad),
+          new THREE.Vector3(bb3.max.x + pad, bb3.max.y + 0.0, bb3.max.z + pad)
+        ),
+        active: true, soft: !solid, tag: "prop", url,
+      });
+    }, undefined, (err) => {
+      this.propsPending--;
+      console.warn(`[world] optional prop failed to load: ${url} (${err?.message || err})`);
+    });
+  }
+
+  // Decorative GLB instance (CC0 packs — see research/download-manifest.json).
+  // Base sits at (x,y,z); optional solid collider once loaded. Skyline use
+  // stays non-collidable: those are 25m+ outside the playable bounds.
+  _decoProp(url, x, y, z, yaw = 0, scale = 1, { solid = false, glow = false } = {}) {
+    const loader = new GLTFLoader();
+    loader.setMeshoptDecoder(MeshoptDecoder);
+    loader.load(url, (gltf) => {
+      const root = gltf.scene;
+      root.traverse((o) => {
+        if (!o.isMesh) return;
+        o.castShadow = false; o.receiveShadow = false;
+        if (glow) { // night skyline: unlit PBR reads black — lift with a dim city-glow emissive
+          for (const mm of Array.isArray(o.material) ? o.material : [o.material]) {
+            if (mm && mm.emissive) { mm.emissive.setHex(0x18222e); mm.emissiveIntensity = 1; }
+          }
+        }
+      });
+      const bb = new THREE.Box3().setFromObject(root);
+      root.position.set(-(bb.min.x + bb.max.x) / 2, -bb.min.y, -(bb.min.z + bb.max.z) / 2);
+      const wrap = new THREE.Group();
+      wrap.add(root);
+      wrap.position.set(x, y, z);
+      wrap.rotation.y = yaw;
+      wrap.scale.setScalar(scale);
+      this.scene.add(wrap);
+      if (solid) {
+        wrap.updateWorldMatrix(true, true);
+        const wb = new THREE.Box3().setFromObject(wrap);
+        this.colliders.push({ box: wb, active: true, soft: false, tag: "prop", url });
+      }
+    }, undefined, (err) => console.warn(`[world] deco prop failed: ${url} (${err?.message || err})`));
   }
 
   _kiosk() {
@@ -412,13 +674,16 @@ export class World {
     this.slab(-1.7, 1.7, 2.9, 3.2, -14.7, -11.3, m.get("concreteDark"));
     this.ground(-1.7, 1.7, -14.7, -11.3, 3.2, "concrete");
     // walls (door gap north, stair opening south)
-    this.wallX(-14.85, -1.85, -0.55, 3.2, 5.32, m.get("metalPainted"));
-    this.wallX(-14.85, 0.55, 1.85, 3.2, 5.32, m.get("metalPainted"));
+    // QA 2026-09-07: side walls stopped at 5.32/5.3 while the roof starts at
+    // 5.6 — a black open slit ran across the whole north and south facades.
+    // Sides now rise flush to the roof (the door headers stay above the gaps).
+    this.wallX(-14.85, -1.85, -0.55, 3.2, 5.6, m.get("metalPainted"));
+    this.wallX(-14.85, 0.55, 1.85, 3.2, 5.6, m.get("metalPainted"));
     this.wallX(-14.85, -0.55, 0.55, 5.32, 5.6, m.get("metalPainted"));
     this.wallZ(1.85, -14.85, -11.15, 3.2, 5.6, m.get("metalPainted"));
     this.wallZ(-1.85, -14.85, -11.15, 3.2, 5.6, m.get("metalPainted"));
-    this.wallX(-11.15, -1.85, -0.8, 3.2, 5.3, m.get("metalPainted"));
-    this.wallX(-11.15, 0.8, 1.85, 3.2, 5.3, m.get("metalPainted"));
+    this.wallX(-11.15, -1.85, -0.8, 3.2, 5.6, m.get("metalPainted"));
+    this.wallX(-11.15, 0.8, 1.85, 3.2, 5.6, m.get("metalPainted"));
     this.wallX(-11.15, -0.8, 0.8, 5.3, 5.6, m.get("metalPainted"));
     this.slab(-1.85, 1.85, 5.6, 5.9, -14.85, -11.15, m.get("metalPainted"));
 
@@ -434,9 +699,28 @@ export class World {
     sign.position.set(0, 4.85, -14.98);
     sign.rotation.y = Math.PI;
     this.scene.add(sign);
+    // QA 2026-09-07: OpenCV pass found the first-door approach 86% uniform
+    // black at night — the door must read as THE way in. Entry lamp over the
+    // sign + a dim porch light, both on the always-live circuit.
+    const porch = kit.wallLamp(m, { on: true });
+    // QA 2026-09-11 (user screenshots): was at (0,5.35,-15.02) — the mount
+    // plate floated 0.06 off the outer face and the open shade silhouetted
+    // above the 5.6 parapet as a sky-arch. Mount now embeds in the wall
+    // (outer face -15.0) and the closed dome tops out at 5.47.
+    this.place(porch, 0, 5.3, -14.95, Math.PI, { collide: false }); // faces street
+    this.light(0, 5.1, -15.6, { color: 0xffd9a0, intensity: 7, distance: 8, circuit: "always" });
     // small meter box
     const meter = kit.breakerBox(m, { levers: 2 });
     this.place(meter, 1.55, 4.3, -13.0, Math.PI / 2, { collide: false });
+    // QA 2026-09-08 (user: "guns rather than blocks"): CC0 flat-guns rack on
+    // the kiosk west wall — the station kiosk doubles as a security post.
+    this.box(-1.67, 4.2, -13.3, 0.05, 0.55, 1.15, m.get("wood"), { collide: false });
+    this._gltfProp("assets/models/guns/rifle.glb", -1.6, 4.28, -12.9, Math.PI / 2, { dim: "length", size: 0.85 });
+    this._gltfProp("assets/models/guns/pistol.glb", -1.6, 4.08, -13.8, Math.PI / 2, { dim: "length", size: 0.28 });
+    // kiosk interior lamp so the first room isn't a black box
+    const kl = kit.wallLamp(m, { on: true });
+    this.place(kl, -1.7, 4.6, -13.0, Math.PI / 2, { collide: false });
+    this.light(0, 5.0, -13.0, { color: 0xdfe8ff, intensity: 5, distance: 6, circuit: "lighting" });
     this.room({ id: "kiosk", name: "Street Kiosk", min: [-1.85, 3.2, -14.85], max: [1.85, 5.6, -11.15], zone: "street" });
   }
 
@@ -470,7 +754,7 @@ export class World {
     const lamp = kit.wallLamp(m, { on: true });
     this.place(lamp, -1.0, 3.6, -8.5, Math.PI / 2, { collide: false });
     const fx = this.makeToggleable(lamp);
-    this.light(-0.7, 3.5, -8.5, { color: 0xffd9a0, intensity: 4, distance: 7, circuit: "emergency" });
+    this.light(-0.7, 3.5, -8.5, { color: 0xffd9a0, intensity: 4, distance: 7, circuit: "lighting" });
     // stencil
     const sten = kit.signPlane(m, makeSignTexture(["LEVEL -1"], { w: 256, h: 96, color: "#cfd6cf", bg: "#20241f", size: 34 }), 0.9, 0.34);
     sten.position.set(1.0, 2.8, -9.5);
@@ -593,7 +877,7 @@ export class World {
     const f = kit.fluorescentFixture(m, { on: true });
     this.place(f, -2.4, 2.72, 9.4, 0, { collide: false });
     this.fixtures.push({ ...this.makeToggleable(f), room: "nook" });
-    this.light(-2.4, 2.4, 9.4, { color: 0xdfe8ff, intensity: 5, distance: 7, circuit: "emergency" });
+    this.light(-2.4, 2.4, 9.4, { color: 0xdfe8ff, intensity: 5, distance: 7, circuit: "lighting" });
 
     // fuse crate + clipboard
     this.place(kit.crate(m, 0.55), -2.9, 0, 8.9, 0.2);
@@ -646,11 +930,19 @@ export class World {
     // gantry along east wall (viewing platform)
     const gantry = kit.gantryPlatform(m, 8);
     this.place(gantry, 4.4, 2.6, 17.85, Math.PI / 2, { collide: false });
-    // stair onto gantry: steps rise eastward along the north wall, landing meets the deck
+    // QA 2026-09-07: OpenCV flagged the gantry end as a 31% uniform-black
+    // mass (fixtures there are on the dead lighting circuit). Small always-on
+    // lamps so the platform and its rail read at night.
+    this.light(4.4, 3.4, 14.4, { color: 0xffd9a0, intensity: 5, distance: 7, circuit: "lighting" });
+    this.light(4.4, 3.4, 21.4, { color: 0xffd9a0, intensity: 5, distance: 7, circuit: "lighting" });
+    // stair onto gantry: steps rise EASTWARD toward the landing/deck
+    // (QA 2026-09-08: the step line was mirrored — low steps sat at the
+    // landing end, so the stairs visually climbed AWAY from the deck while
+    // the ground ramp climbed toward it.)
     const gsteps = new THREE.Group();
     for (let i = 0; i < 8; i++) {
       const st = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.33, 1.1), m.variant("metalRaw", 1, 1));
-      st.position.set(3.55 - i * 0.42, 0.16 + i * 0.325, 12.9);
+      st.position.set(0.61 + i * 0.42, 0.16 + i * 0.325, 12.9);
       st.receiveShadow = true;
       gsteps.add(st);
     }
@@ -659,6 +951,17 @@ export class World {
     this.box(4.4, 2.48, 13.62, 1.3, 0.24, 0.55, m.get("darkMetal"));
     this.ground(0.15, 3.78, 12.4, 13.2, 0, "metal", { axis: "x", from: 3.55, to: 0.19, y0: 2.6, y1: 0 });
     this.ground(3.75, 5.05, 13.35, 21.85, 2.6, "grating"); // deck + landing
+    // QA 2026-09-07: the gantry railing posts were collision-less — the probe
+    // walked through them along both deck edges. Thin solid rails so the deck
+    // edge reads as protected (matches the visible post lines at x 3.8/5.0).
+    this.colliders.push({
+      box: new THREE.Box3(new THREE.Vector3(3.72, 2.6, 13.4), new THREE.Vector3(3.86, 3.7, 21.85)),
+      active: true, tag: "gantry-rail",
+    });
+    this.colliders.push({
+      box: new THREE.Box3(new THREE.Vector3(4.94, 2.6, 13.4), new THREE.Vector3(5.08, 3.7, 21.85)),
+      active: true, tag: "gantry-rail",
+    });
 
     // control panel with taped note (INTERACTIVE — O3)
     const cp = kit.controlPanel(m);
@@ -676,7 +979,15 @@ export class World {
     this.place(kit.barrel(m), 5.6, 0, 22.9, 0);
     // (original toolbox at (-2.2,0,22.8) removed — it sat inside the new
     // workbench desk footprint; QA pair-probe found the penetration)
-    this.place(kit.crate(m, 0.8), 6.4, 0, 13.3, 0.15);
+    // QA 2026-09-08 (user: replace procedural dressing with real PBR props):
+    // MIT warehouse-3d pack (hookex/warehouse-3d) — cardboard box + electrical
+    // cabinet + racks + robot arm instead of procedural crate/box blobs.
+    this._gltfProp("assets/models/warehouse/box/scene.gltf", 6.4, 0, 13.3, 0.15, { dim: "height", size: 0.8, solid: true });
+    this._gltfProp("assets/models/warehouse/battery/scene.gltf", -6.55, 0, 13.2, Math.PI / 2, { dim: "height", size: 1.7, solid: true });
+    this._gltfProp("assets/models/warehouse/shelf/scene.gltf", -6.5, 0, 15.6, Math.PI / 2, { dim: "height", size: 1.6, solid: true });
+    this._gltfProp("assets/models/warehouse/shelf/scene.gltf", -6.5, 0, 16.7, Math.PI / 2, { dim: "height", size: 1.6, solid: true });
+    this._gltfProp("assets/models/warehouse/wide_books_shelf/scene.gltf", -6.5, 0, 20.0, Math.PI / 2, { dim: "height", size: 1.8, solid: true });
+    this._gltfProp("assets/models/warehouse/robotarm/scene.gltf", 15.6, 0, 15.6, Math.PI, { dim: "length", size: 2.2, solid: true });
 
     // dressing: maintenance workbench against the south wall (visual QA:
     // dead SW corner read as unfinished space) — desk + radio + toolbox,
@@ -716,17 +1027,83 @@ export class World {
     this.wallX(20.85, 7.15, 17.15, 0, 3.2, m.get("concreteWall"));
     this.wallZ(17.15, 14.55, 16.2, 0, 3.2, m.get("concreteWall"));
     this.wallZ(17.15, 19.2, 20.85, 0, 3.2, m.get("concreteWall"));
-    this.wallZ(17.15, 16.2, 19.2, 2.6, 3.2, m.get("concreteWall")); // header over sluice opening
-    this.slab(7.15, 17.15, 3.2, 3.5, 14.55, 20.85, m.get("concreteDark"));
+    // QA 2026-09-08 (user screenshots): the sluice leaf was built yaw 0 while
+    // its opening sits in an X-normal wall — the panel stood PERPENDICULAR to
+    // the hole (edge-on beam mid-doorway) and, raised, slammed into the solid
+    // header/slab instead of a slot. Rebuild: leaf yaw PI/2, slotted header,
+    // ceiling hole + hood housing, visible sprocket/chain/counterweight rig.
+    this.slab(17.0, 17.05, 2.6, 3.2, 16.2, 19.2, m.get("concreteWall")); // header west sheet
+    this.slab(17.25, 17.3, 2.6, 3.2, 16.2, 19.2, m.get("concreteWall")); // header east sheet (slot 17.05..17.25)
+    // ceiling with a slot hole over the leaf path (was one solid slab the
+    // raised leaf intersected)
+    this.slab(7.15, 17.05, 3.2, 3.5, 14.55, 20.85, m.get("concreteDark"));
+    this.slab(17.05, 17.15, 3.2, 3.5, 14.55, 16.2, m.get("concreteDark"));
+    this.slab(17.05, 17.15, 3.2, 3.5, 19.2, 20.85, m.get("concreteDark"));
+    this.slab(17.25, 17.3, 3.2, 3.5, 16.2, 19.2, m.get("concreteDark"));
+    // hood housing above the ceiling: the hole the leaf rises into
+    this.slab(17.0, 17.05, 3.5, 5.15, 16.1, 19.3, m.get("metalRaw"));
+    this.slab(17.25, 17.3, 3.5, 5.15, 16.1, 19.3, m.get("metalRaw"));
+    this.slab(17.0, 17.3, 5.15, 5.25, 16.1, 19.3, m.get("metalRaw"));
+    this.slab(17.0, 17.3, 3.5, 5.15, 16.1, 16.2, m.get("metalRaw"));
+    this.slab(17.0, 17.3, 3.5, 5.15, 19.2, 19.3, m.get("metalRaw"));
 
     // sluice gate in east opening (closed until drained)
     const sluice = new Door({
-      id: "sluice", materials: m, position: [17.15, 0, 17.7], yaw: 0,
+      id: "sluice", materials: m, position: [17.15, 0, 17.7], yaw: Math.PI / 2,
       width: 3.0, height: 2.6, thickness: 0.12, kind: "gate", locked: true,
       lockedMessage: "Chained — the water holds it shut",
     });
     this.addDoor(sluice, { swingCollider: true });
     this.sluice = sluice;
+
+    // lifting rig: two sprockets over the header, chains dropping into the
+    // slot, counterweights on guide rods that descend as the leaf rises
+    const rig = { weights: [], chains: [], sprockets: [] };
+    for (const z of [16.5, 18.9]) {
+      const sp = new THREE.Group();
+      const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.05, 12), m.get("darkMetal"));
+      wheel.rotation.x = Math.PI / 2;
+      sp.add(wheel);
+      for (let k = 0; k < 4; k++) {
+        const spoke = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.24, 0.03), m.get("darkMetal"));
+        spoke.rotation.z = (Math.PI / 4) + (k * Math.PI) / 2 - Math.PI / 2;
+        sp.add(spoke);
+      }
+      sp.position.set(16.93, 2.82, z);
+      this.scene.add(sp);
+      rig.sprockets.push(sp);
+      // guide rod + counterweight (gallery side, visible)
+      const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 2.4, 6), m.get("darkMetal"));
+      rod.position.set(16.9, 1.5, z);
+      this.scene.add(rod);
+      const weight = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.5, 0.16), m.get("metalRaw"));
+      weight.position.set(16.9, 2.15, z);
+      weight.userData.y0 = 2.15;
+      this.scene.add(weight);
+      rig.weights.push(weight);
+      // chain: weight top -> sprocket (dynamic length)
+      const chain = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 1, 6), m.get("darkMetal"));
+      chain.geometry.translate(0, 0.5, 0);
+      this.scene.add(chain);
+      chain.userData.z = z;
+      rig.chains.push(chain);
+      // chain stub from sprocket into the slot (the "pull" side)
+      const stub = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.5, 6), m.get("darkMetal"));
+      stub.position.set(17.15, 2.85, z);
+      this.scene.add(stub);
+    }
+    // crank gearbox on the wall between the sprockets
+    const gbox = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.34, 0.3), m.get("yellowPaint"));
+    gbox.position.set(16.95, 2.82, 17.7);
+    this.scene.add(gbox);
+    const gcrank = new THREE.Group();
+    const garm = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.3, 0.04), m.get("darkMetal"));
+    garm.position.y = -0.15;
+    gcrank.add(garm);
+    gcrank.position.set(16.86, 2.82, 17.7);
+    this.scene.add(gcrank);
+    rig.crank = gcrank;
+    this.sluiceRig = rig;
 
     // grating catwalk strip
     const grating = this.box(12.1, 0.02, 17.7, 9.6, 0.04, 1.0, m.get("darkMetal"), { collide: false, cast: false });
@@ -766,10 +1143,16 @@ export class World {
     this.water.position.set(12.1, this.waterLevel, 17.7);
     this.scene.add(this.water);
 
-    // sump beater (small pump) corner — decorative, no collider
+    // sump beater (small pump) corner — decorative
     const beater = kit.pumpTrain(m, 3);
     this.place(beater, 8.0, 0, 19.8, Math.PI / 2, { collide: false });
     beater.scale.set(0.55, 0.55, 0.55);
+    // QA 2026-09-07: probe walked straight through it (unscaled kit collider
+    // would be oversized at 0.55 scale, so a fitted box instead).
+    this.colliders.push({
+      box: new THREE.Box3(new THREE.Vector3(7.62, 0, 19.0), new THREE.Vector3(8.38, 1.0, 20.8)),
+      active: true, tag: "beater",
+    });
 
     const f1 = kit.fluorescentFixture(m, { on: false });
     this.place(f1, 10, 3.12, 17.7, 0, { collide: false });
@@ -821,28 +1204,33 @@ export class World {
     this.slab(24.0, 27.15, -0.3, 0, 22.35, 22.65, m.get("concreteDark"));
 
     // --- the old tunnel gate (west wall, story focal) ---
+    // QA 2026-09-07: the whole gate sat INSIDE the west wall (wall inner
+    // face at x=15.0; frame/plug/chains/lamp all at x<=14.95) so the story
+    // beat read as plain rock wall. Rebuilt proud of the wall: plug behind,
+    // dark frame around it, bars in front, chains draped, red lamp lit.
     const tombGate = new THREE.Group();
+    const plug = new THREE.Mesh(new THREE.BoxGeometry(0.3, 2.7, 2.5), m.variant("rock", 2, 2));
+    plug.position.set(15.12, -2.0, 17.7); // proud of the frame so rock shows
+    tombGate.add(plug);
     const frame = new THREE.Mesh(new THREE.BoxGeometry(0.2, 3.0, 2.8), m.get("darkMetal"));
-    frame.position.set(14.85, -1.9, 17.7);
+    frame.position.set(15.05, -1.9, 17.7);
     tombGate.add(frame);
     const bars = new THREE.Group();
     for (let i = 0; i < 6; i++) {
       const b = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 2.6, 8), m.get("metalRaw"));
-      b.position.set(0.1, 0, -1.1 + i * 0.44);
+      b.position.set(0.13, 0, -1.1 + i * 0.44);
       bars.add(b);
     }
+    bars.position.set(15.19, -1.9, 17.7); // bars in front of the plug face
     tombGate.add(bars);
-    const plug = new THREE.Mesh(new THREE.BoxGeometry(0.5, 2.7, 2.5), m.variant("rock", 2, 2));
-    plug.position.set(14.7, -2.0, 17.7);
-    tombGate.add(plug);
     // chains
     for (let i = 0; i < 3; i++) {
-      const ch = kit.pipeRun(m, [[14.9, -1.0 - i * 0.5, 16.5], [14.9, -0.7 - i * 0.5, 18.9]], 0.025);
+      const ch = kit.pipeRun(m, [[15.35, -1.0 - i * 0.5, 16.5], [15.35, -0.7 - i * 0.5, 18.9]], 0.025);
       tombGate.add(ch);
     }
     this.scene.add(tombGate);
     const tombLamp = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.1), m.get("glowRed").clone());
-    tombLamp.position.set(14.9, -0.6, 16.4);
+    tombLamp.position.set(15.42, -0.6, 16.4);
     this.scene.add(tombLamp);
     this.tombLamp = tombLamp;
 
@@ -870,12 +1258,14 @@ export class World {
     str.position.set(18.6, -0.9, 18.5);
     this.scene.add(str);
     this.stringLights = str;
-    this.light(17.6, -1.2, 19.5, { color: 0xffc98a, intensity: 11, distance: 11, circuit: "nest" });
+    this.light(17.6, -1.2, 19.5, { color: 0xffc98a, intensity: 11, distance: 11, circuit: "service" });
 
     // barrels NE + salvaged pipe
     this.place(kit.barrel(m), 26.3, -3.4, 14.4, 0);
     this.place(kit.barrel(m), 25.5, -3.4, 14.2, 0);
-    this.scene.add(kit.pipeRun(m, [[22.5, -2.2, 14.2], [24.5, -2.4, 14.6], [26.2, -2.2, 15.2]], 0.12));
+    // QA 2026-09-07: was at y -2.2/-2.4 — head height on the -3.4 sump floor
+    // (the probe capsule walked straight through it). Hung near the ceiling.
+    this.scene.add(kit.pipeRun(m, [[22.5, -0.8, 14.2], [24.5, -1.0, 14.6], [26.2, -0.8, 15.2]], 0.12));
 
     // master breaker (east wall, INTERACTIVE O6)
     const mb = kit.masterBreakerCabinet(m);
@@ -895,22 +1285,29 @@ export class World {
     // west wall with gate opening (z 19.6..22.2, y -3.4..-0.4)
     this.wallZ(x0 - 0.15, zn - 0.15, 19.6, -3.7, 3.6, m.get("concreteWall"));
     this.wallZ(x0 - 0.15, 22.2, zs + 0.15, -3.7, 3.6, m.get("concreteWall"));
-    this.wallZ(x0 - 0.15, 19.6, 22.2, -0.4, 3.6, m.get("concreteWall"));
+    // QA 2026-09-08: was one solid wall — the raised gate leaf intersected it
+    // ("forced to overlap with a cube"). Now two sheets with a 0.18 slot the
+    // leaf rises into; the east sheet bulges 0.2 as a visible hood.
+    this.slab(23.65, 23.81, -0.4, 3.6, 19.6, 22.2, m.get("concreteWall"));
+    this.slab(23.93, 24.0, -0.4, 3.6, 19.6, 22.2, m.get("concreteWall"));
 
     // switchback ramps: 3 flights 45deg, landings
     // chimney lamps (visual QA: switchbacks read as a black void without them)
-    this.place(kit.wallLamp(m, { on: true }), 26.45, -2.4, 19.78, Math.PI, { collide: false });
-    this.light(26.3, -2.2, 20.3, { color: 0xffd9a0, intensity: 8, distance: 7, circuit: "emergency" });
-    this.place(kit.wallLamp(m, { on: true }), 26.45, 0.4, 19.78, Math.PI, { collide: false });
+    // QA 2026-09-11: these were yaw PI at z 19.78 — backs to open space,
+    // mounts floating 0.15+ off the north wall (inner face z=19.6). Now
+    // mounted ON the north wall facing into the chimney (yaw 0, embedded).
+    this.place(kit.wallLamp(m, { on: true }), 26.45, -2.4, 19.62, 0, { collide: false });
+    this.light(26.3, -2.2, 20.3, { color: 0xffd9a0, intensity: 8, distance: 7, circuit: "service" });
+    this.place(kit.wallLamp(m, { on: true }), 26.45, 0.4, 19.62, 0, { collide: false });
     this.light(26.3, 0.6, 20.3, { color: 0xffd9a0, intensity: 8, distance: 7, circuit: "emergency" });
-    this.place(kit.wallLamp(m, { on: true }), 26.45, 3.3, 19.78, Math.PI, { collide: false });
+    this.place(kit.wallLamp(m, { on: true }), 26.45, 3.3, 19.62, 0, { collide: false });
     this.light(26.3, 3.4, 20.3, { color: 0xffd9a0, intensity: 11, distance: 6, circuit: "emergency" });  // above the top platform (y3.2): a lamp below it is occluded by the grate
     // mid-chimney fill + gate-approach lamp (visual QA recapture: west-facing
     // landings and the winch read at mean-luma 0.4-2.4 with east-wall lamps
     // alone — the climb must be readable from every leg, not just from east)
-    this.light(26.0, 0.2, 21.2, { color: 0xffd9a0, intensity: 6, distance: 6, circuit: "emergency" });
-    this.place(kit.wallLamp(m, { on: true }), 24.3, -1.7, 19.72, Math.PI, { collide: false });
-    this.light(24.4, -1.6, 20.4, { color: 0xffd9a0, intensity: 5, distance: 5, circuit: "emergency" });
+    this.light(26.0, 0.2, 21.2, { color: 0xffd9a0, intensity: 6, distance: 6, circuit: "service" });
+    this.place(kit.wallLamp(m, { on: true }), 24.3, -1.7, 19.62, 0, { collide: false });
+    this.light(24.4, -1.6, 20.4, { color: 0xffd9a0, intensity: 5, distance: 5, circuit: "service" });
     // step-edge markers: high-visibility strips along each ramp's outer edge
     // every 0.55m of climb (visual QA: the 45deg flights were invisible)
     const marks = (xa, xb, z, y0, y1) => {
@@ -952,7 +1349,7 @@ export class World {
 
     // service gate (vertical, INTERACTIVE winch)
     const gate = new Door({
-      id: "gate_service", materials: m, position: [23.95, -3.4, 20.9], yaw: Math.PI / 2,
+      id: "gate_service", materials: m, position: [23.87, -3.4, 20.9], yaw: Math.PI / 2,
       width: 2.6, height: 3.0, kind: "gate", locked: true, lockedMessage: "Crank the winch to raise the gate",
     });
     gate.group.rotation.y = Math.PI / 2; // panel across z axis
@@ -1037,6 +1434,10 @@ export class World {
   // ---------------- circuits / world state ----------------
 
   _applyInitialCircuits() {
+    // QA 2026-09-07: "always" was never enabled here, so every always-on
+    // light (street sodium lamp, porch/entry lamps, fence corner lamps)
+    // stayed at intensity 0 — a whole class of invisible-but-present element.
+    this.setCircuit("always", true);
     this.setCircuit("lighting", false);
     this.setCircuit("pumps", true);
     this.setCircuit("nest", true);
@@ -1123,6 +1524,22 @@ export class World {
       if (moving && (door.state === "open" || door.state === "closed")) {
         col.box.copy(door.colliderBox());
         if (door.kind !== "gate") col.active = true;
+      }
+    }
+    // sluice lifting rig (QA 2026-09-08): sprockets turn, counterweights slide
+    // down their rods and chains stay taut while the leaf rises
+    if (this.sluiceRig) {
+      const rise = this.sluice ? this.sluice.rise : 0;
+      const r = this.sluiceRig;
+      for (const sp of r.sprockets) sp.rotation.z = -rise * 5;
+      if (r.crank) r.crank.rotation.x = rise * 4;
+      for (let i = 0; i < r.weights.length; i++) {
+        const w = r.weights[i];
+        w.position.y = Math.max(0.55, w.userData.y0 - rise * 0.8);
+        const c = r.chains[i];
+        const top = w.position.y + 0.25;
+        c.position.set(16.9, top, c.userData.z);
+        c.scale.y = Math.max(0.05, 2.82 - top);
       }
     }
     // light intensity lerp

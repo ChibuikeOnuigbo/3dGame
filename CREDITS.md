@@ -68,3 +68,16 @@ project rule.
 - Open-source repos cloned for study: `research/github/repos/` (licenses
   documented in `research/github/GITHUB_LICENSE_MATRIX.md`). No code was
   copied from these repositories.
+
+## Quaternius (quaternius.com) — CC0
+Low-poly building + street furniture packs (buildings_pack_3, street_pack)
+via github.com/trebeljahr/quaternius-showcase (MIT repo). Skyline near band
+and street verge props.
+
+## hookex/warehouse-3d — MIT
+Industrial PBR props (storage racks, cardboard, robot arm, electrical
+cabinet) used in the Pump Hall / Gallery dressing.
+
+## petroulacl/fps-asset-kit — CC0 (ambientCG textures, flat guns, SFX)
+Weapon rack props (Pistol_Compact, Rifle_Assault), distant gunshot SFX, and
+the ambientCG 1K PBR texture sets used by every surface material.

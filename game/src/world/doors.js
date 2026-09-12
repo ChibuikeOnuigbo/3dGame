@@ -21,6 +21,7 @@ export class Door {
     this.openSign = openSign; // swing direction (+1/-1)
     this.state = "closed"; // closed|opening|open|closing
     this.t = 0; // 0 closed -> 1 open
+    this.rise = 0; // current vertical travel (gates) — drives chains/weights
     this.width = width;
     this.height = height;
 
@@ -30,14 +31,17 @@ export class Door {
 
     // static frame (jambs + header) — never rotates with the leaf, so the
     // hinges visibly attach to something solid instead of floating in air.
-    // MATH: the hinge pivot sits at one EDGE of the doorway, so the frame
-    // must be offset by width/2 along the closed-leaf direction to land on
-    // the GAP CENTER. (Bug this fixes: frame at the hinge origin put one
+    // MATH: for a HINGE door the pivot sits at one EDGE of the doorway, so the
+    // frame must be offset by width/2 along the closed-leaf direction to land
+    // on the GAP CENTER. (Bug this fixes: frame at the hinge origin put one
     // jamb + header mid-doorway — the "pillar in the open door".)
-    // closed-leaf unit direction in world = (cos(yaw)*openSign, 0, -sin(yaw)*openSign)
+    // For a GATE the panel is centered on the group origin, so the frame
+    // (guide rails) must NOT be offset — the old shared offset put one rail
+    // dead-center in the opening (QA 2026-09-08, user screenshot).
     this.frame = new THREE.Group();
+    const frameOff = kind === "hinge" ? width / 2 : 0;
     const leafDx = Math.cos(yaw) * openSign, leafDz = -Math.sin(yaw) * openSign;
-    this.frame.position.set(position[0] + leafDx * (width / 2), position[1], position[2] + leafDz * (width / 2));
+    this.frame.position.set(position[0] + leafDx * frameOff, position[1], position[2] + leafDz * frameOff);
     this.frame.rotation.y = yaw;
 
     if (kind === "hinge") {
@@ -99,12 +103,15 @@ export class Door {
       this.panel = panel;
     } else {
       // vertical gate (service gate): rises up
-      const panel = new THREE.Mesh(new THREE.BoxGeometry(width, height, 0.14), materials.get("metalRaw"));
+      // leaf kept slim (0.10) so the wall slot that receives it stays inside
+      // the old wall envelope — a thicker leaf forced the hood to protrude
+      // into the switchback climb lane (QA 2026-09-08, walk_climb_shaft).
+      const panel = new THREE.Mesh(new THREE.BoxGeometry(width, height, 0.1), materials.get("metalRaw"));
       panel.position.set(0, height / 2, 0);
       panel.castShadow = true;
       this.group.add(panel);
       for (let i = 1; i < 4; i++) {
-        const bar = new THREE.Mesh(new THREE.BoxGeometry(width + 0.04, 0.07, 0.17), materials.get("darkMetal"));
+        const bar = new THREE.Mesh(new THREE.BoxGeometry(width + 0.04, 0.07, 0.1), materials.get("darkMetal"));
         bar.position.set(0, (height / 4) * i, 0);
         this.group.add(bar);
       }
@@ -127,8 +134,16 @@ export class Door {
       if (this.onLockedSound) this.onLockedSound();
       return { locked: true, message: this.lockedMessage };
     }
-    if (this.state === "opening" || this.state === "closing") return { busy: true };
-    if (this.state === "closed" || this.state === "closing") this.open();
+    if (this.state === "opening") {
+      // mid-swing reversal (QA 2026-09-08): pressing E while the leaf is
+      // still opening must flip it to closing, not be ignored as "busy".
+      if (playerPos && this.playerInThreshold(playerPos)) return { ok: true };
+      this.state = "closing";
+      if (this.onCloseSound) this.onCloseSound();
+      return { ok: true };
+    }
+    if (this.state === "closing") { this.state = "opening"; return { ok: true }; }
+    if (this.state === "closed") this.open();
     else this.close(playerPos);
     return { ok: true };
   }
@@ -157,7 +172,7 @@ export class Door {
       this.t = Math.min(1, this.t + dt * speed);
       const ease = this.t * this.t; // Quadratic.In — heavy door accelerates open
       if (this.kind === "hinge") this.group.rotation.y = this.baseYaw + ease * this.openSign * -1.85;
-      else this.group.position.y = this.baseY + ease * (this.height * 0.92);
+      else { this.group.position.y = this.baseY + ease * (this.height * 0.92); this.rise = ease * (this.height * 0.92); }
       if (this.t >= 1) {
         this.state = "open";
         if (this.onEndSound) this.onEndSound();

@@ -1,5 +1,5 @@
-// Audio engine: 100% procedural Web Audio synthesis + CC0 FLAC footstep samples
-// (Fantozzi's Footsteps, OpenGameArt, CC0). No external audio network deps.
+// Audio engine: procedural Web Audio synthesis + CC0 OGG footstep samples
+// (Fantozzi's Footsteps by Fantozzi, OpenGameArt, CC0). No external audio network deps.
 //
 // Design: three buses (ambience / sfx / ui). Zone room-tones are synthesized
 // loops whose gains crossfade by player position. One-shots are small synth
@@ -18,7 +18,7 @@ export class AudioEngine {
     this.ctx = null;
     this.zones = new Map(); // id -> {gain, nodes:[], start(fn)}
     this.zoneGains = new Map();
-    this.stepBuffers = { concrete: [] };
+    this.stepBuffers = { concrete: [], grass: [] };
     this.ready = false;
     this._noise = null;
     this._dripTimers = [];
@@ -77,7 +77,7 @@ export class AudioEngine {
     for (const { names, into } of sets) {
       for (const n of names) {
         try {
-          const res = await fetch(`sfx/footsteps/Fantozzi-${n}.flac`);
+          const res = await fetch(`sfx/footsteps/Fantozzi-${n}.ogg`);
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const buf = await res.arrayBuffer();
           this.stepBuffers[into].push(await this.ctx.decodeAudioData(buf));
@@ -86,6 +86,33 @@ export class AudioEngine {
         }
       }
     }
+  }
+
+  // CC0 urban gunshots (fps-asset-kit) — rare muffled distant shots in the
+  // street zone; the city beyond the fence has a life of its own.
+  async _loadGuns() {
+    try {
+      const res = await fetch("sfx/guns/game_gunshot.wav");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      this.gunBuffer = await this.ctx.decodeAudioData(await res.arrayBuffer());
+    } catch (e) {
+      console.warn(`gunshot sample failed (${e.message}); distant shots disabled`);
+    }
+  }
+
+  distantShot() {
+    if (!this.ready || !this.gunBuffer) return;
+    const ctx = this.ctx;
+    const src = ctx.createBufferSource();
+    src.buffer = this.gunBuffer;
+    src.playbackRate.value = 0.55 + Math.random() * 0.25;
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 260 + Math.random() * 140;
+    const g = ctx.createGain();
+    g.gain.value = 0.05 + Math.random() * 0.03;
+    src.connect(lp); lp.connect(g); g.connect(this.busAmb);
+    src.start();
   }
 
   // ---------- zone ambience ----------
@@ -390,6 +417,66 @@ export class AudioEngine {
     }
     // fallback synth concrete
     this._noiseShot(this.busSfx, { freq: 420, q: 0.9, decay: 0.07, peak: 0.12, rate: 0.9 });
+  }
+
+  // QA 2026-09-07 (user request): jump / landing / running SFX. Synthesized
+  // here because OpenGameArt is network-blocked in this sandbox; the existing
+  // CC0 FLAC footsteps still cover walking surfaces.
+  jump() {
+    if (!this.ready) return;
+    this._noiseShot(this.busSfx, { freq: 520, q: 0.8, decay: 0.14, peak: 0.07, rate: 1.6 });
+    this._tone(this.busSfx, { freq: 170, slideTo: 320, decay: 0.12, peak: 0.05 });
+  }
+
+  land(intensity = 1) {
+    if (!this.ready) return;
+    this._tone(this.busSfx, { freq: 72, slideTo: 38, attack: 0.005, decay: 0.16, peak: 0.16 * intensity });
+    this._noiseShot(this.busSfx, { freq: 300, q: 0.8, decay: 0.09, peak: 0.1 * intensity, rate: 0.7 });
+  }
+
+  exert() { // quiet sprint breath
+    if (!this.ready) return;
+    this._noiseShot(this.busSfx, { freq: 900 + Math.random() * 300, q: 1.2, decay: 0.18, peak: 0.035, rate: 0.8 });
+  }
+
+  // FMOD-style parameter-driven exertion stack (user 2026-09-08): continuous
+  // wind + breath layers + heartbeat pulses whose gains follow ONE exertion
+  // parameter (0..1) fed by sustained sprinting. Synth layers are the
+  // generated-asset fallback; acquired OGA/CC0 samples (if the acquisition
+  // loop stages them) can replace the noise beds later.
+  ensureExertion() {
+    if (this._ex || !this.ctx) return this._ex;
+    const ctx = this.ctx;
+    const bus = ctx.createGain(); bus.gain.value = 1; bus.connect(this.busSfx);
+    const windSrc = ctx.createBufferSource(); windSrc.buffer = this.noiseBuffer(2); windSrc.loop = true;
+    const windF = ctx.createBiquadFilter(); windF.type = "bandpass"; windF.frequency.value = 480; windF.Q.value = 0.5;
+    const windG = ctx.createGain(); windG.gain.value = 0;
+    windSrc.connect(windF); windF.connect(windG); windG.connect(bus); windSrc.start();
+    const brSrc = ctx.createBufferSource(); brSrc.buffer = this.noiseBuffer(2); brSrc.loop = true;
+    const brF = ctx.createBiquadFilter(); brF.type = "bandpass"; brF.frequency.value = 950; brF.Q.value = 1.4;
+    const brG = ctx.createGain(); brG.gain.value = 0;
+    const lfo = ctx.createOscillator(); lfo.frequency.value = 0.26; // breath cycle ~4s
+    const lfoG = ctx.createGain(); lfoG.gain.value = 0.0; // modulated below
+    lfo.connect(lfoG); lfoG.connect(brG.gain); lfo.start();
+    brSrc.connect(brF); brF.connect(brG); brG.connect(bus); brSrc.start();
+    this._ex = { ctx, windG, brG, lfoG, phase: 0 };
+    return this._ex;
+  }
+
+  setExertion(v, dt) {
+    if (!this.ready) return;
+    const ex = this.ensureExertion();
+    if (!ex) return;
+    const t = ex.ctx.currentTime;
+    ex.windG.gain.setTargetAtTime(0.055 * v, t, 0.5);      // running wind rush
+    ex.brG.gain.setTargetAtTime(0.028 * v, t, 0.7);        // breath bed
+    ex.lfoG.gain.setTargetAtTime(0.02 * v, t, 0.7);        // breath swell depth
+    ex.phase += dt * (0.8 + 1.4 * v);
+    if (v > 0.55 && ex.phase >= 1) {                       // pulse layer at high exertion
+      ex.phase = 0;
+      this._tone(this.busSfx, { freq: 58, type: "sine", decay: 0.16, peak: 0.09 * v });
+      setTimeout(() => this._tone(this.busSfx, { freq: 50, type: "sine", decay: 0.13, peak: 0.06 * v }), 190);
+    }
   }
 
   spoolDown() { // pumps dying after master breaker

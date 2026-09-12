@@ -28,6 +28,12 @@ try:
     page.wait_for_function("() => window.swQA && window.swQA.ready().loaded", timeout=60000)
     page.evaluate("() => window.swQA.start()")
     page.wait_for_function("() => window.swQA.ready().started", timeout=30000)
+    # async GLTF street props: wait for the loader queue to drain (props are
+    # optional — a stall here must not kill the run, so cap at 30s).
+    try:
+        page.wait_for_function("() => (window.game.world.propsPending || 0) === 0", timeout=30000)
+    except Exception:
+        stderr("warn: propsPending did not drain in 30s; continuing")
     page.wait_for_timeout(1500)
 
     # ---- torch model ----
@@ -99,7 +105,7 @@ try:
     page.wait_for_function(
         "() => window.game.world.doors.get('door_d1').door.state === 'open'", timeout=30000)
     page.keyboard.down("KeyW")
-    page.wait_for_timeout(5200)  # SwiftShader runs ~3 fps — budget real frames
+    page.wait_for_timeout(16000)  # SwiftShader fps varies 0.5-3; budget real frames
     page.keyboard.up("KeyW")
     pos = page.evaluate("() => window.game.player.pos.toArray().map(v => +v.toFixed(2))")
     check("walk_through_open_door", pos[2] < -0.2, f"pos={pos}")
@@ -146,12 +152,16 @@ try:
     check("all_doorways_clear_when_open", len(clear) == 0, json.dumps(clear[:8]))
 
     # ---- map sealing: walk probes at every edge ----
+    # Player forward = (-sin yaw, -cos yaw) — KeyW walks AGAINST (sin, cos).
+    # QA 2026-09-07: yaws here had the wrong sign (the probes walked the
+    # opposite way and passed trivially); corrected so each probe really
+    # walks INTO its edge.
     probes = [
-        ("street_west", -9.0, 3.2, -15.5, -1.5708),   # face west, walk
-        ("street_east", 9.0, 3.2, -15.5, 1.5708),
-        ("street_north", 0, 3.2, -19.4, 3.1416),
-        ("atrium_west", -3.8, 0, -4.0, -1.5708),
-        ("sump_east", 27.5, -3.4, 20.0, 1.5708),
+        ("street_west", -9.0, 3.2, -15.5, 1.5708),    # walk west into fence
+        ("street_east", 9.0, 3.2, -15.5, -1.5708),    # walk east into fence
+        ("street_north", 0, 3.2, -19.4, 0.0),         # walk north (-z)
+        ("atrium_west", -3.8, 0, -4.0, 1.5708),
+        ("sump_east", 27.5, -3.4, 20.0, -1.5708),
         ("sump_south", 20.0, -3.4, 22.8, 3.1416),
     ]
     for name, x, y, z, yaw in probes:
@@ -189,13 +199,45 @@ try:
                 if (a.soft) continue;
                 const p = pen(pr, a);
                 const horiz = Math.min(p.x, p.z);
-                if (horiz > 0.06 && p.y > 0.3)
+                // shallow vertical bite = wall-mounted (gun rack); deep bite = buried
+                if (horiz > 0.06 && p.y > 0.5)
                     out.push({ kind: 'prop-arch', pen: [+p.x.toFixed(2), +p.y.toFixed(2), +p.z.toFixed(2)] });
             }
         return { pairs: out, propCount: props.length };
     }""")
     check("props_registered", overlaps["propCount"] >= 8, f"props={overlaps['propCount']}")
     check("no_solid_overlaps", len(overlaps["pairs"]) == 0, json.dumps(overlaps["pairs"][:12]))
+
+    # ---- floater audit (user 2026-09-08: "no floating asset"): every solid
+    # prop's AABB floor must sit on the support surface, not hover above it
+    grounded = page.evaluate("""() => {
+        const props = window.game.world.colliders.filter(c => c.active && c.tag === 'prop');
+        const bad = [];
+        for (const c of props) {
+            const cx = (c.box.min.x + c.box.max.x) / 2, cz = (c.box.min.z + c.box.max.z) / 2;
+            const g = window.game.world.groundAt(cx, cz);
+            let sup = g.y; // support = ground OR another prop's top (stacked crates)
+            for (const o of props) {
+                if (o === c) continue;
+                if (cx > o.box.min.x && cx < o.box.max.x && cz > o.box.min.z && cz < o.box.max.z)
+                    sup = Math.max(sup, o.box.max.y);
+            }
+            // ...or an architecture slab top directly beneath (mezzanine over sump)
+            // ...or wall-mounted: arch collider touching/adjacent with vertical overlap
+            for (const o of window.game.world.colliders) {
+                if (!o.active || o === c || o.door || o.soft) continue;
+                if (cx > o.box.min.x && cx < o.box.max.x && cz > o.box.min.z && cz < o.box.max.z &&
+                    o.box.max.y <= c.box.min.y + 0.26) { sup = Math.max(sup, o.box.max.y); continue; }
+                const gapX = Math.max(o.box.min.x - c.box.max.x, c.box.min.x - o.box.max.x);
+                const gapZ = Math.max(o.box.min.z - c.box.max.z, c.box.min.z - o.box.max.z);
+                const vOv = Math.min(o.box.max.y, c.box.max.y) - Math.max(o.box.min.y, c.box.min.y);
+                if (Math.min(gapX, gapZ) < 0.12 && vOv > 0.1) sup = Math.max(sup, c.box.min.y);
+            }
+            if (c.box.min.y - sup > 0.25) bad.push({ miny: +c.box.min.y.toFixed(2), sup: +sup.toFixed(2) });
+        }
+        return bad;
+    }""")
+    check("props_grounded", len(grounded) == 0, json.dumps(grounded[:8]))
 
     check("no_page_errors", len(errors) == 0, "; ".join(errors[:4]))
 finally:

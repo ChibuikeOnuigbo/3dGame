@@ -318,7 +318,7 @@ class Game {
     this.interact.add({
       id,
       position: new THREE.Vector3(position[0], position[1] + 1.1, position[2]),
-      verb: "Open door",
+      verb: () => (d.state === "open" || d.state === "opening" ? "Close door" : "Open door"),
       radius: 2.1,
       interact: () => {
         const r = d.interact(this.player.pos);
@@ -340,10 +340,10 @@ class Game {
     this.interact.add({
       id: "door_street",
       position: V3(0, 4.2, -14.85),
-      verb: "Open door",
+      verb: () => (streetDoor.state === "open" || streetDoor.state === "opening" ? "Close door" : "Open door"),
       radius: 2.2,
       enabled: () => !st.flags.kiosk_locked,
-      interact: () => streetDoor.open(),
+      interact: () => streetDoor.interact(this.player.pos),
     });
     this.interact.add({
       id: "note_dispatch",
@@ -599,6 +599,12 @@ class Game {
       }
     }
     this.audio.updateZones(targets, dt);
+    // rare muffled distant gunshots while in the street zone (CC0 sample)
+    this._shotT = (this._shotT ?? 14) - dt;
+    if (room?.zone === "street" && this._shotT <= 0) {
+      this._shotT = 18 + Math.random() * 30;
+      this.audio.distantShot();
+    }
     let fogD = 0.032, fogC = 0x05070a;
     if (room?.zone === "street") { fogD = 0.012; fogC = 0x131a2a; }
     else if (room?.zone === "sump" || room?.zone === "shaft") { fogD = 0.05; fogC = 0x04050a; }

@@ -10,5 +10,8 @@ export default defineConfig({
   server: {
     host: "0.0.0.0",
     port: 5173,
+    // Allow the Arena preview proxy host (and any reverse proxy) through
+    // Vite's host check so the live preview loads.
+    allowedHosts: true,
   },
 });

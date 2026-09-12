@@ -193,3 +193,31 @@ export function makePaperTexture(title, bodyLines, opts = {}) {
   tex.colorSpace = THREE.SRGBColorSpace;
   return tex;
 }
+
+// Chain-link lattice for perimeter fence infill (QA 2026-09-07): the old
+// solid 0.42-opacity plane read as a black sheet across every view of the
+// parcel edge. An alpha-tested diamond lattice lets the horizon show
+// through while still reading as fencing.
+export function makeChainLinkTexture() {
+  const s = 64;
+  const canvas = document.createElement("canvas");
+  canvas.width = s; canvas.height = s;
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, s, s);
+  ctx.strokeStyle = "#aeb6bf";
+  ctx.lineWidth = 5;
+  ctx.lineCap = "round";
+  // diamond lattice, drawn so the pattern tiles seamlessly
+  ctx.beginPath();
+  ctx.moveTo(-s / 2, s / 2); ctx.lineTo(s / 2, s * 1.5);
+  ctx.moveTo(0, 0); ctx.lineTo(s, s);
+  ctx.moveTo(s / 2, -s / 2); ctx.lineTo(s * 1.5, s / 2);
+  ctx.moveTo(s / 2, s / 2); ctx.lineTo(-s / 2, s * 1.5);
+  ctx.moveTo(s, 0); ctx.lineTo(0, s);
+  ctx.moveTo(s * 1.5, s / 2); ctx.lineTo(s / 2, s * 1.5);
+  ctx.stroke();
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}

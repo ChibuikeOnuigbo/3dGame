@@ -46,10 +46,11 @@ export class HUD {
     }
     const key = this._interactKey();
     let html = "";
+    const verb = typeof current.verb === "function" ? current.verb() : current.verb;
     if (current.hold) {
-      html = `<div class="hold"><div class="hold-ring"><svg viewBox="0 0 36 36"><circle class="track" cx="18" cy="18" r="15.5"/><circle class="fill" cx="18" cy="18" r="15.5"/></svg><span class="hold-pct"></span></div>${bindPromptHTML(key, `${current.verb} — hold`)}</div>`;
+      html = `<div class="hold"><div class="hold-ring"><svg viewBox="0 0 36 36"><circle class="track" cx="18" cy="18" r="15.5"/><circle class="fill" cx="18" cy="18" r="15.5"/></svg><span class="hold-pct"></span></div>${bindPromptHTML(key, `${verb} — hold`)}</div>`;
     } else {
-      html = bindPromptHTML(key, current.verb);
+      html = bindPromptHTML(key, verb);
     }
     this.promptEl.innerHTML = html;
     this.promptEl.classList.add("visible");

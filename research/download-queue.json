@@ -1,0 +1,116 @@
+{
+ "pending": [
+  {
+   "asset": "Poly Haven Concrete Floor 02 (1K diff/nor/rough)",
+   "routes_tried": [
+    "direct",
+    "gateway"
+   ],
+   "failure": "TLS SSL_ERROR_SYSCALL after ClientHello on dl.polyhaven.org from sandbox; gateway host itself TLS-killed",
+   "next_route": "server-side fetch cannot stream binaries; retry direct when user allowlists dl.polyhaven.org"
+  },
+  {
+   "asset": "OpenGameArt Jump Landing (Dan Knoflicek, CC0 wav x3)",
+   "routes_tried": [
+    "direct",
+    "gateway"
+   ],
+   "failure": "TLS killed on opengameart.org",
+   "next_route": "retry when egress restored; synthesized jump/land SFX active meanwhile"
+  },
+  {
+   "asset": "itch PSX Industrial pack GLB (godgoldfear, CC-BY)",
+   "routes_tried": [
+    "direct",
+    "gateway"
+   ],
+   "failure": "TLS killed on itch.io; free-tier download also needs itch session POST flow",
+   "next_route": "browser automation only works from sandbox egress; retry when egress restored"
+  },
+  {
+   "asset": "itch hospital-horror pack (Zertto, CC-BY)",
+   "routes_tried": [
+    "direct",
+    "gateway"
+   ],
+   "failure": "TLS killed on itch.io",
+   "next_route": "same as above"
+  }
+ ],
+ "success": [
+  {
+   "asset": "Fantozzi footsteps OGG x12",
+   "route": "local git clone of ChibuikeOnuigbo/fps-asset-kit",
+   "local": "game/public/sfx/footsteps/"
+  },
+  {
+   "asset": "BoomBox.glb",
+   "route": "git sparse clone (Khronos glTF-Sample-Assets)",
+   "local": "game/public/assets/models/BoomBox.glb"
+  },
+  {
+   "asset": "CommercialRefrigerator.glb",
+   "route": "git sparse clone",
+   "local": "game/public/assets/models/CommercialRefrigerator.glb"
+  },
+  {
+   "asset": "ToyCar.glb",
+   "route": "git sparse clone",
+   "local": "game/public/assets/models/ToyCar.glb"
+  },
+  {
+   "asset": "TrafficCone glTF set",
+   "route": "git sparse clone",
+   "local": "game/public/assets/models/TrafficCone/"
+  },
+  {
+   "asset": "WaterBottle.glb / Lantern.glb",
+   "route": "git sparse clone",
+   "local": "research/assets/models/"
+  },
+  {
+   "asset": "uisfx mechanical UI ogg x5",
+   "route": "npm registry tarball (registry.npmjs.org)",
+   "local": "game/public/sfx/ui/"
+  }
+ ],
+ "blocked": [
+  {
+   "asset": "YouTube video bytes to032deYr-Q",
+   "routes_tried": [
+    "yt-dlp direct",
+    "gateway",
+    "server-side page (metadata only)"
+   ],
+   "status": "VIDEO_BINARY=NOT_ACQUIRED; VIDEO_RESEARCH=AVAILABLE",
+   "reason": "all media hosts (youtube.com, *.googlevideo.com) TLS-killed from sandbox; server-side fetch returns HTML pages only, not binary streams; no legitimate static file URL exists for YouTube media"
+  }
+ ],
+ "paid_required": [
+  {
+   "asset": "PSXIndustrialExteriorPack_v3.unitypackage",
+   "price": "USD 2.99",
+   "action": "recorded, not bypassed"
+  }
+ ],
+ "auth_required": [
+  {
+   "asset": "Sketchfab downloads (simple-factory-scene, small-industrial-scene, maps)",
+   "reason": "api.sketchfab.com/v3/models/{id}/download returns 401 anonymous; Sketchfab requires login for any download including CC models; no bypass attempted"
+  }
+ ],
+ "invalid": [
+  {
+   "asset": "Cy4nWare/sfx-api (GitHub, CC0)",
+   "reason": "REJECTED: contents are Kenney audio packs - Kenney assets are BANNED project-wide"
+  },
+  {
+   "asset": "zstar1003/nature-sfx-library (GitHub)",
+   "reason": "REJECTED: RIGHTS.md requires explicit authorization from author before use - not freely licensed"
+  },
+  {
+   "asset": "Sketchfab 'maps' model",
+   "reason": "content mismatch (skibidi-themed SFM port), deprioritized, license fine"
+  }
+ ]
+}

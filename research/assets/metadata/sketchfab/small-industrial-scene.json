@@ -1,0 +1,16 @@
+{
+ "source": "Sketchfab",
+ "model_id": "4b3cc287c76c4ede92c433f9d19c1006",
+ "url": "https://sketchfab.com/3d-models/small-industrial-scene-4b3cc287c76c4ede92c433f9d19c1006",
+ "name": "Small Industrial scene",
+ "author": "Brendan Wood (brendanwood872)",
+ "license": "CC-BY-4.0",
+ "triangles": 48300,
+ "vertices": 24700,
+ "downloads": 111,
+ "downloadable": true,
+ "published": "2019-10-10",
+ "description": "small scene featuring realistic UV wrapped assets and environment lighting",
+ "binary_status": "not downloaded - same diagnostics as simple-factory-scene",
+ "credit_line": "Small Industrial scene by Brendan Wood, CC-BY 4.0, via Sketchfab"
+}
