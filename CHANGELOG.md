@@ -2,6 +2,59 @@
 
 All notable changes to Still Water. Dates are YYYY-MM-DD (build session).
 
+## 2026-09-12 (turn 8) — first-door poster → hologram + floor audit + street filling
+
+### User-requested changes
+- **First-door "poster" REMOVED** (user asked again): the framed STORMWATER
+  STATION 6 sign above the street door is gone. Replaced by a **see-through
+  hologram projection** (new `kit.hologramSign`): additive shader plane —
+  scanlines, upward light-band sweep, glitch ticks, flicker dips, cyan tint,
+  alpha 0.62 so the facade shows through — floating above a small projector
+  housing. **Moved up** (text centre y 4.92 → 5.45 vs old framed sign at
+  4.85) and the porch lamp shifted to x 1.5 so the dome no longer sits in
+  the text. Projector boot blip (uisfx "connect", MIT) plays at game start.
+- **Floor audit (new tool `tools/qa/audit_floors.py`)** — raycast-based
+  scan of every ground region and every room-volume mesh top. Found and
+  FIXED:
+  - street parcel south edge: visuals/regions/fence stopped at z -10.9
+    while asphalt ran to -10.4 — a walkable see-through strip with no
+    boundary. Regions/verges extended, **south fence line added** (splits
+    around the stairwell block) — the parcel is now fully sealed.
+  - stair-ramp foot slot: visual steps ended at z -6.37 vs region -6.2 —
+    filler tread closes it flush at y 0.
+  - tilted-ramp class: single tilted ramp slabs (stairwell + sump F0) shrink
+    their footprint by cos(slope), leaving the lane ends with NO visual
+    underfoot. `_rampVis` rebuilt as stepped treads spanning the full run.
+  - collider-top support: solid collider tops (crates, bench, fridge) are
+    now standable (`world.colliderTopNear` + player ground integration) —
+    hopping onto a prop no longer falls through it.
+- **Street de-scanted** (user: "space too scanty, create new houses"):
+  - CC0 **KayKit City Builder Bits** neighbourhood across the fence:
+    5 buildings + water tower + yard bushes on the city-ground disc.
+  - In-parcel street furniture (all solid, overlap-verified): sedan +
+    taxi parked parallel to the kerbs, dumpster, bench, hydrant, 2 bins.
+  - Pump Hall SW crate row + NE crate, Atrium NW corner crate pair.
+- **More SFX** (user request): CC0 OpenGameArt packs acquired via the
+  network-reachable GitHub route (`python-sound-generator` redistributes
+  OGA archives with provenance): Iwan Gabovitch doors, laleksic creaks/
+  thunks/cant-open, rubberduck slams, leonmire gate squeal (now rides the
+  gateGrind synth), wood/panel debris, key-click layer on breakerClack,
+  winch strain creak, hologram boot blip. All sample paths keep their
+  original synth fallbacks. Sketchfab + worker gateway verified BLOCKED
+  ("Host not allowed" for api.sketchfab.com; binary payloads impossible) —
+  token intentionally not stored in the repo.
+
+### QA
+- NEW `tools/qa/audit_floors.py` (raycast floor integrity): **PASS**
+  (0 see-through samples, 0 unsupported reachable floor tops; regions=25,
+  meshes≈1070, 2235 samples).
+- verify_world **17/17** (no_solid_overlaps back to 0 after re-placing the
+  new props against every existing collider — 6 initial clashes found and
+  fixed; cars de-rotated to parallel parking).
+- critical_path **40/40**; ghost scan open=0 / invisible=0.
+- Visual pass: `qa/visual/2026-09-12/` (hologram door shots, street with
+  houses/cars, pump-hall + atrium crates).
+
 ## 1.0.0 — 2026-09-04 (release)
 
 First complete, playable build. All gates §215–216 green.

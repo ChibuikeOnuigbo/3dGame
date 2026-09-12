@@ -278,6 +278,8 @@ class Game {
       this.state.startClock();
       await this.audio.init();
       this.audio.buildDefaultZones();
+      // street hologram sign projector spinning up (CC0/MIT blip; soft)
+      setTimeout(() => this.audio.holoBoot(), 900);
     }
     this.audio.resume();
     document.getElementById("menu").classList.remove("ready");
@@ -528,10 +530,12 @@ class Game {
       enabled: () => st.flags.master_off && !st.flags.gate_open,
       onHoldProgress: (p, dt) => {
         if (dt > 0 && p < 1 && Math.random() < 0.6) this.audio.crankTick();
+        if (!this._winchCreaked) { this._winchCreaked = true; this.audio.winchCreak(); }
         if (w.winch.userData.crank) w.winch.userData.crank.rotation.x += dt * 5;
         if (w.winch.userData.drum) w.winch.userData.drum.rotation.x += dt * 5;
       },
       finishHold: () => {
+        this._winchCreaked = false;
         st.setFlag("gate_open");
         this.audio.gateGrind(4);
         w.serviceGate.locked = false;

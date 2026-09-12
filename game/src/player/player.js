@@ -242,7 +242,12 @@ export class Player {
     this._tryAxis("z", nz);
 
     // gravity + ground follow (y-aware: ghost-climb fix — see world.groundNear)
-    const g = this.world.groundNear(this.pos.x, this.pos.z, this.pos.y);
+    // Floor-audit 2026-09-12: solid collider tops (crates, benches, low
+    // ledges) now count as support, so hopping onto a prop stands on it
+    // instead of falling through to the floor below.
+    const gRaw = this.world.groundNear(this.pos.x, this.pos.z, this.pos.y);
+    const cTop = this.world.colliderTopNear(this.pos.x, this.pos.z, this.pos.y);
+    const g = cTop !== null && cTop > gRaw.y ? { y: cTop, surface: "metal" } : gRaw;
     const gdy = g.y - this.pos.y;
     this._slope = Math.min(1, Math.abs(gdy) * 5);
     if (!this.airborne && gdy < -STEPH) this.airborne = true; // walked off an edge

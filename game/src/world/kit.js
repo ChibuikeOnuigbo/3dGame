@@ -436,6 +436,70 @@ export function signPlane(materials, texture, w, h, opts = {}) {
   return m;
 }
 
+// See-through hologram projection sign (USER 2026-09-12: "change the style to
+// hologram, see-through a little"). Replaces the old framed poster sign: no
+// backing board at all — the text floats as additive light with scanlines, a
+// slow band sweep, subtle glitch jitter and occasional flicker dips, so the
+// wall behind stays visible through it. The tiny housing box at the bottom
+// reads as the projector emitter. Caller advances material.uniforms.uTime
+// (register the returned group's materials via world.holoMats).
+export function hologramSign(materials, texture, w, h, opts = {}) {
+  const tint = new THREE.Color(opts.tint ?? 0x9fdcff);
+  const mat = new THREE.ShaderMaterial({
+    transparent: true,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    blending: THREE.AdditiveBlending,
+    uniforms: {
+      uMap: { value: texture },
+      uTime: { value: 0 },
+      uTint: { value: tint },
+      uAlpha: { value: opts.alpha ?? 0.68 },
+    },
+    vertexShader: `
+      varying vec2 vUv;
+      void main(){ vUv = uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }
+    `,
+    fragmentShader: `
+      uniform sampler2D uMap; uniform float uTime; uniform vec3 uTint; uniform float uAlpha;
+      varying vec2 vUv;
+      float hash(float n){ return fract(sin(n)*43758.5453); }
+      void main(){
+        vec2 uv = vUv;
+        // slow vertical roll + rare horizontal glitch ticks
+        uv.y = fract(uv.y + 0.005*sin(uTime*1.6));
+        uv.x += (hash(floor(uTime*22.0)) - 0.5) * 0.006 * step(0.93, hash(floor(uTime*11.0)+7.0));
+        vec4 tex = texture2D(uMap, uv);
+        // fine scanlines + one soft brightness band sweeping upward
+        float scan = 0.84 + 0.16*sin(vUv.y*210.0);
+        float ph = fract(vUv.y*0.5 - uTime*0.09);
+        float band = smoothstep(0.0, 0.35, ph) * smoothstep(0.7, 0.35, ph);
+        // mostly-stable flicker with occasional dips
+        float fl = 0.92 + 0.08*sin(uTime*21.0)*step(0.72, hash(floor(uTime*8.0)+3.0));
+        float a = tex.a * uAlpha * scan * fl * (0.78 + 0.35*band);
+        vec3 col = tex.rgb * uTint * 1.4 + uTint * 0.10 * band;
+        gl_FragColor = vec4(col * a, a);
+      }
+    `,
+  });
+  const g = new THREE.Group();
+  // the floating light plane, drifted slightly proud of its housing
+  const plane = new THREE.Mesh(new THREE.PlaneGeometry(w, h), mat);
+  plane.position.set(0, h * 0.5 + 0.1, 0.14);
+  g.add(plane);
+  // projector emitter: small housing on the wall + cyan lens slit
+  const lens = new THREE.Mesh(
+    new THREE.BoxGeometry(w * 0.32, 0.022, 0.02),
+    new THREE.MeshStandardMaterial({ color: 0x0a0d12, emissive: tint, emissiveIntensity: 2.2, roughness: 0.4 })
+  );
+  lens.position.set(0, 0.02, 0.075);
+  g.add(lens);
+  const housing = box(w * 0.36, 0.075, 0.11, materials.get("darkMetal"), 0, -0.02, 0.02);
+  g.add(housing);
+  g.userData.holoMat = mat;
+  return g;
+}
+
 // ---------------- water ----------------
 
 export function waterMaterial() {

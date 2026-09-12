@@ -394,8 +394,8 @@ export class World {
     this.slab(-10, 10, 3.05, 3.2, -20, -11.3, this.mats.get("asphalt"), { tile: 2.0 });
     this.slab(-10, -1.3, 3.05, 3.2, -11.3, -10.4, this.mats.get("asphalt"), { tile: 2.0 });
     this.slab(1.3, 10, 3.05, 3.2, -11.3, -10.4, this.mats.get("asphalt"), { tile: 2.0 });
-    this.ground(-10, 10, -20, -10.9, 3.2, "asphalt");
-    this.room({ id: "street", name: "Stadtfeld Street", min: [-10, 3, -20], max: [10, 8, -10.9], zone: "street" });
+    this.ground(-10, 10, -20, -10.4, 3.2, "asphalt"); // to -10.4: match the visual asphalt (floor-audit fix)
+    this.room({ id: "street", name: "Stadtfeld Street", min: [-10, 3, -20], max: [10, 8, -10.4], zone: "street" });
 
     // sodium lamp + pole
     const pole = kit.ladder(this.mats, 4.4);
@@ -421,17 +421,22 @@ export class World {
     // Night fog alone reads better than fake skyline at this scale.)
 
     // ---- grass verges inside the street parcel (CC0 Ground037) ----
+    // USER 2026-09-12 floor audit: visuals AND ground regions used to stop at
+    // z -10.9 while the asphalt ran to -10.4 — a visual asphalt strip with no
+    // analytic floor and no boundary, i.e. a floor the player could walk off
+    // into the void. Verges/regions now run to -10.4 like the asphalt, and a
+    // fence line seals the south edge (see fenceLines below).
     const vergeMat = this.mats.get("grass");
-    this.slab(-10, -7.6, 3.2, 3.28, -20, -10.9, vergeMat, { cast: false, tile: 1.2 });
-    this.slab(7.6, 10, 3.2, 3.28, -20, -10.9, vergeMat, { cast: false, tile: 1.2 });
-    this.ground(-10, -7.6, -20, -10.9, 3.28, "grass");
-    this.ground(7.6, 10, -20, -10.9, 3.28, "grass");
+    this.slab(-10, -7.6, 3.2, 3.28, -20, -10.4, vergeMat, { cast: false, tile: 1.2 });
+    this.slab(7.6, 10, 3.2, 3.28, -20, -10.4, vergeMat, { cast: false, tile: 1.2 });
+    this.ground(-10, -7.6, -20, -10.4, 3.28, "grass");
+    this.ground(7.6, 10, -20, -10.4, 3.28, "grass");
     // soil strip in front of the buildings (CC0 Ground054)
     this.slab(-7.6, 7.6, 3.2, 3.26, -20, -18.4, this.mats.get("soil"), { cast: false });
     this.ground(-7.6, 7.6, -20, -18.4, 3.26, "grass");
     // low curb edging the verges
-    this.slab(-7.75, -7.55, 3.2, 3.34, -20, -10.9, this.mats.get("concreteDark"), { cast: false });
-    this.slab(7.55, 7.75, 3.2, 3.34, -20, -10.9, this.mats.get("concreteDark"), { cast: false });
+    this.slab(-7.75, -7.55, 3.2, 3.34, -20, -10.4, this.mats.get("concreteDark"), { cast: false });
+    this.slab(7.55, 7.75, 3.2, 3.34, -20, -10.4, this.mats.get("concreteDark"), { cast: false });
 
     // QA 2026-09-07: parcel edges were uniform-black past the single sodium
     // lamp's pool — corner lamps keep the fence line legible as environment.
@@ -454,10 +459,17 @@ export class World {
     const post = this.mats.get("darkMetal");
     const railMat = this.mats.get("metalRaw");
     const fenceH = 2.05;
+    // USER 2026-09-12 floor audit: the parcel's SOUTH edge was open — the
+    // side runs stopped at z -10.9 and nothing sealed the street, so a walker
+    // could leave the map across the -10.9..-10.4 asphalt strip. New south
+    // fence closes x beyond the stairwell block (its walls at x +/-1.0..1.3
+    // close the middle). Side runs now meet the south line at z -10.55.
     const fenceLines = [
       { x0: -10.05, z0: -20.05, x1: 10.05, z1: -20.05 },
-      { x0: -10.05, z0: -10.9, x1: -10.05, z1: -20.05 },
-      { x0: 10.05, z0: -20.05, x1: 10.05, z1: -10.9 },
+      { x0: -10.05, z0: -10.55, x1: -10.05, z1: -20.05 },
+      { x0: 10.05, z0: -20.05, x1: 10.05, z1: -10.55 },
+      { x0: -10.05, z0: -10.55, x1: -1.3, z1: -10.55 },
+      { x0: 1.3, z0: -10.55, x1: 10.05, z1: -10.55 },
     ];
     for (const L of fenceLines) {
       const len = Math.hypot(L.x1 - L.x0, L.z1 - L.z0);
@@ -543,6 +555,43 @@ export class World {
     this._gltfProp("assets/models/ToyCar.glb", -5.1, 3.2, -12.6, 0.4, { dim: "length", size: 0.46, solid: false });
     // boombox on the kiosk floor beside the meter box (CC0 Microsoft)
     this._gltfProp("assets/models/BoomBox.glb", 1.15, 3.2, -12.15, Math.PI * 0.75, { dim: "length", size: 0.5, solid: false });
+
+    // ---- USER 2026-09-12: "the space is too scanty — create new houses". ----
+    // A real neighbourhood row across the fence (CC0 KayKit City Builder
+    // Bits, glTF — see CREDITS.md). These sit OUTSIDE the playable bounds on
+    // the city-ground disc (fence + bounds colliders seal them off), so they
+    // are decorative: no colliders, dim city-glow lift so facades don't read
+    // black under fog. Native KayKit scale is ~2x2x[1.6..3] units — scaled
+    // per-model to true house proportions (A/B ~9m 2-story, F ~8.9, D/G ~9.5+).
+    const kk = "assets/models/kaykit/";
+    const houses = [
+      ["building_A.gltf", -14.5, -26.2, Math.PI, 4.5],
+      ["building_D.gltf", -5.0, -26.8, Math.PI, 3.3],
+      ["building_F.gltf", 4.6, -26.0, Math.PI, 3.8],
+      ["building_B.gltf", 14.2, -26.6, Math.PI, 4.5],
+      ["building_G.gltf", 23.4, -25.4, Math.PI * 0.97, 3.2],
+    ];
+    for (const [f, hx, hz, hy, hs] of houses) {
+      this._decoProp(kk + f, hx, 3.12, hz, hy, hs, { glow: true });
+    }
+    // watertower silhouette closing the western end of the row
+    this._decoProp(kk + "watertower.gltf", -21.5, 3.12, -27.6, 0.3, 7, { glow: true });
+    // yard bushes along the house fronts (outside the fence, decorative)
+    for (const [bx, bz, br] of [[-10.9, -21.6, 0.7], [-0.2, -21.8, 2.4], [9.4, -21.5, 1.2], [19.3, -21.9, 0.4]]) {
+      this._decoProp(kk + "bush.gltf", bx, 3.14, bz, br, 3, { glow: true });
+    }
+
+    // In-parcel street furniture (these ARE reachable -> solid colliders).
+    // Cars parked parallel to the kerbs (length along z) leave the centre
+    // lane clear for the kiosk door. Positions verified against every other
+    // prop collider (verify_world no_solid_overlaps).
+    this._decoProp(kk + "car_sedan.gltf", 5.3, 3.22, -17.6, 0, 4.6, { solid: true });
+    this._decoProp(kk + "car_taxi.gltf", -6.2, 3.22, -15.0, 0, 4.6, { solid: true });
+    this._decoProp(kk + "firehydrant.gltf", 8.35, 3.2, -13.6, Math.PI / 2, 2.2, { solid: true });
+    this._decoProp(kk + "bench.gltf", -8.3, 3.2, -14.2, -Math.PI / 2, 3, { solid: true });
+    this._decoProp(kk + "dumpster.gltf", -8.7, 3.2, -17.2, Math.PI / 2, 3, { solid: true });
+    this._decoProp(kk + "trash_A.gltf", 7.85, 3.2, -17.9, 0.8, 4, { solid: true });
+    this._decoProp(kk + "trash_B.gltf", -7.9, 3.2, -12.4, -0.6, 5, { solid: true });
   }
 
   // Loads one glTF prop, normalizes it to `size` along `dim` ("height" |
@@ -694,11 +743,19 @@ export class World {
     });
     this.addDoor(dStreet, { swingCollider: true });
 
-    // entry sign above door
-    const sign = kit.signPlane(m, makeSignTexture(["STORMWATER", "STATION 6"], { w: 512, h: 160, color: "#e8d27a", size: 44 }), 1.5, 0.47, { backing: true, lit: true });
-    sign.position.set(0, 4.85, -14.98);
-    sign.rotation.y = Math.PI;
-    this.scene.add(sign);
+    // USER 2026-09-12: the framed poster sign above the first door is GONE
+    // (removed on request — it read as a stuck-on poster). Style is now a
+    // see-through hologram projection, no backing board, and it sits HIGHER
+    // on the facade (old framed sign: y 4.85, h 0.47; hologram text center
+    // y 5.02). Additive shader: scanlines + band sweep + glitch jitter, the
+    // wall shows through it. Projector housing sits flush on the wall face.
+    const holo = kit.hologramSign(m, makeSignTexture(["STORMWATER", "STATION 6"], { w: 512, h: 160, color: "#eef8ff", bg: "#010409", size: 44 }), 1.7, 0.53, { alpha: 0.62 });
+    holo.position.set(0, 4.92, -14.92);
+    holo.rotation.y = Math.PI; // face the street
+    this.scene.add(holo);
+    (this.holoMats = this.holoMats || []).push(holo.userData.holoMat);
+    // faint cyan spill so the projection reads on the wet asphalt
+    this.light(0, 5.1, -15.4, { color: 0x69c9ef, intensity: 2.6, distance: 6.5, circuit: "always" });
     // QA 2026-09-07: OpenCV pass found the first-door approach 86% uniform
     // black at night — the door must read as THE way in. Entry lamp over the
     // sign + a dim porch light, both on the always-live circuit.
@@ -707,8 +764,10 @@ export class World {
     // plate floated 0.06 off the outer face and the open shade silhouetted
     // above the 5.6 parapet as a sky-arch. Mount now embeds in the wall
     // (outer face -15.0) and the closed dome tops out at 5.47.
-    this.place(porch, 0, 5.3, -14.95, Math.PI, { collide: false }); // faces street
-    this.light(0, 5.1, -15.6, { color: 0xffd9a0, intensity: 7, distance: 8, circuit: "always" });
+    // USER 2026-09-12: shifted off-centre (x 1.5) so the dome no longer sits
+    // in the middle of the hologram sign text above the door.
+    this.place(porch, 1.5, 5.3, -14.95, Math.PI, { collide: false }); // faces street
+    this.light(1.5, 5.1, -15.6, { color: 0xffd9a0, intensity: 6, distance: 8, circuit: "always" });
     // small meter box
     const meter = kit.breakerBox(m, { levers: 2 });
     this.place(meter, 1.55, 4.3, -13.0, Math.PI / 2, { collide: false });
@@ -741,6 +800,13 @@ export class World {
       st.receiveShadow = true;
       steps.add(st);
     }
+    // USER 2026-09-12 floor audit: the visual steps ended at z -6.37 while the
+    // ramp's ground region runs to -6.2 — a thin see-through slot underfoot at
+    // the ramp foot. Filler tops at y 0, flush with the atrium slab below.
+    const foot = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.34, 0.44), this.mats.variant("concreteDark", 1, 1));
+    foot.position.set(0, -0.17, -6.27);
+    foot.receiveShadow = true;
+    steps.add(foot);
     this.scene.add(steps);
     this.ground(-1.0, 1.0, -11.3, -6.2, 3.2, "concrete", { axis: "z", from: -11.3, to: -6.2, y0: 3.2, y1: 0 });
     // handrail on east side
@@ -808,6 +874,9 @@ export class World {
     this.place(kit.toolbox(m), -3.45, 0, -3.6, 0.2);
     this.place(kit.crate(m, 0.6), 3.3, 0, -1.2, 0.3);
     this.place(kit.barrel(m), -3.5, 0, -0.9, 0);
+    // USER 2026-09-12: KayKit crate pair fills the bare NW corner
+    this._decoProp("assets/models/kaykit/box_A.gltf", -3.4, 0, -5.65, 0.4, 3.6, { solid: true });
+    this._decoProp("assets/models/kaykit/box_B.gltf", -2.35, 0, -5.8, -0.3, 3.4, { solid: true });
 
     // ceiling fixtures (lighting circuit)
     const f1 = kit.fluorescentFixture(m, { on: false });
@@ -998,6 +1067,13 @@ export class World {
     this.radios.push(benchRadio);
     this.place(kit.toolbox(m), -3.2, 0, 22.2, 0.4);
 
+    // USER 2026-09-12 (sections felt scanty): CC0 KayKit crate row in the
+    // dead SW corner + NE corner by the barrels (spacing ≥0.05 m verified).
+    this._decoProp("assets/models/kaykit/box_A.gltf", -6.3, 0, 22.5, 0.35, 3.6, { solid: true });
+    this._decoProp("assets/models/kaykit/box_A.gltf", -5.2, 0, 22.4, 1.1, 3.4, { solid: true });
+    this._decoProp("assets/models/kaykit/box_B.gltf", -4.3, 0, 22.7, 0.2, 3.8, { solid: true });
+    this._decoProp("assets/models/kaykit/box_B.gltf", 6.35, 0, 21.3, 0.2, 3.8, { solid: true });
+
     // signage on east wall by D3
     const s = kit.signPlane(m, makeSignTexture(["VALVE GALLERY"], { w: 512, h: 110, color: "#d8c26a", arrow: "right" }), 1.2, 0.26, { backing: true, lit: true });
     s.position.set(7.0, 2.5, 16.5);
@@ -1180,11 +1256,11 @@ export class World {
     this.ground(24.3, 26.5, 20.85, 20.95, -3.4, "concrete");  // center gap (gate entry)
     // ramp from gallery opening down (ground + visual + fill)
     this.ground(17.0, 21.4, 16.2, 19.2, 0, "metal", { axis: "x", from: 17.0, to: 21.4, y0: 0, y1: -3.4 });
-    const rampVis = new THREE.Mesh(new THREE.BoxGeometry(4.4, 0.25, 3.0), m.variant("metalRaw", 3, 1));
-    rampVis.position.set(19.2, -1.7, 17.7);
-    rampVis.rotation.z = Math.atan2(3.4, 4.4);
-    rampVis.receiveShadow = true;
-    this.scene.add(rampVis);
+    // USER 2026-09-12 floor audit: the old single tilted slab covered only
+    // x 17.5..20.9 of the 17.0..21.4 run (tilt shrinks the footprint by
+    // cos(slope)) — the top/bottom of the descent had NO visual underfoot.
+    // _rampVis now builds stepped treads that span the full run.
+    this._rampVis(17.0, 21.4, 17.7, 0, -3.4, "x", 3.0);
     // under-ramp fill colliders
     this.colliders.push({ box: new THREE.Box3(new THREE.Vector3(17, -3.4, 16.2), new THREE.Vector3(19.7, -2.2, 19.2)), active: true });
     // ramp retaining walls
@@ -1405,18 +1481,44 @@ export class World {
   }
 
   _rampVis(x0, x1, zc, y0, y1, axis, width) {
+    // USER 2026-09-12 floor audit: the old single tilted slab's footprint
+    // shrinks by cos(slope) — on the steep sump ramps (~38°) it covered only
+    // half the run, leaving the top and bottom of the lane with NO visual
+    // underfoot (the player floated on the analytic region looking through
+    // the world). Stepped boxes now span the full run exactly, stay within
+    // half-a-step of the analytic slope, and read as a real industrial stair.
     const len = Math.abs(x1 - x0);
-    const m = new THREE.Mesh(new THREE.BoxGeometry(len, 0.16, width), this.mats.variant("metalRaw", 2, 1));
-    m.position.set((x0 + x1) / 2, (y0 + y1) / 2 - 0.08 * 0, zc);
-    m.rotation.z = Math.atan2(y1 - y0, x1 - x0);
-    m.receiveShadow = true;
-    this.scene.add(m);
-    // steps overlay for readability
-    const n = Math.floor(len / 0.3);
+    const n = Math.max(6, Math.round(len / 0.3));
+    const step = len / n + 0.02; // tiny overlap: no seams between treads
+    for (let i = 0; i < n; i++) {
+      const ya = y0 + (y1 - y0) * (i / n);
+      const yb = y0 + (y1 - y0) * ((i + 1) / n);
+      const top = Math.max(ya, yb);
+      const h = Math.abs(yb - ya) + 0.34; // drop below both ends: no under-gaps
+      const t = (i + 0.5) / n;
+      const s = new THREE.Mesh(
+        axis === "x"
+          ? new THREE.BoxGeometry(step, h, width)
+          : new THREE.BoxGeometry(width, h, step),
+        this.mats.variant("metalRaw", 2, 1)
+      );
+      s.position.set(
+        axis === "x" ? x0 + (x1 - x0) * t : zc,
+        top - h / 2,
+        axis === "x" ? zc : z0_of(x0, x1, t) // (axis z unused today; symmetric)
+      );
+      s.receiveShadow = true;
+      this.scene.add(s);
+    }
+    function z0_of(a, b, t) { return a + (b - a) * t; }
+    // nosing strips for readability
     for (let i = 0; i <= n; i++) {
       const t = i / n;
-      const s = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, width), this.mats.get("trim"));
-      s.position.set(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t + 0.09, zc);
+      const s = new THREE.Mesh(
+        axis === "x" ? new THREE.BoxGeometry(0.05, 0.05, width) : new THREE.BoxGeometry(width, 0.05, 0.05),
+        this.mats.get("trim")
+      );
+      s.position.set(axis === "x" ? x0 + (x1 - x0) * t : zc, y0 + (y1 - y0) * t + 0.09, axis === "x" ? zc : x0 + (x1 - x0) * t);
       this.scene.add(s);
     }
   }
@@ -1558,6 +1660,8 @@ export class World {
     }
     if (this.waterMat) this.waterMat.uniforms.uTime.value = this.time;
     this.water.visible = this.waterLevel > 0.03;
+    // hologram sign shaders (scanline roll / flicker clock)
+    for (const hm of this.holoMats || []) hm.uniforms.uTime.value = this.time;
   }
 
   groundAt(x, z) {
@@ -1604,6 +1708,25 @@ export class World {
       if (x >= r.min[0] && x <= r.max[0] && y >= r.min[1] - 0.3 && y <= r.max[1] + 0.3 && z >= r.min[2] && z <= r.max[2]) return r;
     }
     return null;
+  }
+
+  // USER 2026-09-12 floor audit: analytic ground regions ignore props, so a
+  // player who hopped onto a crate/fridge-top would fall straight through it
+  // to the floor. Highest suitable solid collider top under/nearly-under the
+  // feet becomes standable support. Door leaves are excluded (they swing),
+  // soft colliders (bushes) too, and the top must be within a small step of
+  // the feet — walls/fences stay un-climbable.
+  colliderTopNear(x, z, refY) {
+    let best = null;
+    for (const c of this.colliders) {
+      if (!c.active || c.soft || c.door) continue;
+      const b = c.box;
+      if (x < b.min.x - 0.08 || x > b.max.x + 0.08 || z < b.min.z - 0.08 || z > b.max.z + 0.08) continue;
+      const top = b.max.y;
+      if (top > refY + 0.38 || refY - top > 2.4) continue;
+      if (best === null || top > best) best = top;
+    }
+    return best;
   }
 
   waterAt(x, z, feetY) {

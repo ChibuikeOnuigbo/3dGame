@@ -81,3 +81,35 @@ cabinet) used in the Pump Hall / Gallery dressing.
 ## petroulacl/fps-asset-kit — CC0 (ambientCG textures, flat guns, SFX)
 Weapon rack props (Pistol_Compact, Rifle_Assault), distant gunshot SFX, and
 the ambientCG 1K PBR texture sets used by every surface material.
+
+## KayKit — City Builder Bits (kaylousberg.com) — CC0 1.0
+Added 2026-09-12 (user "too scanty / create new houses" pass). Low-poly
+neighbourhood across the street fence (buildings A/B/D/F/G, water tower,
+bushes) plus in-parcel street furniture (sedan, taxi, dumpster, bench,
+hydrant, trash) and crate dressing (box_A/box_B) in the Pump Hall and
+Atrium. Files: `game/public/assets/models/kaykit/` (glTF + shared
+`citybits_texture.png`). Source:
+https://github.com/KayKit-Game-Assets/KayKit-City-Builder-Bits-1.0
+(License.txt: Creative Commons Zero). "KayKit" is not Kenney — the
+no-Kenney project rule is unaffected.
+
+## Door / foley sound packs — CC0 1.0 (OpenGameArt, via GitHub)
+Added 2026-09-12 (user "more sfx" pass). Acquired from the
+`itsmygithubacct/python-sound-generator` repo, which redistributes the
+original OpenGameArt archives (per-collection provenance + SHA-256 in that
+repo's `provenance.json` files); trimmed to length with a local tool, no
+content alteration:
+
+- **"Door open, door close" by Iwan Gabovitch (qubodup)** — CC0.
+  `sfx/doors/iwan_01/04/07.wav` (https://opengameart.org/content/door-open-door-close)
+- **laleksic door set** — CC0 ("Doors" pack, re-uploaded CC0).
+  `sfx/doors/creak_open|creak_close|soft_open|soft_close|cant_open.wav`
+- **rubberduck "100 CC0 SFX"** — CC0. `sfx/doors/slam_1|2.wav`,
+  `sfx/doors/rd_open.wav`, `sfx/debris/wood_hit_1|2.wav`,
+  `sfx/debris/wood_creak.wav` (tree creak by antumdeluge, CC0),
+  `sfx/debris/panel_scrape.wav` (lampeight, CC0)
+- **leonmire "Squeaky door"** — CC0. `sfx/doors/gate_squeal.wav` (winch/gate)
+
+## Hologram boot blip — uisfx (romainsimon/uisfx) — MIT
+`sfx/holo/holo-on.ogg` (scifi "connect" cue), one-shot for the street
+hologram sign projector. https://github.com/romainsimon/uisfx

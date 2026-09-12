@@ -19,6 +19,7 @@ export class AudioEngine {
     this.zones = new Map(); // id -> {gain, nodes:[], start(fn)}
     this.zoneGains = new Map();
     this.stepBuffers = { concrete: [], grass: [] };
+    this.foley = {}; // name -> AudioBuffer (CC0 OpenGameArt packs, see CREDITS.md)
     this.ready = false;
     this._noise = null;
     this._dripTimers = [];
@@ -41,6 +42,7 @@ export class AudioEngine {
     for (const b of [this.busAmb, this.busSfx, this.busUi]) b.connect(this.master);
     this.applyVolumes();
     await this._loadSteps();
+    this._loadFoley(); // fire-and-forget: synth fallbacks cover until decoded
     this.ready = true;
   }
 
@@ -113,6 +115,59 @@ export class AudioEngine {
     g.gain.value = 0.05 + Math.random() * 0.03;
     src.connect(lp); lp.connect(g); g.connect(this.busAmb);
     src.start();
+  }
+
+  // ---------- real foley samples (USER 2026-09-12: "more sfx assets") ----------
+  // CC0 OpenGameArt packs (Iwan Gabovitch door set, rubberduck 100 CC0 SFX,
+  // laleksic doors, leonmire squeaky door, antumdeluge tree creak,
+  // lampeight panel scrape) + one MIT uisfx blip — acquired via the
+  // python-sound-generator / uisfx GitHub repos (network-reachable route;
+  // see CREDITS.md + research/download-manifest.json). Every consumer keeps
+  // its original synth as a fallback, so a missing sample is never fatal.
+  _loadFoley() {
+    const files = {
+      creakOpen: "sfx/doors/creak_open.wav",
+      creakClose: "sfx/doors/creak_close.wav",
+      softOpen: "sfx/doors/soft_open.wav",
+      softClose: "sfx/doors/soft_close.wav",
+      cantOpen: "sfx/doors/cant_open.wav",
+      slam1: "sfx/doors/slam_1.wav",
+      slam2: "sfx/doors/slam_2.wav",
+      iwan1: "sfx/doors/iwan_01.wav",
+      iwan4: "sfx/doors/iwan_04.wav",
+      iwan7: "sfx/doors/iwan_07.wav",
+      rdOpen: "sfx/doors/rd_open.wav",
+      gateSqueal: "sfx/doors/gate_squeal.wav",
+      keyClick: "sfx/debris/key_click.wav",
+      woodHit1: "sfx/debris/wood_hit_1.wav",
+      woodHit2: "sfx/debris/wood_hit_2.wav",
+      woodCreak: "sfx/debris/wood_creak.wav",
+      panelScrape: "sfx/debris/panel_scrape.wav",
+      holoOn: "sfx/holo/holo-on.ogg",
+    };
+    for (const [name, url] of Object.entries(files)) {
+      fetch(url)
+        .then((res) => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.arrayBuffer(); })
+        .then((ab) => this.ctx.decodeAudioData(ab))
+        .then((buf) => { this.foley[name] = buf; })
+        .catch((e) => console.warn(`foley ${name} failed to load (${e.message}); synth fallback stays active`));
+    }
+  }
+
+  // One-shot sample playback. Returns the source node (or null): callers may
+  // stop/re-pitch it. All doors/gates in Still Water are heavy — a mild
+  // random pitch spread keeps repeats organic.
+  _sample(name, { gain = 1, rate = 1, bus = null } = {}) {
+    if (!this.ready || !this.foley[name]) return null;
+    const ctx = this.ctx;
+    const src = ctx.createBufferSource();
+    src.buffer = this.foley[name];
+    src.playbackRate.value = rate * (0.94 + Math.random() * 0.12);
+    const g = ctx.createGain();
+    g.gain.value = gain;
+    src.connect(g).connect(bus || this.busSfx);
+    src.start();
+    return src;
   }
 
   // ---------- zone ambience ----------
@@ -317,6 +372,20 @@ export class AudioEngine {
 
   doorCreak() {
     if (!this.ready) return;
+    // CC0 foley first (laleksic creaks, iwan/rubberduck sets for variety);
+    // a whisper of the old synth underneath keeps the metal-station character.
+    const which = Math.random();
+    const s = which < 0.4
+      ? this._sample("creakOpen", { gain: 0.5 })
+      : which < 0.7
+        ? this._sample("iwan1", { gain: 0.42 })
+        : which < 0.85
+          ? this._sample("iwan4", { gain: 0.42 })
+          : this._sample("rdOpen", { gain: 0.5 });
+    if (s) {
+      this._noiseShot(this.busSfx, { freq: 900, q: 3, decay: 0.3, peak: 0.012, rate: 0.7 });
+      return;
+    }
     const f = 300 + Math.random() * 200;
     this._tone(this.busSfx, { freq: f, type: "sawtooth", slideTo: f * 1.6, attack: 0.08, decay: 0.55, peak: 0.028 });
     this._noiseShot(this.busSfx, { freq: 900, q: 3, decay: 0.4, peak: 0.02, rate: 0.7 });
@@ -324,12 +393,14 @@ export class AudioEngine {
 
   doorThunk() {
     if (!this.ready) return;
+    this._sample("softClose", { gain: 0.55, rate: 0.9 });
     this._tone(this.busSfx, { freq: 90, slideTo: 45, decay: 0.22, peak: 0.28 });
     this._noiseShot(this.busSfx, { freq: 300, q: 1.5, decay: 0.09, peak: 0.12 });
   }
 
   doorSlam() { // kiosk commitment beat
     if (!this.ready) return;
+    this._sample("slam1", { gain: 0.8 });
     this.doorThunk();
     setTimeout(() => this.doorThunk(), 70);
     this._noiseShot(this.busSfx, { freq: 140, q: 0.8, decay: 0.5, peak: 0.3, rate: 0.6 });
@@ -337,15 +408,30 @@ export class AudioEngine {
 
   lockedRattle() {
     if (!this.ready) return;
+    this._sample("cantOpen", { gain: 0.7 });
     for (let i = 0; i < 3; i++) setTimeout(() =>
       this._noiseShot(this.busSfx, { freq: 1800, q: 2, decay: 0.05, peak: 0.08 }), i * 90);
   }
 
   breakerClack() {
     if (!this.ready) return;
+    this._sample("keyClick", { gain: 0.5, rate: 0.85 });
     this._noiseShot(this.busSfx, { freq: 2400, q: 1.2, decay: 0.04, peak: 0.3 });
     this._tone(this.busSfx, { freq: 70, slideTo: 40, decay: 0.3, peak: 0.4 });
     setTimeout(() => this._tone(this.busSfx, { freq: 120, decay: 0.12, peak: 0.12 }), 120); // relay
+  }
+
+  // winch crank start: heavy wood/panel strain under the existing ratchet ticks
+  winchCreak() {
+    if (!this.ready) return;
+    this._sample("woodCreak", { gain: 0.4, rate: 0.8 });
+    this._sample("panelScrape", { gain: 0.3, rate: 1.1 });
+  }
+
+  // hologram sign power-on blip (street sign projector cycling up)
+  holoBoot() {
+    if (!this.ready) return;
+    this._sample("holoOn", { gain: 0.16, rate: 0.9, bus: this.busAmb });
   }
 
   valveTick() { this._noiseShot(this.busSfx, { freq: 1600 + Math.random() * 500, q: 3, decay: 0.035, peak: 0.10 }); }
@@ -509,6 +595,8 @@ export class AudioEngine {
   gateGrind(dur = 3.5) {
     if (!this.ready) return;
     const ctx = this.ctx;
+    // CC0 leonmire squeaky-door squeal rides on top of the synth grind
+    this._sample("gateSqueal", { gain: 0.32, rate: 0.72 });
     const src = ctx.createBufferSource();
     src.buffer = this.noiseBuffer(4);
     src.loop = true;

@@ -262,5 +262,44 @@
    "wide_books_shelf/scene.gltf": "d8da21b4afa1269d"
   },
   "timestamp": "2026-09-08T00:00:00"
+ },
+ {
+  "type": "model-pack",
+  "asset": "KayKit City Builder Bits 1.0 (buildings A/B/D/F/G, watertower, bush, car_sedan, car_taxi, dumpster, bench, firehydrant, trash_A/B, box_A/B + shared citybits_texture)",
+  "source": "github.com/KayKit-Game-Assets/KayKit-City-Builder-Bits-1.0 (codeload zip; registry + codeload are the reachable routes)",
+  "route": "codeload_zip",
+  "status": "success",
+  "license": "CC0 1.0 (License.txt by Kay Lousberg)",
+  "local_path": "game/public/assets/models/kaykit/",
+  "timestamp": "2026-09-12T00:00:00"
+ },
+ {
+  "type": "audio",
+  "asset": "OpenGameArt CC0 door/foley packs (Iwan Gabovitch door open/close; laleksic doors; rubberduck 100 CC0 SFX; leonmire squeaky door; antumdeluge tree creak; lampeight panel scrape)",
+  "source": "github.com/itsmygithubacct/python-sound-generator (raw @sparticuz-free GitHub contents API; OGA itself is TLS-blocked)",
+  "route": "gh_contents_raw",
+  "status": "success",
+  "license": "CC0 1.0 (per-collection provenance.json in source repo)",
+  "local_path": "game/public/sfx/doors/ + game/public/sfx/debris/",
+  "timestamp": "2026-09-12T00:00:00"
+ },
+ {
+  "type": "audio",
+  "asset": "uisfx scifi 'connect' blip (hologram projector boot)",
+  "source": "github.com/romainsimon/uisfx",
+  "route": "gh_contents_raw",
+  "status": "success",
+  "license": "MIT",
+  "local_path": "game/public/sfx/holo/holo-on.ogg",
+  "timestamp": "2026-09-12T00:00:00"
+ },
+ {
+  "type": "note",
+  "asset": "Sketchfab API + user worker gateway",
+  "source": "api.sketchfab.com via arena-asset-gateway worker",
+  "route": "worker_proxy",
+  "status": "failed",
+  "error": "worker answers 'Host not allowed' for api.sketchfab.com and cannot carry binary GLB payloads; sketchfab_token NOT stored in repo. GitHub CC0 packs used instead (user-visible note in session).",
+  "timestamp": "2026-09-12T00:00:00"
  }
 ]
